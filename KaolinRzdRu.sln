@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.RzdRu.Api", "Kaolin.RzdRu.Api\Kaolin.RzdRu.Api.csproj", "{A0A99268-08AA-4A07-88D3-41EE2DDA3A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Services.PassRzdRu.Parser", "..\Kaolin.Services.PassRzdRu.Parser\Kaolin.Services.PassRzdRu.Parser.csproj", "{6B9FD207-1C82-4095-8554-3D95CAE38C00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Services.PassRzdRu.Parser", "Kaolin.Services.PassRzdRu.Parser\Kaolin.Services.PassRzdRu.Parser.csproj", "{6B9FD207-1C82-4095-8554-3D95CAE38C00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
