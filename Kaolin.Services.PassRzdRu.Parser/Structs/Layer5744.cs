@@ -49,6 +49,40 @@
         public Ticket[] Tickets { get; set; }
         public string Timestamp { get; set; }
 
+        public string DefShowTime { get; set; }
+        public bool DefShowTimeMsk { get; set; }
+        public string MskTimeSuffix { get; set; }
+        public string MskTimeSuffix_ru { get; set; }
+        public string MskTimeSuffix_en { get; set; }
+
+        public string LocalDate0 { get; set; }
+        public string LocalDateShort0 { get; set; }
+        public string LocalTime0 { get; set; }
+
+        public string Date0 { get; set; }
+        public string DateShort0 { get; set; }
+        public string Time0 { get; set; }
+        public string Date1 { get; set; }
+        public string DateShort1 { get; set; }
+        public string Time1 { get; set; }
+        public string LocalDate1 { get; set; }
+        public string LocalDateShort1 { get; set; }
+        public string LocalTime1 { get; set; }
+        public string TimeDeltaString0 { get; set; }
+        public string TimeDeltaString1 { get; set; }
+        public string TimeDeltaString0_ru { get; set; }
+        public string TimeDeltaString1_ru { get; set; }
+        public string TimeDeltaString0_en { get; set; }
+        public string TimeDeltaString1_en { get; set; }
+
+        public bool Msk0 { get; set; }
+        public bool Msk1 { get; set; }
+        public bool ShowTimeMsk0 { get; set; }
+        public bool ShowTimeMsk1 { get; set; }
+
+        public string DPeople { get; set; }
+        public string DFifaAdditionalInfo { get; set; }
+
         public class Ticket
         {
             public long Id { get; set; }
