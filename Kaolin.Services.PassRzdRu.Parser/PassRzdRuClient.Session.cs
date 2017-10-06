@@ -10,14 +10,16 @@ namespace Kaolin.Services.PassRzdRu.Parser
     public partial class PassRzdRuClient
     {
         private readonly CookieContainer _cookieContainer;
+        private readonly Uri _sessionUri;
 
         public PassRzdRuClient()
         {
             _cookieContainer = new CookieContainer();
+            _sessionUri = new Uri("https://pass.rzd.ru");
         }
 
 
-        public async Task<Session> Authorize(string login, string password)
+        public async Task<Session> CreateSession(string login, string password)
         {
             var url = "https://pass.rzd.ru/selfcare/j_security_check/ru";
 
@@ -41,6 +43,21 @@ namespace Kaolin.Services.PassRzdRu.Parser
 
             return GetSession(login);
         }
+
+        public HttpClientHandler RestoreSession(Session session)
+        {
+            _cookieContainer.Add(_sessionUri, new Cookie("JSESSIONID", session.JSessionId, "/", ".rzd.ru"));
+            _cookieContainer.Add(_sessionUri, new Cookie("LtpaToken2", session.LtpaToken2, "/", ".rzd.ru"));
+            _cookieContainer.Add(_sessionUri, new Cookie("lang", "ru", "/", ".rzd.ru"));
+            _cookieContainer.Add(_sessionUri, new Cookie("AuthFlag", "true", "/", ".rzd.ru"));
+
+            return new HttpClientHandler
+            {
+                CookieContainer = _cookieContainer,
+                UseCookies = true
+            };
+        }
+
 
         private Task<HttpResponseMessage> LoginAsync(string url, string login, string password)
         {
@@ -85,7 +102,7 @@ namespace Kaolin.Services.PassRzdRu.Parser
 
         private Session GetSession(string login)
         {
-            var cookies = _cookieContainer.GetCookies(new Uri("https://pass.rzd.ru"));
+            var cookies = _cookieContainer.GetCookies(_sessionUri);
 
             return new Session
             {
