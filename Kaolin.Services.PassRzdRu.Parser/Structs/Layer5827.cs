@@ -20,55 +20,75 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string WhereCode { get; set; }
             public string Date { get; set; }
             public bool NoSeats { get; set; }
+            public string DefShowTime { get; set; }
             public string State { get; set; }
 
             public TpTrain[] List { get; set; }
-        }
 
-        public class TpTrain
-        {
-            public string Number { get; set; }
-            public string Number2 { get; set; }
-            public int Type { get; set; }
-            public int TypeEx { get; set; }
-            public bool ElReg { get; set; }
-            public bool DeferredPayment { get; set; }
-            public bool VarPrice { get; set; }
-            public bool BEntire { get; set; }
-            public string TrainName { get; set; }
-            public string Brand { get; set; }
-            public string Carrier { get; set; }
+            public ServiceMessage[] MsgList { get; set; }
 
-            public string Route0 { get; set; }
-            public string Route1 { get; set; }
-            public string TrDate0 { get; set; }
-            public string TrTime0 { get; set; }
-            public string Station0 { get; set; }
-            public string Station1 { get; set; }
-            public string Date0 { get; set; }
-            public string Time0 { get; set; }
-            public string Date1 { get; set; }
-            public string Time1 { get; set; }
-            public string TimeInWay { get; set; }
-            public int FlMsk { get; set; }
-            public long Train_id { get; set; }
-            public Car[] Cars { get; set; }
-            public bool? DisabledType { get; set; }
+            public string TransferSearchMode { get; set; }
+            public bool? FlFPKRoundBonus { get; set; }
+            //public string Discounts { get; set; }
 
-            public bool CarMods { get; set; }
-            public bool BFirm { get; set; }
-        }
 
-        public class Car
-        {
-            public int IType { get; set; }
-            public string Type { get; set; }
-            public string TypeLoc { get; set; }
-            public int FreeSeats { get; set; }
-            public bool BFreeInvisible { get; set; }
-            public decimal Pt { get; set; }
-            public decimal Tariff { get; set; }
-            public string ServCls { get; set; }
+            public class TpTrain
+            {
+                public string Number { get; set; }
+                public string Number2 { get; set; }
+                public int Type { get; set; }
+                public int TypeEx { get; set; }
+                public int Depth { get; set; }
+                public bool New { get; set; }
+                public bool ElReg { get; set; }
+                public bool DeferredPayment { get; set; }
+                public bool VarPrice { get; set; }
+                public bool BEntire { get; set; }
+                public bool BFirm { get; set; }
+                public bool CarMods { get; set; }
+                public string TrainName { get; set; }
+                public string Brand { get; set; }
+                public string Carrier { get; set; }
+
+                public string Route0 { get; set; }
+                public string Route1 { get; set; }
+                public string TrDate0 { get; set; }
+                public string TrTime0 { get; set; }
+                public string Station0 { get; set; }
+                public string Station1 { get; set; }
+                public string Date0 { get; set; }
+                public string Time0 { get; set; }
+                public string Date1 { get; set; }
+                public string Time1 { get; set; }
+                public string LocalDate1 { get; set; }
+                public string LocalTime1 { get; set; }
+                public string TimeDeltaString1 { get; set; }
+                public string TimeInWay { get; set; }
+                public int FlMsk { get; set; }
+                public long Train_id { get; set; }
+                public bool? DisabledType { get; set; }
+                public Car[] Cars { get; set; }
+            }
+
+            public class Car
+            {
+                public int IType { get; set; }
+                public string Type { get; set; }
+                public string TypeLoc { get; set; }
+                public int FreeSeats { get; set; }
+                public decimal Pt { get; set; }
+                public decimal Tariff { get; set; }
+                public string ServCls { get; set; }
+                public bool? BFreeInvisible { get; set; }
+                public bool? DisabledPerson { get; set; }
+            }
+
+            public class ServiceMessage
+            {
+                public string Message { get; set; }
+                public string AddInfo { get; set; }
+                public string Type { get; set; }
+            }
         }
 
         public class Request
