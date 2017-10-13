@@ -1,12 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
-using Newtonsoft.Json;
 using Kaolin.Services.PassRzdRu.Parser.Structs;
-using Kaolin.Services.PassRzdRu.Parser.Exceptions;
 
 namespace Kaolin.Services.PassRzdRu.Parser
 {
@@ -14,7 +9,6 @@ namespace Kaolin.Services.PassRzdRu.Parser
     {
         private readonly Config _config;
         private readonly ILogger _log;
-        private static readonly JsonSerializer _json;
 
         public PassRzdRuClient(IOptions<Config> configAccessor, ILogger<PassRzdRuClient> logger)
         {
@@ -22,78 +16,17 @@ namespace Kaolin.Services.PassRzdRu.Parser
             _log = logger;
         }
 
-        static PassRzdRuClient()
-        {
-            _json = JsonSerializer.Create(new JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
-        }
 
+        public Task<Layer5827> GetTrainsAsync(Session session, Layer5827.Request request)
+           => PostRidDictionary<Layer5827>("https://pass.rzd.ru/timetable/public/ru?layer_id=5827", session, _config.Polling.TrainList, request.ToDictionary());
 
-        public async Task<T> ReadAs<T>(HttpContent content)
-        {
-            using (var stream = await content.ReadAsStreamAsync())
-            {
-                using (var reader = new System.IO.StreamReader(stream))
-                {
-                    return _json.Deserialize<T>(new JsonTextReader(reader));
-                }
-            }
-        }
+        public Task<Layer5764> GetCarsAsync(Session session, Layer5764.Request request)
+            => PostRidDictionary<Layer5764>("https://pass.rzd.ru/timetable/public/ru?layer_id=5764", session, _config.Polling.CarList, request.ToDictionary());
 
-        public T ReadAs<T>(string content)
-        {
-            using (var reader = new System.IO.StringReader(content))
-            {
-                return _json.Deserialize<T>(new JsonTextReader(reader));
-            }
-        }
+        public Task<Layer5705> ReserveTicketAsync(Session session, Layer5705.Request request)
+            => PostRidDictionary<Layer5705>("https://pass.rzd.ru/ticket/secure/ru?layer_id=5705&STRUCTURE_ID=735", session, _config.Polling.Order, request.ToDictionary());
 
-        public Task<T> PostRidDictionary<T>(string requestUri, Session session, Config.PollingConfig.Polling config, Dictionary<string, string> requestParams) where T : IRidRequestResponse
-            => PostRidDictionary<T>(requestUri, new HttpClient(RestoreSession(session)), config, requestParams);
-
-        private async Task<T> PostRidDictionary<T>(string requestUri, HttpClient http, Config.PollingConfig.Polling config, Dictionary<string, string> requestParams) where T : IRidRequestResponse
-        {
-            // Get RID
-            var response = await http.PostAsync(requestUri, new FormUrlEncodedContent(requestParams));
-            var content = await response.Content.ReadAsStringAsync();
-            var result = ReadAs<T>(content);
-
-            if ("RID" == result.Result)
-            {
-                requestParams.Add("rid", result.RID);
-            }
-
-            var retries = config.MaxRetry;
-            for (; ; )
-            {
-                if ("OK".Equals(result.Result))
-                {
-                    return result;
-                }
-                else if ("RID".Equals(result.Result))
-                {
-                    if (--retries <= 0)
-                    {
-                        break;
-                    }
-                    await Task.Delay(config.Interval);
-                    response = await http.PostAsync(requestUri, new FormUrlEncodedContent(requestParams));
-                    content = await response.Content.ReadAsStringAsync();
-                    result = ReadAs<T>(content);
-                }
-                else if ("FAIL".Equals(result.Result))
-                {
-                    var errorResult = ReadAs<ParserErrorResponse>(content);
-                    var message = errorResult.Info ?? errorResult.Error;
-
-                    throw new ErrorResponseException(message, "POST", requestUri);
-                }
-                else
-                {
-                    throw new UnexpectedContentException("Unexpected Status", "POST", requestUri, content);
-                }
-            };
-
-            throw new NoMoreRetriesException(requestUri, config.MaxRetry);
-        }
+        public Task<Layer5769> CancelReserveAsync(Session session, Layer5769.Request request)
+            => PostDictionary<Layer5769>("https://pass.rzd.ru/ticket/secure/ru?layer_id=5769", session, request.ToDictionary());
     }
 }
