@@ -25,5 +25,8 @@ namespace Kaolin.Services.PassRzdRu.Parser
 
         public Task<Layer5705> ReserveTicketAsync(Session session, Layer5705.Request request)
             => PostRidDictionary<Layer5705>("https://pass.rzd.ru/ticket/secure/ru?layer_id=5705&STRUCTURE_ID=735", session, _config.Polling.Order, request.ToDictionary());
+
+        public Task<Layer5769> CancelReserveAsync(Session session, Layer5769.Request request)
+            => PostDictionary<Layer5769>("https://pass.rzd.ru/ticket/secure/ru?layer_id=5769", session, request.ToDictionary());
     }
 }
