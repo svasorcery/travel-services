@@ -1,9 +1,11 @@
-﻿namespace Kaolin.Services.PassRzdRu.Parser.Structs
+﻿using System.Collections.Generic;
+
+namespace Kaolin.Services.PassRzdRu.Parser.Structs
 {
     /// <summary>
     /// Car list
     /// </summary>
-    public class Layer5764
+    public class Layer5764 : IRidRequestResponse
     {
         public string Result { get; set; }
         public string RID { get; set; }
@@ -156,6 +158,20 @@
                 TNum0 = tnum0;
                 Dt0 = dt0;
                 BEntire = bEntire;
+            }
+
+            public Dictionary<string, string> ToDictionary()
+            {
+                return new Dictionary<string, string>
+                {
+                    ["dir"] = Dir.ToString(),
+                    ["seatDetails"] = "1",
+                    ["code0"] = Code0,
+                    ["code1"] = Code1,
+                    ["tnum0"] = TNum0,
+                    ["dt0"] = Dt0,
+                    ["bEntire"] = BEntire ? "true" : "false"
+                };
             }
         }
     }
