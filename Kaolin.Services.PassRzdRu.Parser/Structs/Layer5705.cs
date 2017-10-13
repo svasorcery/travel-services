@@ -1,9 +1,13 @@
-﻿namespace Kaolin.Services.PassRzdRu.Parser.Structs
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+
+namespace Kaolin.Services.PassRzdRu.Parser.Structs
 {
     /// <summary>
     /// Reserve seat
     /// </summary>
-    public class Layer5705
+    public class Layer5705 : IRidRequestResponse
     {
         public string Result { get; set; }
         public string RID { get; set; }
@@ -98,6 +102,15 @@
             public RequestPassenger[] Passengers { get; set; }
             public RequestOrder[] Orders { get; set; }
             public string ActorType { get; set; }
+
+            internal Dictionary<string, string> ToDictionary()
+            {
+                return new Dictionary<string, string>
+                {
+                    ["journeyRequest"] = JsonConvert.SerializeObject(this, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                    ["actorType"] = this.ActorType
+                };
+            }
         }
 
         public class RequestPassenger

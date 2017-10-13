@@ -22,5 +22,8 @@ namespace Kaolin.Services.PassRzdRu.Parser
 
         public Task<Layer5764> GetCarsAsync(Session session, Layer5764.Request request)
             => PostRidDictionary<Layer5764>("https://pass.rzd.ru/timetable/public/ru?layer_id=5764", session, _config.Polling.CarList, request.ToDictionary());
+
+        public Task<Layer5705> ReserveTicketAsync(Session session, Layer5705.Request request)
+            => PostRidDictionary<Layer5705>("https://pass.rzd.ru/ticket/secure/ru?layer_id=5705&STRUCTURE_ID=735", session, _config.Polling.Order, request.ToDictionary());
     }
 }
