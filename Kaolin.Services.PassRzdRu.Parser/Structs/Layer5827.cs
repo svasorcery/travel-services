@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kaolin.Services.PassRzdRu.Parser.Structs
 {
     /// <summary>
     /// Train list
     /// </summary>
-    public class Layer5827
+    public class Layer5827 : IRidRequestResponse
     {
         public string Result { get; set; }
         public string RID { get; set; }
@@ -105,6 +106,17 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
                 FromDate = fromDate;
                 Ti0 = ti0;
             }
+
+            public Dictionary<string, string> ToDictionary() =>
+                new Dictionary<string, string>
+                {
+                    ["dir"] = "0",
+                    ["tfl"] = "1",
+                    ["code0"] = From,
+                    ["code1"] = To,
+                    ["dt0"] = FromDate.ToString("dd.MM.yyyy"),
+                    ["checkSeats"] = "1"
+                };
         }
     }
 }
