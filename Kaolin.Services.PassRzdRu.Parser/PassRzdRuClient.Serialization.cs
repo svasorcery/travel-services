@@ -85,5 +85,29 @@ namespace Kaolin.Services.PassRzdRu.Parser
 
             throw new NoMoreRetriesException(requestUri, config.MaxRetry);
         }
+
+
+        public Task<T> PostDictionary<T>(string requestUri, Session session, Dictionary<string, string> requestParams) where T : IParserResponse
+            => PostDictionary<T>(requestUri, new HttpClient(RestoreSession(session)), requestParams);
+
+        public async Task<T> PostDictionary<T>(string requestUri, HttpClient http, Dictionary<string, string> requestParams) where T : IParserResponse
+        {
+            var response = await http.PostAsync(requestUri, new FormUrlEncodedContent(requestParams));
+
+            var result = await ReadAs<T>(response.Content);
+
+            if ("OK".Equals(result.Result))
+            {
+                return result;
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var errorResult = ReadAs<ParserErrorResponse>(content);
+                var message = errorResult.Info ?? errorResult.Error;
+
+                throw new ErrorResponseException(message, "POST", requestUri);
+            }
+        }
     }
 }
