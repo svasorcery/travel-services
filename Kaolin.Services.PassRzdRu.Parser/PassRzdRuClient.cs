@@ -14,6 +14,8 @@ namespace Kaolin.Services.PassRzdRu.Parser
         {
             _config = configAccessor.Value;
             _log = logger;
+            _cookieContainer = new System.Net.CookieContainer();
+            _sessionUri = new System.Uri("https://pass.rzd.ru");
         }
 
 

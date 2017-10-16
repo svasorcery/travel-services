@@ -12,12 +12,6 @@ namespace Kaolin.Services.PassRzdRu.Parser
         private readonly CookieContainer _cookieContainer;
         private readonly Uri _sessionUri;
 
-        public PassRzdRuClient()
-        {
-            _cookieContainer = new CookieContainer();
-            _sessionUri = new Uri("https://pass.rzd.ru");
-        }
-
 
         public async Task<Session> CreateSession(string login, string password)
         {
