@@ -29,11 +29,11 @@ namespace Kaolin.Services.PassRzdRu.ConsoleApp
         static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
-                   .AddLogging()
-                   .AddOptions()
-                   .Configure<Parser.Config>(_ => _.Polling = new Parser.Config.PollingConfig(60, 1000))
-                   .AddSingleton<Parser.PassRzdRuClient>()
-                   .BuildServiceProvider();
+                .AddLogging()
+                .AddOptions()
+                .Configure<Parser.Config>(_ => _.Polling = new Parser.Config.PollingConfig(60, 1000))
+                .AddSingleton<Parser.PassRzdRuClient>()
+                .BuildServiceProvider();
 
             serviceProvider
                 .GetService<ILoggerFactory>()
