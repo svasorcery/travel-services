@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Kaolin.Services.PassRzdRu.Parser.Structs
 {
@@ -96,27 +97,58 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
         {
             public string From { get; set; }
             public string To { get; set; }
-            public DateTime FromDate { get; set; }
-            public string Ti0 { get; set; }
+            public DateTime DepartDate { get; set; }
+            public HourInterval DepartTime { get; set; }
 
-            public Request(string from, string to, DateTime fromDate, string ti0)
+            public Request(string from, string to, DateTime departDate, int hourFrom = 0, int hourTo = 24)
             {
                 From = from;
                 To = to;
-                FromDate = fromDate;
-                Ti0 = ti0;
+                DepartDate = departDate;
+                DepartTime = HourInterval.Get(hourFrom, hourTo);
             }
 
-            public Dictionary<string, string> ToDictionary() =>
-                new Dictionary<string, string>
+            public Dictionary<string, string> ToDictionary()
+            {
+                var requestParams = new Dictionary<string, string>
                 {
                     ["dir"] = "0",
                     ["tfl"] = "1",
                     ["code0"] = From,
                     ["code1"] = To,
-                    ["dt0"] = FromDate.ToString("dd.MM.yyyy"),
+                    ["dt0"] = DepartDate.ToString("dd.MM.yyyy"),
+                    ["ti0"] = DepartTime.ToString(),
                     ["checkSeats"] = "1"
                 };
+
+                return requestParams;
+            }
+
+
+            public class HourInterval
+            {
+                public int From { get; set; }
+                public int To { get; set; }
+                public override string ToString() => $"{From}-{To}";
+
+                HourInterval(int from, int to)
+                {
+                    From = from;
+                    To = to;
+                }
+
+                public static HourInterval Get(int from, int to)
+                {
+                    return CheckRange(from, to) ? new HourInterval(from, to) : new HourInterval(0, 24);
+                }
+
+                private static bool CheckRange(int from, int to)
+                {
+                    return (from >= 0 && from < 24)
+                        && (to > 0 && to <= 24)
+                        && from < to;
+                }
+            }
         }
     }
 }
