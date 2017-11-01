@@ -13,9 +13,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
 
         public class Request
         {
-            public string Type { get; set; }
             public string OrderId { get; set; }
-            public string ActorType { get; set; }
 
             public Dictionary<string, string> ToDictionary()
             {

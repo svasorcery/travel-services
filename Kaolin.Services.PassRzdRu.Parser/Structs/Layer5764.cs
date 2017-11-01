@@ -150,7 +150,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string Dt0 { get; set; }
             public bool BEntire { get; set; }
 
-            public Request(int dir, string code0, string code1, string tnum0, string dt0, bool bEntire)
+            public Request(int dir, string code0, string code1, string dt0, string tnum0, bool bEntire)
             {
                 Dir = dir;
                 Code0 = code0;

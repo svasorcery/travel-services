@@ -101,14 +101,13 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
         {
             public RequestPassenger[] Passengers { get; set; }
             public RequestOrder[] Orders { get; set; }
-            public string ActorType { get; set; }
 
             internal Dictionary<string, string> ToDictionary()
             {
                 return new Dictionary<string, string>
                 {
                     ["journeyRequest"] = JsonConvert.SerializeObject(this, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
-                    ["actorType"] = this.ActorType
+                    ["actorType"] = "desktop_2016"
                 };
             }
         }
