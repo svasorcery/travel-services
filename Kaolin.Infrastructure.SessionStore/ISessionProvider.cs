@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kaolin.Services.PassRzdRu.RailClient
+namespace Kaolin.Infrastructure.SessionStore
 {
     public interface ISessionProvider
     {

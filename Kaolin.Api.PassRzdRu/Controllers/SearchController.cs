@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kaolin.RzdRu.Api.Controllers
+namespace Kaolin.Api.PassRzdRu.Controllers
 {
     public class SearchController : Controller
     {
