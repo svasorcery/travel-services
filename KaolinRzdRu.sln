@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Infrastructure.SessionStore", "Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj", "{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Models.Rail", "Kaolin.Models.Rail\Kaolin.Models.Rail.csproj", "{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

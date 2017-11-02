@@ -14,4 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj" />
+    <ProjectReference Include="..\Kaolin.Models.Rail\Kaolin.Models.Rail.csproj" />
+    <ProjectReference Include="..\Kaolin.Services.PassRzdRu.RailClient\Kaolin.Services.PassRzdRu.RailClient.csproj" />
+  </ItemGroup>
+
 </Project>

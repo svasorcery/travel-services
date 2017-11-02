@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Kaolin.Models.Rail\Kaolin.Models.Rail.csproj" />
     <ProjectReference Include="..\Kaolin.Services.PassRzdRu.Parser\Kaolin.Services.PassRzdRu.Parser.csproj" />
   </ItemGroup>
 
