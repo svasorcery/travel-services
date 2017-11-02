@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kaolin.Services.PassRzdRu.RailClient
+namespace Kaolin.Infrastructure.SessionStore
 {
     public interface ISessionStore
     {

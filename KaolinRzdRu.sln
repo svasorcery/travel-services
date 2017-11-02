@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Api.PassRzdRu", "Kaolin.Api.PassRzdRu\Kaolin.Api.PassRzdRu.csproj", "{C50C7EA7-B4AD-4D46-8080-1B719D29B134}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Api.PassRzdRu", "Kaolin.Api.PassRzdRu\Kaolin.Api.PassRzdRu.csproj", "{C50C7EA7-B4AD-4D46-8080-1B719D29B134}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.Parser", "Kaolin.Services.PassRzdRu.Parser\Kaolin.Services.PassRzdRu.Parser.csproj", "{6B9FD207-1C82-4095-8554-3D95CAE38C00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.ConsoleApp", "Kaolin.Services.PassRzdRu.ConsoleApp\Kaolin.Services.PassRzdRu.ConsoleApp.csproj", "{E541C354-C834-41C8-B5AF-0B97CE3ED15A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.RailClient", "Kaolin.Services.PassRzdRu.RailClient\Kaolin.Services.PassRzdRu.RailClient.csproj", "{D27FCE76-3C9D-4E79-8325-6E3E3539E2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Infrastructure.SessionStore", "Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj", "{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D27FCE76-3C9D-4E79-8325-6E3E3539E2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27FCE76-3C9D-4E79-8325-6E3E3539E2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D27FCE76-3C9D-4E79-8325-6E3E3539E2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
