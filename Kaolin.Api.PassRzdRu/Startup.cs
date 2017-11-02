@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Kaolin.RzdRu.Api
+namespace Kaolin.Api.PassRzdRu
 {
     public class Startup
     {
