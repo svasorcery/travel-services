@@ -77,10 +77,10 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
                 public int IType { get; set; }
                 public string Type { get; set; }
                 public string TypeLoc { get; set; }
-                public int FreeSeats { get; set; }
-                public decimal Pt { get; set; }
-                public decimal Tariff { get; set; }
                 public string ServCls { get; set; }
+                public int FreeSeats { get; set; }
+                public decimal Tariff { get; set; }
+                public int Pt { get; set; }
                 public bool? BFreeInvisible { get; set; }
                 public bool? DisabledPerson { get; set; }
             }
