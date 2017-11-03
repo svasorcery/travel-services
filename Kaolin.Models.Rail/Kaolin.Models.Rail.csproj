@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj" />
+  </ItemGroup>
+
 </Project>
