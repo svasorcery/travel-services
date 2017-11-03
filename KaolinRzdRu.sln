@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Services.PassRzdRu.RailClient", "Kaolin.Services.PassRzdRu.RailClient\Kaolin.Services.PassRzdRu.RailClient.csproj", "{D27FCE76-3C9D-4E79-8325-6E3E3539E2ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Infrastructure.SessionStore", "Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj", "{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Infrastructure.SessionStore", "Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj", "{CA7D2DC6-FED8-436B-8F95-FE7092FE239A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaolin.Models.Rail", "Kaolin.Models.Rail\Kaolin.Models.Rail.csproj", "{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaolin.Services.Rail.ConsoleApp", "Kaolin.Services.Rail.ConsoleApp\Kaolin.Services.Rail.ConsoleApp.csproj", "{4A8442E6-0C2D-4ECA-88A6-6C60D8F643BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE078DAF-0BF6-4586-B610-0106CCA3AEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A8442E6-0C2D-4ECA-88A6-6C60D8F643BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A8442E6-0C2D-4ECA-88A6-6C60D8F643BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A8442E6-0C2D-4ECA-88A6-6C60D8F643BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A8442E6-0C2D-4ECA-88A6-6C60D8F643BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
