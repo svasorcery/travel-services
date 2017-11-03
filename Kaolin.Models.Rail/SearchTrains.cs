@@ -37,6 +37,7 @@ namespace Kaolin.Models.Rail
                 public TripEvent ArriveLocal { get; set; }
                 public TripEvent RouteStart { get; set; }
                 public string RouteEndStation { get; set; }
+                public string TimezoneDifference { get; set; }
                 public TimeSpan TripDuration { get; set; }
                 public int? TripDistance { get; set; }
                 public string Carrier { get; set; }

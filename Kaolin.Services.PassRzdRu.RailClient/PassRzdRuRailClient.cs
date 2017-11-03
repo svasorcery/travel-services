@@ -69,6 +69,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                              ArriveLocal = new TripEvent(t.LocalDate1, t.LocalTime1, TimeType.LOCAL, t.Station1, result.Tp[0].WhereCode),
                              RouteStart = new TripEvent(t.TrDate0, t.TrTime0, tt, t.Route0, null),
                              RouteEndStation = t.Route1,
+                             TimezoneDifference = t.TimeDeltaString1,
                              TripDuration = new TimeSpan(durationParts.ElementAt(0), durationParts.ElementAt(1), 00),
                              //TripDistance = null,
                              Carrier = t.Carrier,
