@@ -118,5 +118,40 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                          }
             };
         }
+
+        public Task<GetTrain.Result> GetTrainAsync(ISessionStore session, GetTrain.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var trains = session.Retrieve<Internal.SearchTrainOptions>("train_options");
+            var train = trains.Options.First(x => x.OptionRef == request.OptionRef);
+
+            return Task.FromResult(new GetTrain.Result
+            {
+                Train = new GetTrain.Result.TrainOption
+                {
+                    OptionRef = train.OptionRef,
+                    DisplayNumber = train.DisplayNumber,
+                    Brand = train.Brand,
+                    BEntire = train.BEntire,
+                    IsFirm = train.IsFirm,
+                    HasElectronicRegistration = train.HasElectronicRegistration,
+                    HasDynamicPricing = train.HasDynamicPricing,
+                    Depart = train.Depart,
+                    Arrive = train.Arrive,
+                    TripDuration = train.TripDuration,
+                    RouteStart = train.RouteStart,
+                    RouteEndStation = train.RouteEndStation
+                }
+            });
+        }
     }
 }
