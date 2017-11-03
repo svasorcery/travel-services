@@ -46,6 +46,34 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 );
 
             int optionRef = 0;
+            if (result.Tp != null && result.Tp.Length == 1)
+            {
+                var tp = new Internal.SearchTrainOptions
+                {
+                    Request = request,
+                    Options = (from t in result.Tp[0].List
+                               let tt = t.FlMsk == 3 || t.FlMsk == 2 ? TimeType.MOSCOW : TimeType.LOCAL
+                               let durationParts = t.TimeInWay.Split(':').Select(x => int.Parse(x))
+                               select new Internal.SearchTrainOptions.Option
+                               {
+                                   OptionRef = ++optionRef,
+                                   DisplayNumber = t.Number2,
+                                   Brand = t.Brand,
+                                   BEntire = t.BEntire,
+                                   IsFirm = t.BFirm,
+                                   HasElectronicRegistration = t.ElReg,
+                                   HasDynamicPricing = t.VarPrice,
+                                   Depart = new TripEvent(t.Date0, t.Time0, tt, t.Station0, result.Tp[0].FromCode),
+                                   Arrive = new TripEvent(t.Date1, t.Time1, tt, t.Station1, result.Tp[0].WhereCode),
+                                   TripDuration = new TimeSpan(durationParts.ElementAt(0), durationParts.ElementAt(1), 00),
+                                   RouteStart = new TripEvent(t.TrDate0, t.TrTime0, tt, t.Route0, null),
+                                   RouteEndStation = t.Route1
+                               })
+                };
+                session.Store("train_options", tp);
+            }
+
+            optionRef = 0;
             return new SearchTrains.Result
             {
                 Origin = result.Tp[0].From,
