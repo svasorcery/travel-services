@@ -2,15 +2,15 @@
 {
     public class PriceRange
     {
-        public decimal Min { get; internal set; }
-        public decimal Max { get; internal set; }
+        public Price Min { get; internal set; }
+        public Price Max { get; internal set; }
 
-        public PriceRange(decimal min, decimal max)
+        public PriceRange(Price min, Price max)
         {
             Min = min;
             Max = max;
         }
 
-        public override string ToString() => Min == Max ? $"[{Min}]" : $"[{Min}...{Max}]";
+        public override string ToString() => Min == Max ? $"{Min.Total}" : $"{Min.Total}...{Max.Total}";
     }
 }
