@@ -9,7 +9,7 @@ namespace Kaolin.Models.Rail
         public Charges Charges { get; protected set; }
         public decimal Total => Base; // TODO: Add sum with extra charges, ref #51
 
-        public Price(decimal providerPrice, Charges charges)
+        public Price(decimal providerPrice, Charges charges = null)
         {
             Base = providerPrice;
             Charges = charges;

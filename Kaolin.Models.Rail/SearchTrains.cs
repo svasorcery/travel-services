@@ -12,6 +12,8 @@ namespace Kaolin.Models.Rail
             public DateTime DepartDate { get; set; }
             public int? HourFrom { get; set; }
             public int? HourTo { get; set; }
+
+            public string DepartDateString => DepartDate.ToString("yyyy-MM-dd");
         }
 
         public class Result
