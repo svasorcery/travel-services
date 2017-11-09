@@ -52,52 +52,44 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public class Car
             {
                 public string CNumber { get; set; }
+                public int CType { get; set; }
+                public int CTypeI { get; set; }
                 public string Type { get; set; }
                 public string TypeLoc { get; set; }
-                public int CTypeI { get; set; }
-                public int CType { get; set; }
-                public string Letter { get; set; }
                 public string ClsType { get; set; }
-                public string ClsName { get; set; }
+                public string IntServiceClass { get; set; }
+                public string Letter { get; set; }
+                public string AddSigns { get; set; }
+                public long SchemeId { get; set; }
+                public string Places { get; set; }
+                public string SpecialSeatTypes { get; set; }
+                public Seat[] Seats { get; set; }
                 public Service[] Services { get; set; }
+                public string ClsName { get; set; }
                 public string Tariff { get; set; }
                 public string Tariff2 { get; set; }
                 public string TariffServ { get; set; }
-                public string AddSigns { get; set; }
-                public string Carrier { get; set; }
+                public string SeniorTariff { get; set; }
                 public long CarrierId { get; set; }
-                public bool? InsuranceFlag { get; set; }
+                public string Carrier { get; set; }
                 public string Owner { get; set; }
                 public bool ElReg { get; set; }
+                public bool VarPrice { get; set; }
+                public bool NoSmok { get; set; }
+                public bool Bedding { get; set; }
+                public bool ForcedBedding { get; set; }
                 public bool Food { get; set; }
                 public bool RegularFoodService { get; set; }
-                public bool NoSmok { get; set; }
+                public bool Ferry { get; set; }
+                public bool InsuranceFlag { get; set; }
+                public bool DeferredPayment { get; set; }
                 public bool InetSaleOff { get; set; }
                 public bool BVip { get; set; }
                 public bool ConferenceRoomFlag { get; set; }
                 public bool BDeck2 { get; set; }
-                public string IntServiceClass { get; set; }
-                public string SpecialSeatTypes { get; set; }
-                public bool DeferredPayment { get; set; }
-                public bool VarPrice { get; set; }
-                public bool Ferry { get; set; }
-                public string SeniorTariff { get; set; }
-                public bool Bedding { get; set; }
+                public bool PolicyAvailable { get; set; }
                 public bool Youth { get; set; }
                 public bool Unior { get; set; }
-                public string Places { get; set; }
-                public Seat[] Seats { get; set; }
-                public long SchemeId { get; set; }
-                public bool ForcedBedding { get; set; }
-                public bool PolicyAvailable { get; set; }
-
-                public class Service
-                {
-                    public long Id { get; set; }
-                    public string Name { get; set; }
-                    public string Description { get; set; }
-                    public bool? HasImage { get; set; }
-                }
 
                 public class Seat
                 {
@@ -107,6 +99,14 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
                     public string Tariff { get; set; }
                     public string TariffServ { get; set; }
                     public string Places { get; set; }
+                }
+
+                public class Service
+                {
+                    public long Id { get; set; }
+                    public string Name { get; set; }
+                    public string Description { get; set; }
+                    public bool? HasImage { get; set; }
                 }
             }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Kaolin.Services.PassRzdRu.RailClient.Internal
 {
-    public class SearchTrainOptions
+    public class TrainOptions
     {
         public SearchTrains.Request Request { get; set; }
         public IEnumerable<Option> Options { get; set; }

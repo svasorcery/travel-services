@@ -48,13 +48,13 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             int optionRef = 0;
             if (result.Tp != null && result.Tp.Length == 1)
             {
-                var tp = new Internal.SearchTrainOptions
+                var options = new Internal.TrainOptions
                 {
                     Request = request,
                     Options = (from t in result.Tp[0].List
                                let tt = t.FlMsk == 3 || t.FlMsk == 2 ? TimeType.MOSCOW : TimeType.LOCAL
                                let durationParts = t.TimeInWay.Split(':').Select(x => int.Parse(x))
-                               select new Internal.SearchTrainOptions.Option
+                               select new Internal.TrainOptions.Option
                                {
                                    OptionRef = ++optionRef,
                                    DisplayNumber = t.Number2,
@@ -70,7 +70,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                    RouteEndStation = t.Route1
                                })
                 };
-                session.Store("train_options", tp);
+
+                session.Store("train_options", options);
             }
 
             optionRef = 0;
@@ -131,7 +132,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var trains = session.Retrieve<Internal.SearchTrainOptions>("train_options");
+            var trains = session.Retrieve<Internal.TrainOptions>("train_options");
             var train = trains.Options.First(x => x.OptionRef == request.OptionRef);
 
             return Task.FromResult(new GetTrain.Result
@@ -151,6 +152,113 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                     RouteStart = train.RouteStart,
                     RouteEndStation = train.RouteEndStation
                 }
+            });
+        }
+
+        public async Task<GetCars.Result> GetCarsAsync(ISessionStore session, GetCars.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var login = session.Retrieve<Session>("login");
+            var trains = session.Retrieve<Internal.TrainOptions>("train_options");
+            var selected = trains.Options.First(x => x.OptionRef == request.OptionRef);
+
+            var result = await _parser.GetCarsAsync(login, new Parser.Structs.Layer5764.Request(
+                    0, trains.Request.From, trains.Request.To, trains.Request.DepartDateString, selected.DisplayNumber, selected.BEntire
+                ));
+            
+            var optionRef = 0;
+            var carsQuery = from c in result.Lst[0].Cars
+                            let priceMin = Internal.Converters.PriceConverter.ToDecimal(c.Tariff)
+                            let priceMax = c.Tariff2 == null ? priceMin : Internal.Converters.PriceConverter.ToDecimal(c.Tariff2)
+                            select new GetCars.Result.Car
+                            {
+                                OptionRef = ++optionRef,
+                                Number = c.CNumber,
+                                CarType = Internal.Converters.CarTypeConverter.ByCType(c.CType),
+                                ServiceClass = c.ClsType,
+                                ServiceClassInternational = c.IntServiceClass,
+                                Letter = c.Letter,
+                                Categories = c.AddSigns.Split(' '),
+                                SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
+                                FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
+                                SpecialSeatTypes = c.SpecialSeatTypes.Split(' '),
+                                FreeSeats = c.Seats.Select(s => new GetCars.Result.SeatGroup
+                                {
+                                    Type = s.Type,
+                                    Label = s.Label.Replace("&nbsp;", " "),
+                                    Price = new Price(Internal.Converters.PriceConverter.ToDecimal(s.Tariff)),
+                                    Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
+                                    Count = s.Free
+                                }).ToArray(),
+                                Services = c.Services.Select(s => new GetCars.Result.CarService
+                                {
+                                    Name = s.Name,
+                                    Description = s.Description
+                                }).ToArray(),
+                                ServicesDescription = c.ClsName,
+                                Price = new PriceRange(new Price(priceMin), new Price(priceMax)),
+                                Carrier = c.Carrier,
+                                Owner = c.Owner,
+                                HasElectronicRegistration = c.ElReg,
+                                HasDynamicPricing = c.VarPrice,
+                                IsNoSmoking = c.NoSmok,
+                                CanAddBedding = c.Bedding,
+                                HasBeddingIncluded = c.ForcedBedding,
+                                IsTwoStorey = c.BDeck2,
+                                IsWebSalesForbidden = c.InetSaleOff
+                            };
+
+            var cars = carsQuery.ToList();
+
+            var options = new Internal.CarOptions
+            {
+                Options = cars
+                // TODO: add Schemes
+            };
+
+            session.Store("car_options", options);
+
+            return new GetCars.Result
+            {
+                // TODO: add train info
+                Cars = cars,
+                // TODO: add AgeLimits, ref #52
+                // TODO: add Insurance, ref #49
+            };
+        }
+
+        public Task<GetCar.Result> GetCarAsync(ISessionStore session, GetCar.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var trains = session.Retrieve<Internal.TrainOptions>("train_options");
+            var train = trains.Options.First(x => x.OptionRef == request.TrainRef);
+
+            var cars = session.Retrieve<Internal.CarOptions>("car_options");
+            var car = cars.Options.First(x => x.OptionRef == request.OptionRef);
+
+            return Task.FromResult(new GetCar.Result
+            {
+                // TODO: add train info
+                Car = car,
+                // TODO: add car schemes
             });
         }
     }
