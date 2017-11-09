@@ -9,5 +9,6 @@ namespace Kaolin.Models.Rail.Abstractions
         Task<GetTrain.Result> GetTrainAsync(ISessionStore session, GetTrain.Request request);
 
         Task<GetCars.Result> GetCarsAsync(ISessionStore session, GetCars.Request request);
+        Task<GetCar.Result> GetCarAsync(ISessionStore session, GetCar.Request request);
     }
 }
