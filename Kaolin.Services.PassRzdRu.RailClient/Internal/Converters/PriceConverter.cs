@@ -11,7 +11,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
         public static PriceRange ToPriceRange(string min, string max)
         {
-            return new PriceRange(ToDecimal(min), ToDecimal(max));
+            return new PriceRange(new Price(ToDecimal(min)), new Price(ToDecimal(max)));
         }
     }
 }
