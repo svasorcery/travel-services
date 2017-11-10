@@ -13,7 +13,7 @@ namespace Kaolin.Models.Rail
             public int? HourFrom { get; set; }
             public int? HourTo { get; set; }
 
-            public string DepartDateString => DepartDate.ToString("yyyy-MM-dd");
+            public string DepartDateString => DepartDate.ToString("dd-MM-yyyy");
         }
 
         public class Result
