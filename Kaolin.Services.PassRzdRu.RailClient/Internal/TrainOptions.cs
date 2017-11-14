@@ -12,7 +12,9 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal
         public class Option
         {
             public int OptionRef { get; set; }
+            public string Number { get; set; }
             public string DisplayNumber { get; set; }
+            public string Type { get; set; }
             public string Brand { get; set; }
             public bool BEntire { get; set; }
             public bool IsFirm { get; set; }

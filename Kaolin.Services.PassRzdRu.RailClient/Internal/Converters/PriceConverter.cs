@@ -2,16 +2,23 @@
 
 namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 {
-    public static class PriceConverter
+    public class PriceConverter
     {
-        public static decimal ToDecimal(string value)
+        public decimal ToDecimal(string value)
         {
             return decimal.Parse(value, System.Globalization.NumberFormatInfo.InvariantInfo);
         }
 
-        public static PriceRange ToPriceRange(string min, string max)
+        public Price ToPrice(string value)
         {
-            return new PriceRange(new Price(ToDecimal(min)), new Price(ToDecimal(max)));
+            return new Price(ToDecimal(value));
+        }
+
+        public PriceRange ToPriceRange(string min, string max = null)
+        {
+            var minPrice = ToPrice(min);
+            var maxPrice = ToPrice(System.String.IsNullOrEmpty(max) ? min : max);
+            return new PriceRange(minPrice, maxPrice);
         }
     }
 }
