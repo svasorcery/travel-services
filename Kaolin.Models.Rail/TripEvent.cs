@@ -42,6 +42,11 @@ namespace Kaolin.Models.Rail
         {
             return shorten ? DateAndTime.ToString("HH:mm") : DateAndTime.ToString("HH:mm:ss");
         }
+
+        public string GetDateTimeString()
+        {
+            return $"{GetDateString()} {GetTimeString(shorten: true)}";
+        }
     }
 
     public enum TimeType
