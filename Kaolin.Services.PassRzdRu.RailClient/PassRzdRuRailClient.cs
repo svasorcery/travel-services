@@ -267,7 +267,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             });
         }
 
-        public async Task<ReserveCreate.Result> ReserveTicketAsync(ISessionStore session, ReserveCreate.Request request)
+        public async Task<ReserveCreate.Result> CreateReserveAsync(ISessionStore session, ReserveCreate.Request request)
         {
             if (session == null)
             {
@@ -404,6 +404,39 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                     Name = p.Name,
                     Tip = p.Tip
                 })
+            };
+        }
+
+        public async Task<ReserveCancel.Result> CancelReserveAsync(ISessionStore session, ReserveCancel.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            var login = session.Retrieve<Session>("login");
+            var reserve = session.Retrieve<Parser.Structs.Layer5705>("reserve");
+
+            if (reserve == null)
+            {
+                throw new ArgumentNullException(nameof(reserve));
+            }
+
+            var requestData = new Parser.Structs.Layer5769.Request
+            {
+                OrderId = reserve.SaleOrderId
+            };
+
+            var response = await _parser.CancelReserveAsync(login, requestData);
+
+            reserve.Canceled = true;
+            session.Store("reserve", reserve);
+
+            return new ReserveCancel.Result
+            {
+                OrderId = reserve.SaleOrderId,
+                Code = response.Result,
+                Status = response.Status
             };
         }
     }
