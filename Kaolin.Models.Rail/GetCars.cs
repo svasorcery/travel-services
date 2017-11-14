@@ -20,11 +20,11 @@ namespace Kaolin.Models.Rail
             {
                 public int OptionRef { get; set; }
                 public string Number { get; set; }
-                public CarType CarType { get; set; }
+                public CarType Type { get; set; }
                 public string ServiceClass { get; set; }
                 public string ServiceClassInternational { get; set; }
                 public string Letter { get; set; }
-                public string[] Categories { get; set; }
+                public string Categories { get; set; }
                 public string SchemeId { get; set; }
                 public int[] FreePlaceNumbers { get; set; }
                 public string[] SpecialSeatTypes { get; set; }

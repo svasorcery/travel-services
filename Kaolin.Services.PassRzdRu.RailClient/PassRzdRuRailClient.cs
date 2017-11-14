@@ -15,11 +15,16 @@ namespace Kaolin.Services.PassRzdRu.RailClient
     {
         private readonly Config _config;
         private readonly PassRzdRuClient _parser;
+        private readonly Internal.Converters.PriceConverter _priceConverter;
+        private readonly Internal.Converters.PersonToLayer5705 _personConverter;
+        private readonly Internal.Converters.CarTypeConverter _carTypeConverter;
 
         public PassRzdRuRailClient(IOptions<Config> optionsAccessor, PassRzdRuClient parser)
         {
             _config = optionsAccessor.Value;
             _parser = parser;
+            _priceConverter = new Internal.Converters.PriceConverter();
+            _personConverter = new Internal.Converters.PersonToLayer5705();
         }
 
 
@@ -57,7 +62,9 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                select new Internal.TrainOptions.Option
                                {
                                    OptionRef = ++optionRef,
+                                   Number = t.Number,
                                    DisplayNumber = t.Number2,
+                                   //Type = t.Type,
                                    Brand = t.Brand,
                                    BEntire = t.BEntire,
                                    IsFirm = t.BFirm,
@@ -177,17 +184,15 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             
             var optionRef = 0;
             var carsQuery = from c in result.Lst[0].Cars
-                            let priceMin = Internal.Converters.PriceConverter.ToDecimal(c.Tariff)
-                            let priceMax = c.Tariff2 == null ? priceMin : Internal.Converters.PriceConverter.ToDecimal(c.Tariff2)
                             select new GetCars.Result.Car
                             {
                                 OptionRef = ++optionRef,
                                 Number = c.CNumber,
-                                CarType = Internal.Converters.CarTypeConverter.ByCType(c.CType),
+                                Type = _carTypeConverter.ByCType(c.CType),
                                 ServiceClass = c.ClsType,
                                 ServiceClassInternational = c.IntServiceClass,
                                 Letter = c.Letter,
-                                Categories = c.AddSigns.Split(' '),
+                                Categories = c.AddSigns,
                                 SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
                                 FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
                                 SpecialSeatTypes = c.SpecialSeatTypes.Split(' '),
@@ -195,7 +200,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 {
                                     Type = s.Type,
                                     Label = s.Label.Replace("&nbsp;", " "),
-                                    Price = new Price(Internal.Converters.PriceConverter.ToDecimal(s.Tariff)),
+                                    Price = _priceConverter.ToPrice(s.Tariff),
                                     Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
                                     Count = s.Free
                                 }).ToArray(),
@@ -205,7 +210,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                     Description = s.Description
                                 }).ToArray(),
                                 ServicesDescription = c.ClsName,
-                                Price = new PriceRange(new Price(priceMin), new Price(priceMax)),
+                                Price = _priceConverter.ToPriceRange(c.Tariff, c.Tariff2),
                                 Carrier = c.Carrier,
                                 Owner = c.Owner,
                                 HasElectronicRegistration = c.ElReg,
@@ -260,6 +265,179 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 Car = car,
                 // TODO: add car schemes
             });
+        }
+
+        public async Task<ReserveCreate.Result> CreateReserveAsync(ISessionStore session, ReserveCreate.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var login = session.Retrieve<Session>("login");
+
+            var trains = session.Retrieve<Internal.TrainOptions>("train_options");
+            var train = trains.Options.First(x => x.OptionRef == request.Option.TrainOptionRef);
+
+            var cars = session.Retrieve<Internal.CarOptions>("car_options");
+            var car = cars.Options.First(x => x.OptionRef == request.Option.CarOptionRef);
+
+            var requestData = new Parser.Structs.Layer5705.Request
+            {
+                Passengers = request.Passengers.Select(_personConverter.Convert).ToArray(),
+                Orders = new Parser.Structs.Layer5705.RequestOrder[]
+                {
+                    new Parser.Structs.Layer5705.RequestOrder
+                    {
+                        Range0 = request.Option.Range.From,
+                        Range1 = request.Option.Range.To,
+                        PlBedding = request.Option.Bedding,
+                        PlUpdown = request.Option.Updown,
+                        PlComp = request.Option.Location,
+                        Dir = 1,
+                        Code0 = Int32.Parse(train.Depart.Station.Code),
+                        Code1 = Int32.Parse(train.Arrive.Station.Code),
+                        Route0 = train.RouteStart.Station.Name,
+                        Route1 = train.RouteEndStation,
+                        Number = train.Number,
+                        Number2 = train.DisplayNumber,
+                        Brand = train.Brand,
+                        Letter = Char.IsLetter(train.DisplayNumber.Last()) ? train.DisplayNumber.Last().ToString() : "",
+                        Ctype = car.Type.Id,
+                        Cnumber = car.Number,
+                        ClsType = car.ServiceClass,
+                        ElReg = car.HasElectronicRegistration,
+                        Ferry = false,
+                        SeatType = null,
+                        TicketPriceInPoints = 0,
+                        TrainType = train.Type,
+                        ConferenceRoomFlag = false,
+                        CarrierGroupId = 1,
+                        Datetime0 = train.Depart.GetDateTimeString(),
+                        Teema = 0,
+                        CarVipFlag = 0
+                    }
+                }
+            };
+
+            var result = await _parser.ReserveTicketAsync(login, requestData);
+
+            session.Store("reserve", result);
+
+            var price = _priceConverter.ToDecimal(result.TotalSum);
+            var priceWithCharges = new Price(price); // TODO: add price charges calculation, ref #51
+
+            session.Store("price", priceWithCharges);
+            
+            return new ReserveCreate.Result
+            {
+                SaleOrderId = result.SaleOrderId,
+                Price = priceWithCharges,
+                Orders = from o in result.Orders
+                         let durationParts = o.TimeInWay.Split(':').Select(x => int.Parse(x))
+                         select new ReserveCreate.Result.ResultOrder
+                         {
+                             OrderId = o.OrderId,
+                             Cost = o.Cost,
+                             TotalCostPt = o.TotalCostPt,
+                             Created = o.Created,
+                             SeatNums = o.SeatNums,
+                             DirName = o.DirName,
+                             Agent = o.Agent,
+                             //DeferredPayment = o.DeferredPayment,
+                             Train = new TrainInfo
+                             {
+                                 Number = o.Number,
+                                 DisplayNumber = o.Number2,
+                                 Depart = new TripEvent(o.Date0, o.Time0, o.Msk0 ? TimeType.MOSCOW : TimeType.LOCAL, o.Station0, o.Code0),
+                                 Arrive = new TripEvent(o.Date1, o.Time1, o.Msk1 ? TimeType.MOSCOW : TimeType.LOCAL, o.Station1, o.Code1),
+                                 RouteStart = new TripEvent(o.TrDate0, o.TrTime0, o.Msk0 ? TimeType.MOSCOW : TimeType.LOCAL, o.Route0, null),
+                                 ArriveLocal = new TripEvent(o.LocalDate1, o.LocalTime1, TimeType.LOCAL, o.Station1, o.Code1),
+                                 RouteEndStation = o.Route1,
+                                 TimezoneDifference = o.TimeDeltaString1,
+                                 TripDuration = new TimeSpan(durationParts.ElementAt(0), durationParts.ElementAt(1), 00),
+                                 //TripDistance = train.TripDistance,
+                                 Carrier = o.Carrier,
+                                 Brand = train.Brand,
+                                 IsFirm = train.IsFirm,
+                                 HasElectronicRegistration = train.HasElectronicRegistration,
+                                 HasDynamicPricing = train.HasDynamicPricing
+                             },
+                             Car = new ReserveCreate.Result.Car
+                             {
+                                 Number = o.CNumber,
+                                 Type = _carTypeConverter.ByCTypeI(o.Ctype), // WARNING: it's cTypeI here, not cType
+                                 ServiceClass = o.ClsType,
+                                 AdditionalInfo = o.TimeInfo
+                             },
+                             Tickets = o.Tickets.Select(t => new ReserveCreate.Result.Ticket
+                             {
+                                 TicketId = t.TicketId,
+                                 Cost = t.Cost,
+                                 Seats = t.Seats,
+                                 SeatsType = t.SeatsType,
+                                 Tariff = new ReserveCreate.Result.Tariff(t.Tariff, t.TariffName),
+                                 Teema = t.Teema,
+                                 Passengers = t.Pass.Select(p => new ReserveCreate.Result.ResultPassenger // TODO: change to Person
+                                 {
+                                     LastName = p.LastName,
+                                     FirstName = p.FirstName,
+                                     MiddleName = p.MidName,
+                                     BirthDate = DateTime.Parse(p.BirthDate),
+                                     Gender = p.GenderId == 1 ? Gender.FEMALE : Gender.MALE,
+                                     DocType = p.DocType,
+                                     DocTypeName = p.DocTypeName,
+                                     DocNumber = p.DocNumber,
+                                     Insurance = p.Insurance
+                                 })
+                             })
+                         },
+                PaymentSystems = result.PaymentSystems.Select(p => new ReserveCreate.Result.PaymentSystem
+                {
+                    Id = p.Id,
+                    Code = p.Code,
+                    Name = p.Name,
+                    Tip = p.Tip
+                })
+            };
+        }
+
+        public async Task<ReserveCancel.Result> CancelReserveAsync(ISessionStore session, ReserveCancel.Request request)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
+
+            var login = session.Retrieve<Session>("login");
+            var reserve = session.Retrieve<Parser.Structs.Layer5705>("reserve");
+
+            if (reserve == null)
+            {
+                throw new ArgumentNullException(nameof(reserve));
+            }
+
+            var requestData = new Parser.Structs.Layer5769.Request
+            {
+                OrderId = reserve.SaleOrderId
+            };
+
+            var response = await _parser.CancelReserveAsync(login, requestData);
+
+            reserve.Canceled = true;
+            session.Store("reserve", reserve);
+
+            return new ReserveCancel.Result
+            {
+                OrderId = reserve.SaleOrderId,
+                Code = response.Result,
+                Status = response.Status
+            };
         }
     }
 }
