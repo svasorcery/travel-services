@@ -23,6 +23,8 @@ namespace Kaolin.Services.PassRzdRu.ConsoleApp
                 
                 var reserve = await client.ReserveTicketAsync(loginResult, GetReserveRequest(request, train, car));
 
+                var docs = await client.GetDocumentTypesAsync(); // "ru" / "en"
+
                 var cancel = await client.CancelReserveAsync(loginResult, new Parser.Structs.Layer5769.Request { OrderId = reserve.SaleOrderId });
             }
             catch (Exception ex)
