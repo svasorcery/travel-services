@@ -4,40 +4,41 @@ using System.Collections.Generic;
 namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 {
     using Kaolin.Models.Rail;
+    using Kaolin.Services.PassRzdRu.Parser.Structs;
 
     internal class PersonToLayer5705
     {
-        private readonly IReadOnlyDictionary<PassportType, int> _docTypes;
+        private readonly IReadOnlyDictionary<PassportType, Layer5705.DocumentTypes> _docTypes;
 
         public PersonToLayer5705()
         {
-            _docTypes = new Dictionary<PassportType, int>
+            _docTypes = new Dictionary<PassportType, Layer5705.DocumentTypes>
             {
-                [PassportType.RussianPassport] = 1,
-                [PassportType.RussianForeignPassport] = 3,
-                [PassportType.ForeignNationalPassport] = 4,
-                [PassportType.BirthCertificate] = 6,
-                [PassportType.MilitaryCard] = 7,
-                [PassportType.SailorPassport] = 5
+                [PassportType.RussianPassport] = Layer5705.DocumentTypes.PN,
+                [PassportType.RussianForeignPassport] = Layer5705.DocumentTypes.PSP,
+                [PassportType.ForeignNationalPassport] = Layer5705.DocumentTypes.NP,
+                [PassportType.BirthCertificate] = Layer5705.DocumentTypes.SR,
+                [PassportType.MilitaryCard] = Layer5705.DocumentTypes.VB,
+                [PassportType.SailorPassport] = Layer5705.DocumentTypes.PM
             };
         }
 
         public IEnumerable<PassportType> SupportedPassportTypes => _docTypes.Keys;
 
-        public Parser.Structs.Layer5705.RequestPassenger Convert(Person person)
+        public Layer5705.RequestPassenger Convert(Person person)
         {
             if (person == null)
             {
                 throw new ArgumentNullException(nameof(person));
             }
 
-            return new Parser.Structs.Layer5705.RequestPassenger
+            return new Layer5705.RequestPassenger
             {
                 Id = person.Ref,
                 LastName = person.LastName,
                 FirstName = person.FirstName,
                 MidName = person.MiddleName,
-                Gender = person.Gender.Value == Gender.FEMALE ? 1 : 2,
+                Gender = person.Gender.Value == Gender.FEMALE ? Layer5705.Gender.FEMALE : Layer5705.Gender.MALE,
                 Birthdate = person.BirthDate?.ToString("dd.MM.yyyy"),
                 DocType = ConvertDocType(person.Passport.Type),
                 DocNumber = person.Passport.Series + person.Passport.Number,
@@ -46,8 +47,10 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
             };
         }
 
-        private int ConvertDocType(PassportType passportType)
-            => _docTypes.ContainsKey(passportType) ? _docTypes[passportType] : throw new ArgumentOutOfRangeException(nameof(passportType), $"PassportType [{Enum.GetName(typeof(PassportType), passportType)}] is not supported by provider");
+        private Layer5705.DocumentTypes ConvertDocType(PassportType passportType)
+            => _docTypes.ContainsKey(passportType) ? 
+                _docTypes[passportType] : 
+                throw new ArgumentOutOfRangeException(nameof(passportType), $"PassportType [{Enum.GetName(typeof(PassportType), passportType)}] is not supported by provider");
 
         private int CountryCountryCode(string isoCountryCode)
         {
