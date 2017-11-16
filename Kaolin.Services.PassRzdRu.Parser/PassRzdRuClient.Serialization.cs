@@ -1,13 +1,15 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Kaolin.Services.PassRzdRu.Parser.Structs;
-using Kaolin.Services.PassRzdRu.Parser.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Kaolin.Services.PassRzdRu.Parser
 {
+    using Kaolin.Services.PassRzdRu.Parser.Structs;
+    using Kaolin.Services.PassRzdRu.Parser.Exceptions;
+
     public partial class PassRzdRuClient
     {
         private static readonly JsonSerializer _json;
@@ -35,6 +37,21 @@ namespace Kaolin.Services.PassRzdRu.Parser
             {
                 return _json.Deserialize<T>(new JsonTextReader(reader));
             }
+        }
+
+        protected async Task<T> Get<T>(string url)
+        {
+            var client = new HttpClient();
+            _log.LogInformation("GET {Url}", url);
+
+            var response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode == false)
+            {
+                _log.LogWarning("Unsuccessful status code GET {Url} {StatusCode}", url, response.StatusCode);
+            }
+
+            return await ReadAs<T>(response.Content);
         }
 
         public Task<T> PostRidDictionary<T>(string requestUri, Session session, Config.PollingConfig.Polling config, Dictionary<string, string> requestParams) where T : IRidRequestResponse
