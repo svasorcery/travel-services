@@ -128,10 +128,10 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string LastName { get; set; }
             public string FirstName { get; set; }
             public string MidName { get; set; }
-            public int Gender { get; set; } // TODO: change to Gender
+            public Gender Gender { get; set; }
             public string Birthdate { get; set; }
             public string Tariff { get; set; }
-            public int DocType { get; set; } // TODO: change to DocumentTypes, ref #60
+            public DocumentTypes DocType { get; set; }
             public string DocNumber { get; set; }
             public int Country { get; set; }
         }
@@ -142,14 +142,18 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             MALE = 2
         }
 
-        public enum DocumentTypes // TODO: find other type identifiers, ref #60
+        public enum DocumentTypes
         {
             /// <summary>
-            /// Общегражданский паспорт
+            /// Общегражданский паспорт РФ
             /// </summary>
-            PS = 1,
+            PN = 1,
             /// <summary>
-            /// Общегражданский заграничный паспорт 
+            /// Паспорт формы СССР
+            /// </summary>
+            PS = 2,
+            /// <summary>
+            /// Общегражданский заграничный паспорт РФ
             /// </summary>
             PSP = 3,
             /// <summary>
@@ -171,7 +175,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             /// <summary>
             /// Вид на жительство
             /// </summary>
-            VZ,
+            VZ = 11,
             /// <summary>
             /// Временное удостоверение личности
             /// </summary>

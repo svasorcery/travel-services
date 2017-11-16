@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using Kaolin.Services.PassRzdRu.Parser.Structs;
 
 namespace Kaolin.Services.PassRzdRu.Parser
 {
+    using Kaolin.Services.PassRzdRu.Parser.Structs;
+
     public partial class PassRzdRuClient
     {
         private readonly Config _config;
