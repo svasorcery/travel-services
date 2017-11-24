@@ -15,6 +15,14 @@ namespace Kaolin.Api.PassRzdRu
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Infrastructure.Database.Config>(config =>
+            {
+                config.ConnectionString = "mongodb://localhost:27017";
+                config.Database = "kaolin";
+                config.CountriesCollection = "countries";
+            })
+                .AddSingleton<Infrastructure.Database.CountriesDbContext>();
+
             services.AddMvc();
         }
 
