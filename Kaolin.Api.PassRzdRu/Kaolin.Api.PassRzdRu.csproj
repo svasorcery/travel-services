@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Kaolin.Infrastructure.Database\Kaolin.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\Kaolin.Infrastructure.SessionStore\Kaolin.Infrastructure.SessionStore.csproj" />
     <ProjectReference Include="..\Kaolin.Models.Rail\Kaolin.Models.Rail.csproj" />
     <ProjectReference Include="..\Kaolin.Services.PassRzdRu.RailClient\Kaolin.Services.PassRzdRu.RailClient.csproj" />
