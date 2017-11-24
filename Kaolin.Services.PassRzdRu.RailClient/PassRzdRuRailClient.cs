@@ -225,10 +225,17 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var cars = carsQuery.ToList();
 
+            var ageLimits = new GetCars.Result.AgeRestrictions
+            {
+                ChildWithPlace = result.Lst[0].ChildrenAge,
+                InfantWithoutPlace = result.Lst[0].MotherAndChildAge
+            };
+
             var options = new Internal.CarOptions
             {
-                Options = cars
+                Options = cars,
                 // TODO: add Schemes
+                AgeLimits = ageLimits
             };
 
             session.Store("car_options", options);
@@ -238,6 +245,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 // TODO: add train info
                 Cars = cars,
                 // TODO: add AgeLimits, ref #52
+                AgeLimits = ageLimits,
                 // TODO: add Insurance, ref #49
             };
         }
@@ -290,7 +298,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var requestData = new Parser.Structs.Layer5705.Request
             {
-                Passengers = request.Passengers.Select(_personConverter.Convert).ToArray(),
+                Passengers = request.Passengers.Select(p => _personConverter.Convert(p, train.Depart.DateAndTime, cars.AgeLimits)).ToArray(),
                 Orders = new Parser.Structs.Layer5705.RequestOrder[]
                 {
                     new Parser.Structs.Layer5705.RequestOrder

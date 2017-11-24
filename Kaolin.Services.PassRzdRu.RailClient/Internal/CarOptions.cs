@@ -7,5 +7,6 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal
     {
         public IEnumerable<GetCars.Result.Car> Options { get; set; }
         // TODO: add Schemes
+        public GetCars.Result.AgeRestrictions AgeLimits { get; set; }
     }
 }
