@@ -1,16 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Kaolin.Infrastructure.SessionStore
 {
-    public interface ISessionProvider
-    {
-        ISessionStore Create();
-        Task SaveAsync(ISessionStore session);
-        Task<ISessionStore> LoadAsync(string id);
-    }
-
     internal class InMemorySessionProvider : ISessionProvider
     {
         private readonly List<InMemorySessionStore> _sessions;
@@ -23,15 +17,13 @@ namespace Kaolin.Infrastructure.SessionStore
 
         public ISessionStore Create()
         {
-            var session = new InMemorySessionStore();
-            _sessions.Add(session);
-            return session;
+            return new InMemorySessionStore();
         }
 
         public Task SaveAsync(ISessionStore session)
         {
-            //var doc = _sessions.Find(s => s.Id == session.Id);
-            //doc = (InMemorySessionStore)session;
+            _sessions.Add((InMemorySessionStore)session);
+
             return Task.FromResult(0);
         }
 
