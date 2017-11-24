@@ -25,7 +25,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
         public IEnumerable<PassportType> SupportedPassportTypes => _docTypes.Keys;
 
-        public Layer5705.RequestPassenger Convert(Person person)
+        public Layer5705.RequestPassenger Convert(Person person, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
         {
             if (person == null)
             {
@@ -43,7 +43,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 DocType = ConvertDocType(person.Passport.Type),
                 DocNumber = person.Passport.Series + person.Passport.Number,
                 Country = CountryCountryCode(person.Passport.Citizenship ?? "RU"),
-                Tariff = "Adult" // TODO: add tariff type calculation, ref #52
+                Tariff = GetTariffByBirthDate(person.BirthDate.Value, departDate, ageLimits)
             };
         }
 
@@ -60,6 +60,36 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 // TODO: add more country codes. ref #58
                 default: throw new ArgumentOutOfRangeException(nameof(isoCountryCode), $"CountryCode [{isoCountryCode}] is not supported by provider");
             }
+        }
+
+        private string GetTariffByBirthDate(DateTime birthDate, DateTime departDate, GetCars.Result.AgeRestrictions limits)
+        {
+            var ageYears = GetYearsDiff(birthDate, departDate);
+
+            if (ageYears >= limits.ChildWithPlace)
+            {
+                return Parser.Constants.RailPassengerCategories.Adult;
+            }
+
+            if (ageYears < limits.InfantWithoutPlace)
+            {
+                return Parser.Constants.RailPassengerCategories.BabyWithoutPlace;
+            }
+
+            return Parser.Constants.RailPassengerCategories.Child;
+        }
+
+        private int GetYearsDiff(DateTime start, DateTime end)
+        {
+            int years = end.Year - start.Year;
+
+            if ((end.Month == start.Month && end.Day < start.Day) ||
+                (end.Month < start.Month))
+            {
+                years--;
+            }
+
+            return years;
         }
     }
 }
