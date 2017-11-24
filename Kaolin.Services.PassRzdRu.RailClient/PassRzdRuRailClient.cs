@@ -25,6 +25,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             _parser = parser;
             _priceConverter = new Internal.Converters.PriceConverter();
             _personConverter = new Internal.Converters.PersonToLayer5705();
+            _carTypeConverter = new Internal.Converters.CarTypeConverter();
         }
 
 
