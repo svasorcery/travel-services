@@ -15,7 +15,7 @@ namespace Kaolin.Infrastructure.SessionStore
         }
 
 
-        public ISessionStore Create()
+        public ISessionStore Create(TimeSpan ttl)
         {
             return new InMemorySessionStore();
         }

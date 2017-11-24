@@ -14,7 +14,7 @@ namespace Kaolin.Services.Rail.ConsoleApp
         {
             try
             {
-                var session = ssm.Create();
+                var session = ssm.Create(TimeSpan.FromMinutes(15));
 
                 var trainsResult = await client.SearchTrainsAsync(session, new SearchTrains.Request { From = "2000000", To = "2030000", DepartDate = DateTime.Now.AddDays(30) });
                 var trains = trainsResult.Trains.ToArray();

@@ -5,7 +5,7 @@ namespace Kaolin.Infrastructure.SessionStore
 {
     public interface ISessionProvider
     {
-        ISessionStore Create();
+        ISessionStore Create(TimeSpan ttl);
         Task SaveAsync(ISessionStore session);
         Task<ISessionStore> LoadAsync(string id);
     }
