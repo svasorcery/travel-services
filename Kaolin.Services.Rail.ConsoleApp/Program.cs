@@ -38,7 +38,14 @@ namespace Kaolin.Services.Rail.ConsoleApp
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .AddOptions()
-                .AddInMemorySessionProvider()
+                //.AddInMemorySessionProvider()
+                .AddMongoDbSessionProvider()
+                .Configure<Infrastructure.SessionStore.Config>(config =>
+                {
+                    config.ConnectionString = "mongodb://localhost:27017";
+                    config.Database = "ssp";
+                    config.Collection = "sessions";
+                })
                 .Configure<PassRzdRu.Parser.Config>(config =>
                 {
                     config.Polling = new PassRzdRu.Parser.Config.PollingConfig(60, 1000);

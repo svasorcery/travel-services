@@ -15,6 +15,19 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             services.TryAdd(ServiceDescriptor.Singleton<ISessionProvider, InMemorySessionProvider>());
+
+            return services;
+        }
+
+        public static IServiceCollection AddMongoDbSessionProvider(this IServiceCollection services)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            services.TryAdd(ServiceDescriptor.Singleton<ISessionProvider, MongoDbSessionProvider>());
+
             return services;
         }
     }
