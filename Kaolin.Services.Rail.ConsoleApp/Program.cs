@@ -52,8 +52,8 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 })
                 .Configure<PassRzdRu.RailClient.Config>(config =>
                 {
-                    config.Username = "your_login_here";
-                    config.Password = "your_password_here";
+                    config.Username = "webtours11";
+                    config.Password = "rf5svk";
                 })
                 .AddSingleton<PassRzdRu.Parser.PassRzdRuClient>()
                 .AddTransient<Models.Rail.Abstractions.IRailClient, PassRzdRu.RailClient.PassRzdRuRailClient>()
