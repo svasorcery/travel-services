@@ -25,12 +25,52 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 var carsResult = await client.GetCarsAsync(session, new GetCars.Request { OptionRef = 1 });
                 var cars = carsResult.Cars.ToArray();
                 await ssm.SaveAsync(session);
+
+                var reserveResult = await client.CreateReserveAsync(session, GetReserveRequest(session));
+                var totalCost = reserveResult.Price.Total;
+                await ssm.SaveAsync(session);
+
+                var cancelResult = await client.CancelReserveAsync(session, new ReserveCancel.Request { SessionId = session.Id });
+                var status = cancelResult.Status;
+                await ssm.SaveAsync(session);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.ReadLine();
             }
+        }
+
+        private static ReserveCreate.Request GetReserveRequest(Infrastructure.SessionStore.ISessionStore session)
+        {
+            var person = new Person(
+                Gender.MALE, 
+                "Иван", "Иванович", "Иванов", 
+                new DateTime(1985, 7, 31), 
+                new Passport(
+                    PassportType.RussianPassport,
+                    "1511", "151115", 
+                    new Country { RzdId = 114 }, 
+                    new DateTime(2020, 7, 31)
+                )
+            );
+
+            return new ReserveCreate.Request
+            {
+                Option = new ReserveCreate.Request.OptionParams
+                {
+                    SessionId = session.Id,
+                    TrainOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.TrainOptions>("train_options").Options.First().OptionRef,
+                    CarOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.CarOptions>("car_options").Options.First().OptionRef,
+                    Range = new ReserveCreate.Request.PlacesRange(1, 30),
+                    Bedding = true,
+                    CountByType = new ReserveCreate.Request.PlacesCount { Top = 1 }
+                },
+                Passengers = new Passenger[]
+                {
+                    new Passenger(1, person)
+                }
+            };
         }
 
         static void Main(string[] args)
