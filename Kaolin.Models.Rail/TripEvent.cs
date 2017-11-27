@@ -35,12 +35,12 @@ namespace Kaolin.Models.Rail
 
         public string GetDateString()
         {
-            return DateAndTime.ToString("dd.MM.yyyy");
+            return DateAndTime.ToLocalTime().ToString("dd.MM.yyyy");
         }
 
         public string GetTimeString(bool shorten = true)
         {
-            return shorten ? DateAndTime.ToString("HH:mm") : DateAndTime.ToString("HH:mm:ss");
+            return shorten ? DateAndTime.ToLocalTime().ToString("HH:mm") : DateAndTime.ToLocalTime().ToString("HH:mm:ss");
         }
 
         public string GetDateTimeString()

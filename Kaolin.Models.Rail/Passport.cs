@@ -7,7 +7,7 @@ namespace Kaolin.Models.Rail
         public PassportType Type { get; private set; }
         public string Series { get; private set; }
         public string Number { get; private set; }
-        public string Citizenship { get; private set; }
+        public Country Citizenship { get; private set; }
         public DateTime? Expire { get; private set; }
 
         public Passport(PassportType type, string number) 
@@ -15,7 +15,7 @@ namespace Kaolin.Models.Rail
         {
         }
 
-        public Passport(PassportType type, string number, string citizenship, DateTime? expire)
+        public Passport(PassportType type, string number, Country citizenship, DateTime? expire)
             : this(type, null, number, citizenship, expire)
         {
         }
@@ -25,7 +25,7 @@ namespace Kaolin.Models.Rail
         {
         }
 
-        public Passport(PassportType type, string series, string number, string citizenship, DateTime? expire)
+        public Passport(PassportType type, string series, string number, Country citizenship, DateTime? expire)
         {
             Type = type;
             Series = series;
