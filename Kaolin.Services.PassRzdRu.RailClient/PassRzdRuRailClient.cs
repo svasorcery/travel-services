@@ -304,8 +304,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                     {
                         Range0 = request.Option.Range.From,
                         Range1 = request.Option.Range.To,
+                        PlUpdown = $"{request.Option.Range.BottomCount.ToString()}{request.Option.Range.TopCount.ToString()}",
                         PlBedding = request.Option.Bedding,
-                        PlUpdown = $"{request.Option.CountByType.Bottom.ToString()}{request.Option.CountByType.Top.ToString()}",
                         PlComp = request.Option.Location,
                         Dir = 1,
                         Code0 = Int32.Parse(train.Depart.Station.Code),
