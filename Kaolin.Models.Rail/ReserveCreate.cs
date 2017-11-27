@@ -16,7 +16,7 @@ namespace Kaolin.Models.Rail
                 public int CarOptionRef { get; set; }
                 public PlacesRange Range { get; set; }
                 public bool Bedding { get; set; }
-                public string Updown { get; set; }
+                public PlacesCount CountByType { get; set; }
                 public string Location { get; set; }
             }
 
@@ -24,6 +24,18 @@ namespace Kaolin.Models.Rail
             {
                 public int From { get; set; }
                 public int To { get; set; }
+
+                public PlacesRange(int from, int to)
+                {
+                    From = from;
+                    To = to;
+                }
+            }
+
+            public class PlacesCount
+            {
+                public int Top { get; set; } = 0;
+                public int Bottom { get; set; } = 0;
             }
         }
 

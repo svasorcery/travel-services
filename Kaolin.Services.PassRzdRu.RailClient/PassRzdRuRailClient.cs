@@ -305,7 +305,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                         Range0 = request.Option.Range.From,
                         Range1 = request.Option.Range.To,
                         PlBedding = request.Option.Bedding,
-                        PlUpdown = request.Option.Updown,
+                        PlUpdown = $"{request.Option.CountByType.Bottom.ToString()}{request.Option.CountByType.Top.ToString()}",
                         PlComp = request.Option.Location,
                         Dir = 1,
                         Code0 = Int32.Parse(train.Depart.Station.Code),
@@ -391,7 +391,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                  SeatsType = t.SeatsType,
                                  Tariff = new ReserveCreate.Result.Tariff(t.Tariff, t.TariffName),
                                  Teema = t.Teema,
-                                 Passengers = t.Pass.Select(p => _passengerConverter.ToPassenger(Array.IndexOf(t.Pass, p), p))
+                                 Passengers = t.Pass.Select(p => _passengerConverter.ToPassenger(Array.IndexOf(t.Pass, p) + 1, p))
                              })
                          },
                 PaymentSystems = result.PaymentSystems.Select(p => new ReserveCreate.Result.PaymentSystem
