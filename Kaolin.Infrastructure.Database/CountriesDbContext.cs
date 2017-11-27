@@ -45,10 +45,11 @@ namespace Kaolin.Infrastructure.Database
             return _countries.Find(_ => true).ToListAsync();
         }
 
-        public Task<List<CountryDoc>> SearchAsync(string term)
+        public Task<List<CountryDoc>> SearchAsync(string term, int? limit = null)
         {
             var q = term.ToLower().Trim();
-            return _countries.Find(x => x.NameRu.ToLower().Contains(q)).ToListAsync();
+            var l = limit ?? 10;
+            return _countries.Find(x => x.NameRu.ToLower().Contains(q)).Limit(l).ToListAsync();
         }
 
         public Task<CountryDoc> FindByIdAsync(int id)
