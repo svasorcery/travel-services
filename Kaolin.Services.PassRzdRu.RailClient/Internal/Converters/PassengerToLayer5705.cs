@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 {
     using Kaolin.Models.Rail;
     using Kaolin.Services.PassRzdRu.Parser.Structs;
-
-    internal class PersonToLayer5705
+    
+    internal class PassengerToLayer5705
     {
         private readonly IReadOnlyDictionary<PassportType, Layer5705.DocumentTypes> _docTypes;
 
-        public PersonToLayer5705()
+        public PassengerToLayer5705()
         {
             _docTypes = new Dictionary<PassportType, Layer5705.DocumentTypes>
             {
@@ -25,41 +26,59 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
         public IEnumerable<PassportType> SupportedPassportTypes => _docTypes.Keys;
 
-        public Layer5705.RequestPassenger Convert(Person person, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
+        public Layer5705.RequestPassenger ToLayer5705(Passenger passenger, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
         {
-            if (person == null)
+            if (passenger == null)
             {
-                throw new ArgumentNullException(nameof(person));
+                throw new ArgumentNullException(nameof(passenger));
             }
 
             return new Layer5705.RequestPassenger
             {
-                Id = person.Ref,
-                LastName = person.LastName,
-                FirstName = person.FirstName,
-                MidName = person.MiddleName,
-                Gender = person.Gender.Value == Gender.FEMALE ? Layer5705.Gender.FEMALE : Layer5705.Gender.MALE,
-                Birthdate = person.BirthDate?.ToString("dd.MM.yyyy"),
-                DocType = ConvertDocType(person.Passport.Type),
-                DocNumber = person.Passport.Series + person.Passport.Number,
-                Country = CountryCountryCode(person.Passport.Citizenship ?? "RU"),
-                Tariff = GetTariffByBirthDate(person.BirthDate.Value, departDate, ageLimits)
+                Id = passenger.Ref,
+                LastName = passenger.LastName,
+                FirstName = passenger.FirstName,
+                MidName = passenger.MiddleName,
+                Gender = passenger.Gender.Value == Gender.FEMALE ? Layer5705.Gender.FEMALE : Layer5705.Gender.MALE,
+                Birthdate = passenger.BirthDate?.ToString("dd.MM.yyyy"),
+                DocType = ConvertDocType(passenger.Passport.Type),
+                DocNumber = passenger.Passport.Series + passenger.Passport.Number,
+                Country = passenger.Passport.Citizenship.RzdId.HasValue ? passenger.Passport.Citizenship.RzdId.Value : 114,
+                Tariff = GetTariffByBirthDate(passenger.BirthDate.Value, departDate, ageLimits)
             };
         }
+
+        public Passenger ToPassenger(int @ref, Layer5705.ResultPassenger passenger)
+        {
+            if (passenger == null)
+            {
+                throw new ArgumentNullException(nameof(passenger));
+            }
+
+            var person = new Person(
+                passenger.GenderId == 1 ? Gender.FEMALE : Gender.MALE,
+                passenger.FirstName,
+                passenger.MidName,
+                passenger.LastName,
+                DateTime.Parse(passenger.BirthDate), 
+                new Passport(ConvertPassportType(passenger.DocType), passenger.DocNumber)
+            );
+
+            return new Passenger(@ref, person, passenger.Insurance);
+        }
+
 
         private Layer5705.DocumentTypes ConvertDocType(PassportType passportType)
             => _docTypes.ContainsKey(passportType) ? 
                 _docTypes[passportType] : 
                 throw new ArgumentOutOfRangeException(nameof(passportType), $"PassportType [{Enum.GetName(typeof(PassportType), passportType)}] is not supported by provider");
 
-        private int CountryCountryCode(string isoCountryCode)
+        private PassportType ConvertPassportType(int docTypeId)
         {
-            switch (isoCountryCode)
-            {
-                case "RU": return 114;
-                // TODO: add more country codes. ref #58
-                default: throw new ArgumentOutOfRangeException(nameof(isoCountryCode), $"CountryCode [{isoCountryCode}] is not supported by provider");
-            }
+            var filter = _docTypes.Where(x => (int)x.Value == docTypeId);
+            return filter.Count() > 0 ?
+                filter.First().Key :
+                throw new ArgumentOutOfRangeException(nameof(docTypeId), $"Provider's DocType [{docTypeId}] is not supported");
         }
 
         private string GetTariffByBirthDate(DateTime birthDate, DateTime departDate, GetCars.Result.AgeRestrictions limits)

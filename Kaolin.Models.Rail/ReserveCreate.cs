@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Kaolin.Models.Rail
 {
@@ -8,7 +7,7 @@ namespace Kaolin.Models.Rail
         public class Request
         {
             public OptionParams Option { get; set; }
-            public Person[] Passengers { get; set; }
+            public Passenger[] Passengers { get; set; }
 
             public class OptionParams
             {
@@ -69,7 +68,7 @@ namespace Kaolin.Models.Rail
                 public string SeatsType { get; set; }
                 public Tariff Tariff { get; set; }
                 public bool Teema { get; set; }
-                public IEnumerable<ResultPassenger> Passengers { get; set; } // TODO: change to Person
+                public IEnumerable<Passenger> Passengers { get; set; }
             }
 
             public class Tariff
@@ -82,19 +81,6 @@ namespace Kaolin.Models.Rail
                     Code = code;
                     Name = name;
                 }
-            }
-
-            public class ResultPassenger
-            {
-                public Gender Gender { get; set; }
-                public string FirstName { get; set; }
-                public string MiddleName { get; set; }
-                public string LastName { get; set; }
-                public DateTime? BirthDate { get; set; }
-                public int DocType { get; set; }
-                public string DocTypeName { get; set; }
-                public string DocNumber { get; set; }
-                public int Insurance { get; set; } // TODO: add insurance, ref #49
             }
 
             public class PaymentSystem

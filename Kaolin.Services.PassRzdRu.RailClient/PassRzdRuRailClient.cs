@@ -16,7 +16,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
         private readonly Config _config;
         private readonly PassRzdRuClient _parser;
         private readonly Internal.Converters.PriceConverter _priceConverter;
-        private readonly Internal.Converters.PersonToLayer5705 _personConverter;
+        private readonly Internal.Converters.PassengerToLayer5705 _passengerConverter;
         private readonly Internal.Converters.CarTypeConverter _carTypeConverter;
 
         public PassRzdRuRailClient(IOptions<Config> optionsAccessor, PassRzdRuClient parser)
@@ -24,7 +24,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             _config = optionsAccessor.Value;
             _parser = parser;
             _priceConverter = new Internal.Converters.PriceConverter();
-            _personConverter = new Internal.Converters.PersonToLayer5705();
+            _passengerConverter = new Internal.Converters.PassengerToLayer5705();
             _carTypeConverter = new Internal.Converters.CarTypeConverter();
         }
 
@@ -196,11 +196,11 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 Categories = c.AddSigns,
                                 SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
                                 FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
-                                SpecialSeatTypes = c.SpecialSeatTypes.Split(' '),
+                                SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
                                 FreeSeats = c.Seats.Select(s => new GetCars.Result.SeatGroup
                                 {
                                     Type = s.Type,
-                                    Label = s.Label.Replace("&nbsp;", " "),
+                                    Label = s.Label?.Replace("&nbsp;", " "),
                                     Price = _priceConverter.ToPrice(s.Tariff),
                                     Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
                                     Count = s.Free
@@ -244,7 +244,6 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             {
                 // TODO: add train info
                 Cars = cars,
-                // TODO: add AgeLimits, ref #52
                 AgeLimits = ageLimits,
                 // TODO: add Insurance, ref #49
             };
@@ -298,7 +297,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var requestData = new Parser.Structs.Layer5705.Request
             {
-                Passengers = request.Passengers.Select(p => _personConverter.Convert(p, train.Depart.DateAndTime, cars.AgeLimits)).ToArray(),
+                Passengers = request.Passengers.Select(p => _passengerConverter.ToLayer5705(p, train.Depart.DateAndTime, cars.AgeLimits)).ToArray(),
                 Orders = new Parser.Structs.Layer5705.RequestOrder[]
                 {
                     new Parser.Structs.Layer5705.RequestOrder
@@ -392,18 +391,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                  SeatsType = t.SeatsType,
                                  Tariff = new ReserveCreate.Result.Tariff(t.Tariff, t.TariffName),
                                  Teema = t.Teema,
-                                 Passengers = t.Pass.Select(p => new ReserveCreate.Result.ResultPassenger // TODO: change to Person
-                                 {
-                                     LastName = p.LastName,
-                                     FirstName = p.FirstName,
-                                     MiddleName = p.MidName,
-                                     BirthDate = DateTime.Parse(p.BirthDate),
-                                     Gender = p.GenderId == 1 ? Gender.FEMALE : Gender.MALE,
-                                     DocType = p.DocType,
-                                     DocTypeName = p.DocTypeName,
-                                     DocNumber = p.DocNumber,
-                                     Insurance = p.Insurance
-                                 })
+                                 Passengers = t.Pass.Select(p => _passengerConverter.ToPassenger(Array.IndexOf(t.Pass, p), p))
                              })
                          },
                 PaymentSystems = result.PaymentSystems.Select(p => new ReserveCreate.Result.PaymentSystem
