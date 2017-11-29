@@ -20,8 +20,10 @@ namespace Kaolin.Api.PassRzdRu
                 config.ConnectionString = "mongodb://localhost:27017";
                 config.Database = "kaolin";
                 config.CountriesCollection = "countries";
+                config.StationsCollection = "stations";
             })
-                .AddSingleton<Infrastructure.Database.CountriesDbContext>();
+                .AddSingleton<Infrastructure.Database.CountriesDbContext>()
+                .AddSingleton<Infrastructure.Database.StationsDbContext>();
 
             services.AddMvc();
         }

@@ -49,7 +49,9 @@ namespace Kaolin.Infrastructure.Database
         {
             var q = term.ToLower().Trim();
             var l = limit ?? 10;
-            return _countries.Find(x => x.NameRu.ToLower().Contains(q)).Limit(l).ToListAsync();
+            return _countries.Find(x => x.NameRu.ToLower().Contains(q))
+                .Limit(l)
+                .ToListAsync();
         }
 
         public Task<CountryDoc> FindByIdAsync(int id)
@@ -78,9 +80,14 @@ namespace Kaolin.Infrastructure.Database
             return _countries.InsertOneAsync(doc);
         }
 
-        public Task StoreOManyAsync(IEnumerable<CountryDoc> docs)
+        public Task StoreManyAsync(IEnumerable<CountryDoc> docs)
         {
             return _countries.InsertManyAsync(docs);
+        }
+
+        public Task DeleteOneAsync(string id)
+        {
+            return _countries.DeleteOneAsync(x => x.Id == id);
         }
     }
 }

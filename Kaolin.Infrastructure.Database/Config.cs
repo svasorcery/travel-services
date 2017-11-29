@@ -6,5 +6,6 @@
         public string Database { get; set; }
 
         public string CountriesCollection { get; set; }
+        public string StationsCollection { get; set; }
     }
 }
