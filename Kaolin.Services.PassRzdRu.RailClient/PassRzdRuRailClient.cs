@@ -338,7 +338,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             session.Store("reserve", result);
 
             var price = _priceConverter.ToDecimal(result.TotalSum);
-            var priceWithCharges = new Price(price); // TODO: add price charges calculation, ref #51
+            var fixedExtraCharge = new FixedFeeType(200).ToCharge(price);
+            var priceWithCharges = new Price(price, new Charges { Extra = new List<Charge> { fixedExtraCharge } });
 
             session.Store("price", priceWithCharges);
             
