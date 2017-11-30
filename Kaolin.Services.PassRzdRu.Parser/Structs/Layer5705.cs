@@ -93,7 +93,27 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string DocNumber { get; set; }
             public string BirthDate { get; set; }
             public int GenderId { get; set; }
-            public int Insurance { get; set; } // TODO: add insurance, ref #49
+            public Insurance Insurance { get; set; }
+            public MedicalPolicy Policy { get; set; }
+        }
+
+        public class Insurance
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string ShortName { get; set; }
+            public string Href { get; set; }
+            public decimal Cost { get; set; }
+        }
+
+        public class MedicalPolicy
+        {
+            public int StatusId { get; set; }
+            public int Number { get; set; }
+            public int AreaId { get; set; }
+            public decimal Cost { get; set; }
+            public string StartDate { get; set; }
+            public string FinishDate { get; set; }
         }
 
         public class PaymentSystem
@@ -134,6 +154,8 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public DocumentTypes DocType { get; set; }
             public string DocNumber { get; set; }
             public int Country { get; set; }
+            public int? Insurance { get; set; }
+            public string PolicyDate { get; set; }
         }
 
         public enum Gender

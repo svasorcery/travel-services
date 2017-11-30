@@ -240,12 +240,22 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             session.Store("car_options", options);
 
+            var insuranceProviders = result.InsuranceCompany.Select(x => new InsuranceProvider
+            {
+                Id = x.Id,
+                FullName = x.ShortName,
+                ShortName = x.ShortName,
+                OfferUrl = x.OfferUrl,
+                InsuranceCost = x.InsuranceCost,
+                InsuranceBenefit = x.InsuranceBenefit
+            });
+
             return new GetCars.Result
             {
                 // TODO: add train info
                 Cars = cars,
                 AgeLimits = ageLimits,
-                // TODO: add Insurance, ref #49
+                InsuranceProviders = insuranceProviders
             };
         }
 

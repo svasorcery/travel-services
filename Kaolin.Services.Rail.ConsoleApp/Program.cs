@@ -65,9 +65,12 @@ namespace Kaolin.Services.Rail.ConsoleApp
                     Range = new ReserveCreate.Request.PlacesRange(1, 30, top: 1),
                     Bedding = true
                 },
-                Passengers = new Passenger[]
+                Passengers = new PassengerRequest[]
                 {
-                    new Passenger(1, person)
+                    new PassengerRequest(1, person
+                        //insurance: 10, 
+                        //policy: session.Retrieve<PassRzdRu.RailClient.Internal.TrainOptions>("train_options").Request.DepartDate.AddDays(5).ToString("dd.MM.yyyy")
+                    )
                 }
             };
         }
