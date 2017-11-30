@@ -58,15 +58,6 @@ namespace Kaolin.Models.Rail
                 public string Description { get; set; }
             }
 
-            public class InsuranceProvider
-            {
-                public int Id { get; set; }
-                public string ShortName { get; set; }
-                public string OfferUrl { get; set; }
-                public decimal InsuranceCost { get; set; }
-                public decimal InsuranceBenefit { get; set; }
-            }
-
             public class AgeRestrictions
             {
                 public int InfantWithoutPlace { get; set; }

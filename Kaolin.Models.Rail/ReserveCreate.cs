@@ -7,7 +7,7 @@ namespace Kaolin.Models.Rail
         public class Request
         {
             public OptionParams Option { get; set; }
-            public Passenger[] Passengers { get; set; }
+            public PassengerRequest[] Passengers { get; set; }
 
             public class OptionParams
             {
@@ -30,13 +30,9 @@ namespace Kaolin.Models.Rail
                 {
                     From = from;
                     To = to;
-                    TopCount = top.HasValue ? top.Value : 0;
-                    BottomCount = bottom.HasValue ? bottom.Value : 0;
+                    TopCount = top ?? 0;
+                    BottomCount = bottom ?? 0;
                 }
-            }
-
-            public class PlacesCount
-            {
             }
         }
 

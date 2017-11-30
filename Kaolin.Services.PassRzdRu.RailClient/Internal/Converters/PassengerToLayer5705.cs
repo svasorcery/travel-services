@@ -26,7 +26,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
         public IEnumerable<PassportType> SupportedPassportTypes => _docTypes.Keys;
 
-        public Layer5705.RequestPassenger ToLayer5705(Passenger passenger, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
+        public Layer5705.RequestPassenger ToLayer5705(PassengerRequest passenger, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
         {
             if (passenger == null)
             {
@@ -43,8 +43,9 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 Birthdate = passenger.BirthDate?.ToString("dd.MM.yyyy"),
                 DocType = ConvertDocType(passenger.Passport.Type),
                 DocNumber = passenger.Passport.Series + passenger.Passport.Number,
-                Country = passenger.Passport.Citizenship.RzdId.HasValue ? passenger.Passport.Citizenship.RzdId.Value : 114,
-                Tariff = GetTariffByBirthDate(passenger.BirthDate.Value, departDate, ageLimits)
+                Country = passenger.Passport.Citizenship.RzdId ?? 114,
+                Tariff = GetTariffByBirthDate(passenger.BirthDate.Value, departDate, ageLimits),
+                Insurance = passenger.InsuranceProviderId
             };
         }
 
@@ -64,7 +65,12 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 new Passport(ConvertPassportType(passenger.DocType), passenger.DocNumber)
             );
 
-            return new Passenger(@ref, person, passenger.Insurance);
+            return new Passenger(
+                @ref,
+                person, 
+                insurance: ConvertInsurance(passenger.Insurance), 
+                policy: ConvertMedicalPolicy(passenger.Policy)
+                );
         }
 
 
@@ -109,6 +115,21 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
             }
 
             return years;
+        }
+
+        private InsuranceProviderBase ConvertInsurance(Layer5705.Insurance insurance)
+        {
+            if (insurance == null)
+                return null;
+
+            return new InsuranceProviderBase
+            {
+                Id = insurance.Id,
+                InsuranceCost = insurance.Cost,
+                FullName = insurance.Name,
+                ShortName = insurance.ShortName,
+                OfferUrl = insurance.Href
+            };
         }
     }
 }
