@@ -29,7 +29,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string OrderId { get; set; }
             public string Created { get; set; }
             public decimal Cost { get; set; }
-            public decimal TotalCostPt { get; set; }
+            public int TotalCostPt { get; set; }
             public string TimeInWay { get; set; }
 
             public string Code0 { get; set; }
@@ -93,6 +93,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string DocNumber { get; set; }
             public string BirthDate { get; set; }
             public int GenderId { get; set; }
+
             public Insurance Insurance { get; set; }
             public MedicalPolicy Policy { get; set; }
         }
@@ -154,8 +155,14 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public DocumentTypes DocType { get; set; }
             public string DocNumber { get; set; }
             public int Country { get; set; }
+
             public int? Insurance { get; set; }
             public string PolicyDate { get; set; }
+
+            public string LoyalNum { get; set; }
+
+            public string UniversalNum { get; set; }
+            public bool Volunteer { get; set; }
         }
 
         public enum Gender

@@ -46,7 +46,10 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 Country = passenger.Passport.Citizenship.RzdId ?? 114,
                 Tariff = GetTariffByBirthDate(passenger.BirthDate.Value, departDate, ageLimits),
                 Insurance = passenger.InsuranceProviderId,
-                PolicyDate = passenger.PolicyEndDate
+                PolicyDate = passenger.PolicyEndDate,
+                LoyalNum = passenger.LoalityCardNumber,
+                UniversalNum = passenger.PartnerCardNumber,
+                Volunteer = passenger.PartnerCardNumber != null
             };
         }
 
