@@ -20,12 +20,16 @@
         public int Ref { get; set; }
         public int? InsuranceProviderId { get; set; }
         public string PolicyEndDate { get; set; }
+        public string LoalityCardNumber { get; set; }
+        public string PartnerCardNumber { get; set; }
 
-        public PassengerRequest(int @ref, Person person, int? insurance = null, string policy = null) :
+        public PassengerRequest(int @ref, Person person, int? insurance = null, string policy = null, string loalityCard = null, string partnerCard = null) :
             base(person.Gender, person.FirstName, person.MiddleName, person.LastName, person.BirthDate, person.Passport)
         {
             InsuranceProviderId = insurance;
             PolicyEndDate = policy;
+            LoalityCardNumber = loalityCard;
+            PartnerCardNumber = partnerCard;
         }
     }
 }

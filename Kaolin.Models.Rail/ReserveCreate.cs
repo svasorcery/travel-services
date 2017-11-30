@@ -48,7 +48,7 @@ namespace Kaolin.Models.Rail
             {
                 public string OrderId { get; set; }
                 public decimal Cost { get; set; }
-                public decimal TotalCostPt { get; set; }
+                public int TotalCostPt { get; set; }
 
                 public TrainInfo Train { get; set; }
                 public Car Car { get; set; }
