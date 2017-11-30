@@ -106,6 +106,16 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public decimal Cost { get; set; }
         }
 
+        public class MedicalPolicy
+        {
+            public int StatusId { get; set; }
+            public int Number { get; set; }
+            public int AreaId { get; set; }
+            public decimal Cost { get; set; }
+            public string StartDate { get; set; }
+            public string FinishDate { get; set; }
+        }
+
         public class PaymentSystem
         {
             public int Id { get; set; }
@@ -145,6 +155,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public string DocNumber { get; set; }
             public int Country { get; set; }
             public int? Insurance { get; set; }
+            public string PolicyDate { get; set; }
         }
 
         public enum Gender

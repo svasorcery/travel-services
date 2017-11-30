@@ -45,7 +45,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 DocNumber = passenger.Passport.Series + passenger.Passport.Number,
                 Country = passenger.Passport.Citizenship.RzdId ?? 114,
                 Tariff = GetTariffByBirthDate(passenger.BirthDate.Value, departDate, ageLimits),
-                Insurance = passenger.InsuranceProviderId
+                Insurance = passenger.InsuranceProviderId,
+                PolicyDate = passenger.PolicyEndDate
             };
         }
 
@@ -129,6 +130,22 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 FullName = insurance.Name,
                 ShortName = insurance.ShortName,
                 OfferUrl = insurance.Href
+            };
+        }
+
+        private MedicalPolicy ConvertMedicalPolicy(Layer5705.MedicalPolicy policy)
+        {
+            if (policy == null)
+                return null;
+
+            return new MedicalPolicy
+            {
+                StatusId = policy.StatusId,
+                Number = policy.Number,
+                Cost = policy.Cost,
+                DateStart = policy.StartDate,
+                DateEnd = policy.FinishDate,
+                AreaId = policy.AreaId
             };
         }
     }
