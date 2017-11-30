@@ -22,10 +22,11 @@ namespace Kaolin.Services.PassRzdRu.ConsoleApp
 
                 var cars = await client.GetCarsAsync(loginResult, new Layer5764.Request(0, request.From, request.To, request.DepartDate.ToString("dd.MM.yyyy"), train.Number, train.BEntire));
                 var car = cars.Lst[0]?.Cars[0];
-                
-                var reserve = await client.ReserveTicketAsync(loginResult, GetReserveRequest(request, train, car));
 
                 var docs = await client.GetDocumentTypesAsync(); // "ru" / "en"
+                var policy = await client.MedicalPolicyCostAsync(loginResult, new Layer5887.Request { BirthDate = "31.07.1985", StationCode = trains.Tp[0].WhereCode, ForwardDepartureDate = train.Date0, ForwardArrivalDate = train.Date1, BackwardDepartureDate = request.DepartDate.AddDays(5).ToString("dd.MM.yyyy"), BackwardArrivalDate = request.DepartDate.AddDays(5).ToString("dd.MM.yyyy") });
+                
+                var reserve = await client.ReserveTicketAsync(loginResult, GetReserveRequest(request, train, car, policy.Response));
 
                 var cancel = await client.CancelReserveAsync(loginResult, new Layer5769.Request { OrderId = reserve.SaleOrderId });
             }
@@ -36,7 +37,7 @@ namespace Kaolin.Services.PassRzdRu.ConsoleApp
 
         }
 
-        private static Layer5705.Request GetReserveRequest(Layer5827.Request request, Layer5827.TpItem.TpTrain train, Layer5764.LstItem.Car car)
+        private static Layer5705.Request GetReserveRequest(Layer5827.Request request, Layer5827.TpItem.TpTrain train, Layer5764.LstItem.Car car, Layer5887.MedicalPolicy policy)
         {
             if (request == null || train == null || car == null)
             {
@@ -90,7 +91,9 @@ namespace Kaolin.Services.PassRzdRu.ConsoleApp
                         DocType = Layer5705.DocumentTypes.PN,
                         DocNumber = "1511151115",
                         Country = 114, // RU
-                        Tariff = "Adult"
+                        Tariff = "Adult",
+                        Insurance = 10, // Росгосстрах
+                        PolicyDate = policy.FinishDate
                     }
                 }
             };
