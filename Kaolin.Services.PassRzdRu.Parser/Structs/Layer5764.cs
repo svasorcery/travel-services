@@ -16,6 +16,11 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
         public InsuranceProvider[] InsuranceCompany { get; set; }
         public FoodIconTip[] FoodIconTips { get; set; }
 
+        public string PsAction { get; set; }
+        public int ChildrenAge { get; set; }
+        public int MotherAndChildAge { get; set; }
+        public bool PartialPayment { get; set; }
+
         public class LstItem
         {
             public string Number { get; set; }
@@ -45,9 +50,7 @@ namespace Kaolin.Services.PassRzdRu.Parser.Structs
             public Car[] Cars { get; set; }
             public FunctionBlock[] FunctionBlocks { get; set; }
 
-            public int ChildrenAge { get; set; }
-            public int MotherAndChildAge { get; set; }
-            public bool PartialPayment { get; set; }
+            public string Timestamp { get; set; }
 
             public class Car
             {

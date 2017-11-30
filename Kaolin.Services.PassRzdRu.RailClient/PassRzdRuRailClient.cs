@@ -227,8 +227,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var ageLimits = new GetCars.Result.AgeRestrictions
             {
-                ChildWithPlace = result.Lst[0].ChildrenAge,
-                InfantWithoutPlace = result.Lst[0].MotherAndChildAge
+                ChildWithPlace = result.ChildrenAge,
+                InfantWithoutPlace = result.MotherAndChildAge
             };
 
             var options = new Internal.CarOptions
