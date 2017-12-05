@@ -29,7 +29,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
         }
 
 
-        public async Task<SearchTrains.Result> SearchTrainsAsync(ISessionStore session, SearchTrains.Request request)
+        public async Task<QueryTrains.Result> SearchTrainsAsync(ISessionStore session, QueryTrains.Request request)
         {
             if (session == null)
             {
@@ -83,7 +83,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             }
 
             optionRef = 0;
-            return new SearchTrains.Result
+            return new QueryTrains.Result
             {
                 Origin = result.Tp[0].From,
                 OriginCode = result.Tp[0].FromCode,
@@ -95,7 +95,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 Trains = from t in result.Tp[0].List
                          let tt = t.FlMsk == 3 || t.FlMsk == 2 ? TimeType.MOSCOW : TimeType.LOCAL
                          let durationParts = t.TimeInWay.Split(':').Select(x => int.Parse(x))
-                         select new SearchTrains.Result.Train
+                         select new QueryTrains.Result.Train
                          {
                              OptionRef = ++optionRef,
                              Name = t.TrainName,
@@ -116,7 +116,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                              HasDynamicPricing = t.VarPrice,
                              IsComponent = t.CarMods,
                              Cars = from c in t.Cars
-                                    select new SearchTrains.Result.Car
+                                    select new QueryTrains.Result.Car
                                     {
                                         Type = c.TypeLoc,
                                         ServiceClass = c.ServCls,
@@ -128,7 +128,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public Task<GetTrain.Result> GetTrainAsync(ISessionStore session, GetTrain.Request request)
+        public Task<QueryTrain.Result> GetTrainAsync(ISessionStore session, QueryTrain.Request request)
         {
             if (session == null)
             {
@@ -143,9 +143,9 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             var trains = session.Retrieve<Internal.TrainOptions>("train_options");
             var train = trains.Options.First(x => x.OptionRef == request.OptionRef);
 
-            return Task.FromResult(new GetTrain.Result
+            return Task.FromResult(new QueryTrain.Result
             {
-                Train = new GetTrain.Result.TrainOption
+                Train = new QueryTrain.Result.TrainOption
                 {
                     OptionRef = train.OptionRef,
                     DisplayNumber = train.DisplayNumber,

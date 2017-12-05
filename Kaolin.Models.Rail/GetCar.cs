@@ -10,7 +10,7 @@
 
         public class Result
         {
-            public GetTrain.Result.TrainOption Train { get; set; }
+            public QueryTrain.Result.TrainOption Train { get; set; }
             public GetCars.Result.Car Car { get; set; }
             // TODO: add Car schemes
         }

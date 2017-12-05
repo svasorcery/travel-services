@@ -6,7 +6,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal
 {
     public class TrainOptions
     {
-        public SearchTrains.Request Request { get; set; }
+        public QueryTrains.Request Request { get; set; }
         public IEnumerable<Option> Options { get; set; }
 
         public class Option

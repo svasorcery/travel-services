@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kaolin.Models.Rail
 {
-    public class SearchTrains
+    public class QueryTrains
     {
         public class Request
         {
