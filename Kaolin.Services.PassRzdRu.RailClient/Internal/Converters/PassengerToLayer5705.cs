@@ -26,7 +26,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
         public IEnumerable<PassportType> SupportedPassportTypes => _docTypes.Keys;
 
-        public Layer5705.RequestPassenger ToLayer5705(PassengerRequest passenger, DateTime departDate, GetCars.Result.AgeRestrictions ageLimits)
+        public Layer5705.RequestPassenger ToLayer5705(PassengerRequest passenger, DateTime departDate, QueryCars.Result.AgeRestrictions ageLimits)
         {
             if (passenger == null)
             {
@@ -91,7 +91,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 throw new ArgumentOutOfRangeException(nameof(docTypeId), $"Provider's DocType [{docTypeId}] is not supported");
         }
 
-        private string GetTariffByBirthDate(DateTime birthDate, DateTime departDate, GetCars.Result.AgeRestrictions limits)
+        private string GetTariffByBirthDate(DateTime birthDate, DateTime departDate, QueryCars.Result.AgeRestrictions limits)
         {
             var ageYears = GetYearsDiff(birthDate, departDate);
 

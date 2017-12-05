@@ -29,7 +29,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
         }
 
 
-        public async Task<SearchTrains.Result> SearchTrainsAsync(ISessionStore session, SearchTrains.Request request)
+        public async Task<QueryTrains.Result> SearchTrainsAsync(ISessionStore session, QueryTrains.Request request)
         {
             if (session == null)
             {
@@ -83,7 +83,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             }
 
             optionRef = 0;
-            return new SearchTrains.Result
+            return new QueryTrains.Result
             {
                 Origin = result.Tp[0].From,
                 OriginCode = result.Tp[0].FromCode,
@@ -95,7 +95,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 Trains = from t in result.Tp[0].List
                          let tt = t.FlMsk == 3 || t.FlMsk == 2 ? TimeType.MOSCOW : TimeType.LOCAL
                          let durationParts = t.TimeInWay.Split(':').Select(x => int.Parse(x))
-                         select new SearchTrains.Result.Train
+                         select new QueryTrains.Result.Train
                          {
                              OptionRef = ++optionRef,
                              Name = t.TrainName,
@@ -116,7 +116,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                              HasDynamicPricing = t.VarPrice,
                              IsComponent = t.CarMods,
                              Cars = from c in t.Cars
-                                    select new SearchTrains.Result.Car
+                                    select new QueryTrains.Result.Car
                                     {
                                         Type = c.TypeLoc,
                                         ServiceClass = c.ServCls,
@@ -128,7 +128,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public Task<GetTrain.Result> GetTrainAsync(ISessionStore session, GetTrain.Request request)
+        public Task<QueryTrain.Result> GetTrainAsync(ISessionStore session, QueryTrain.Request request)
         {
             if (session == null)
             {
@@ -143,9 +143,9 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             var trains = session.Retrieve<Internal.TrainOptions>("train_options");
             var train = trains.Options.First(x => x.OptionRef == request.OptionRef);
 
-            return Task.FromResult(new GetTrain.Result
+            return Task.FromResult(new QueryTrain.Result
             {
-                Train = new GetTrain.Result.TrainOption
+                Train = new QueryTrain.Result.TrainOption
                 {
                     OptionRef = train.OptionRef,
                     DisplayNumber = train.DisplayNumber,
@@ -163,7 +163,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             });
         }
 
-        public async Task<GetCars.Result> GetCarsAsync(ISessionStore session, GetCars.Request request)
+        public async Task<QueryCars.Result> GetCarsAsync(ISessionStore session, QueryCars.Request request)
         {
             if (session == null)
             {
@@ -185,7 +185,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             
             var optionRef = 0;
             var carsQuery = from c in result.Lst[0].Cars
-                            select new GetCars.Result.Car
+                            select new QueryCars.Result.Car
                             {
                                 OptionRef = ++optionRef,
                                 Number = c.CNumber,
@@ -197,7 +197,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
                                 FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
                                 SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
-                                FreeSeats = c.Seats.Select(s => new GetCars.Result.SeatGroup
+                                FreeSeats = c.Seats.Select(s => new QueryCars.Result.SeatGroup
                                 {
                                     Type = s.Type,
                                     Label = s.Label?.Replace("&nbsp;", " "),
@@ -205,7 +205,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                     Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
                                     Count = s.Free
                                 }).ToArray(),
-                                Services = c.Services.Select(s => new GetCars.Result.CarService
+                                Services = c.Services.Select(s => new QueryCars.Result.CarService
                                 {
                                     Name = s.Name,
                                     Description = s.Description
@@ -225,7 +225,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var cars = carsQuery.ToList();
 
-            var ageLimits = new GetCars.Result.AgeRestrictions
+            var ageLimits = new QueryCars.Result.AgeRestrictions
             {
                 ChildWithPlace = result.ChildrenAge,
                 InfantWithoutPlace = result.MotherAndChildAge
@@ -250,7 +250,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 InsuranceBenefit = x.InsuranceBenefit
             });
 
-            return new GetCars.Result
+            return new QueryCars.Result
             {
                 // TODO: add train info
                 Cars = cars,
@@ -259,7 +259,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public Task<GetCar.Result> GetCarAsync(ISessionStore session, GetCar.Request request)
+        public Task<QueryCar.Result> GetCarAsync(ISessionStore session, QueryCar.Request request)
         {
             if (session == null)
             {
@@ -277,7 +277,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             var cars = session.Retrieve<Internal.CarOptions>("car_options");
             var car = cars.Options.First(x => x.OptionRef == request.OptionRef);
 
-            return Task.FromResult(new GetCar.Result
+            return Task.FromResult(new QueryCar.Result
             {
                 // TODO: add train info
                 Car = car,

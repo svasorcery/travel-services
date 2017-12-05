@@ -16,13 +16,13 @@ namespace Kaolin.Services.Rail.ConsoleApp
             {
                 var session = ssm.Create(TimeSpan.FromMinutes(15));
 
-                var trainsResult = await client.SearchTrainsAsync(session, new SearchTrains.Request { From = "2000000", To = "2030000", DepartDate = DateTime.Now.AddDays(30) });
+                var trainsResult = await client.SearchTrainsAsync(session, new QueryTrains.Request { From = "2000000", To = "2030000", DepartDate = DateTime.Now.AddDays(30) });
                 var trains = trainsResult.Trains.ToArray();
                 await ssm.SaveAsync(session);
 
                 //var session = await ssm.LoadAsync("98336db4-3ee5-4af7-84a8-69906aa16b86");
 
-                var carsResult = await client.GetCarsAsync(session, new GetCars.Request { OptionRef = 1 });
+                var carsResult = await client.GetCarsAsync(session, new QueryCars.Request { OptionRef = 1 });
                 var cars = carsResult.Cars.ToArray();
                 await ssm.SaveAsync(session);
 

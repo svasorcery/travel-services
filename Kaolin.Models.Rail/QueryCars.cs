@@ -2,11 +2,22 @@
 
 namespace Kaolin.Models.Rail
 {
-    public class GetCars
+    public class QueryCars
     {
         public class Request
         {
             public int OptionRef { get; set; }
+
+
+            public Request()
+            {
+
+            }
+
+            public Request(int optionRef)
+            {
+                OptionRef = optionRef;
+            }
         }
 
         public class Result

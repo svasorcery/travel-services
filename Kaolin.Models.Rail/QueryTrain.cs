@@ -2,7 +2,7 @@
 
 namespace Kaolin.Models.Rail
 {
-    public class GetTrain
+    public class QueryTrain
     {
         public class Request
         {
