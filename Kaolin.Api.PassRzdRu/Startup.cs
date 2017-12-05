@@ -16,14 +16,32 @@ namespace Kaolin.Api.PassRzdRu
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<Infrastructure.Database.Config>(config =>
-            {
-                config.ConnectionString = "mongodb://localhost:27017";
-                config.Database = "kaolin";
-                config.CountriesCollection = "countries";
-                config.StationsCollection = "stations";
-            })
+                {
+                    config.ConnectionString = "mongodb://localhost:27017";
+                    config.Database = "kaolin";
+                    config.CountriesCollection = "countries";
+                    config.StationsCollection = "stations";
+                })
                 .AddSingleton<Infrastructure.Database.CountriesDbContext>()
-                .AddSingleton<Infrastructure.Database.StationsDbContext>();
+                .AddSingleton<Infrastructure.Database.StationsDbContext>()
+                .AddMongoDbSessionProvider()
+                .Configure<Infrastructure.SessionStore.Config>(config =>
+                {
+                    config.ConnectionString = "mongodb://localhost:27017";
+                    config.Database = "ssp";
+                    config.Collection = "sessions";
+                })
+                .Configure<Services.PassRzdRu.Parser.Config>(config =>
+                {
+                    config.Polling = new Services.PassRzdRu.Parser.Config.PollingConfig(60, 1000);
+                })
+                .Configure<Services.PassRzdRu.RailClient.Config>(config =>
+                {
+                    config.Username = "your_login_here";
+                    config.Password = "your_password_here";
+                })
+                .AddSingleton<Services.PassRzdRu.Parser.PassRzdRuClient>()
+                .AddTransient<Kaolin.Models.Rail.Abstractions.IRailClient, Services.PassRzdRu.RailClient.PassRzdRuRailClient>();
 
             services.AddMvc();
         }
