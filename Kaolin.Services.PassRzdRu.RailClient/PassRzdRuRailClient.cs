@@ -163,7 +163,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             });
         }
 
-        public async Task<GetCars.Result> GetCarsAsync(ISessionStore session, GetCars.Request request)
+        public async Task<QueryCars.Result> GetCarsAsync(ISessionStore session, QueryCars.Request request)
         {
             if (session == null)
             {
@@ -185,7 +185,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             
             var optionRef = 0;
             var carsQuery = from c in result.Lst[0].Cars
-                            select new GetCars.Result.Car
+                            select new QueryCars.Result.Car
                             {
                                 OptionRef = ++optionRef,
                                 Number = c.CNumber,
@@ -197,7 +197,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
                                 FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
                                 SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
-                                FreeSeats = c.Seats.Select(s => new GetCars.Result.SeatGroup
+                                FreeSeats = c.Seats.Select(s => new QueryCars.Result.SeatGroup
                                 {
                                     Type = s.Type,
                                     Label = s.Label?.Replace("&nbsp;", " "),
@@ -205,7 +205,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                     Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
                                     Count = s.Free
                                 }).ToArray(),
-                                Services = c.Services.Select(s => new GetCars.Result.CarService
+                                Services = c.Services.Select(s => new QueryCars.Result.CarService
                                 {
                                     Name = s.Name,
                                     Description = s.Description
@@ -225,7 +225,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             var cars = carsQuery.ToList();
 
-            var ageLimits = new GetCars.Result.AgeRestrictions
+            var ageLimits = new QueryCars.Result.AgeRestrictions
             {
                 ChildWithPlace = result.ChildrenAge,
                 InfantWithoutPlace = result.MotherAndChildAge
@@ -250,7 +250,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 InsuranceBenefit = x.InsuranceBenefit
             });
 
-            return new GetCars.Result
+            return new QueryCars.Result
             {
                 // TODO: add train info
                 Cars = cars,
@@ -259,7 +259,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public Task<GetCar.Result> GetCarAsync(ISessionStore session, GetCar.Request request)
+        public Task<QueryCar.Result> GetCarAsync(ISessionStore session, QueryCar.Request request)
         {
             if (session == null)
             {
@@ -277,7 +277,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             var cars = session.Retrieve<Internal.CarOptions>("car_options");
             var car = cars.Options.First(x => x.OptionRef == request.OptionRef);
 
-            return Task.FromResult(new GetCar.Result
+            return Task.FromResult(new QueryCar.Result
             {
                 // TODO: add train info
                 Car = car,
