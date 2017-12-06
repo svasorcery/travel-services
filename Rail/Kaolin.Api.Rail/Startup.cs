@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Kaolin.Api.PassRzdRu
+namespace Kaolin.Api.Rail
 {
     public class Startup
     {
@@ -16,12 +16,12 @@ namespace Kaolin.Api.PassRzdRu
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<Infrastructure.Database.Config>(config =>
-                {
-                    config.ConnectionString = "mongodb://localhost:27017";
-                    config.Database = "kaolin";
-                    config.CountriesCollection = "countries";
-                    config.StationsCollection = "stations";
-                })
+            {
+                config.ConnectionString = "mongodb://localhost:27017";
+                config.Database = "kaolin";
+                config.CountriesCollection = "countries";
+                config.StationsCollection = "stations";
+            })
                 .AddSingleton<Infrastructure.Database.CountriesDbContext>()
                 .AddSingleton<Infrastructure.Database.StationsDbContext>()
                 .AddMongoDbSessionProvider()

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Kaolin.Api.PassRzdRu.Controllers
+namespace Kaolin.Api.Rail.Controllers
 {
     using Kaolin.Models.Rail.Abstractions;
     using Kaolin.Infrastructure.SessionStore;
-    using Kaolin.Api.PassRzdRu.Models;
+    using Kaolin.Api.Rail.Models;
     using Kaolin.Models.Rail;
 
     [Route("api/[controller]")]
