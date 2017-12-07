@@ -285,7 +285,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             });
         }
 
-        public async Task<ReserveCreate.Result> CreateReserveAsync(ISessionStore session, ReserveCreate.Request request)
+        public async Task<QueryReserveCreate.Result> CreateReserveAsync(ISessionStore session, QueryReserveCreate.Request request)
         {
             if (session == null)
             {
@@ -353,13 +353,13 @@ namespace Kaolin.Services.PassRzdRu.RailClient
 
             session.Store("price", priceWithCharges);
             
-            return new ReserveCreate.Result
+            return new QueryReserveCreate.Result
             {
                 SaleOrderId = result.SaleOrderId,
                 Price = priceWithCharges,
                 Orders = from o in result.Orders
                          let durationParts = o.TimeInWay.Split(':').Select(x => int.Parse(x))
-                         select new ReserveCreate.Result.ResultOrder
+                         select new QueryReserveCreate.Result.ResultOrder
                          {
                              OrderId = o.OrderId,
                              Cost = o.Cost,
@@ -387,25 +387,25 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                  HasElectronicRegistration = train.HasElectronicRegistration,
                                  HasDynamicPricing = train.HasDynamicPricing
                              },
-                             Car = new ReserveCreate.Result.Car
+                             Car = new QueryReserveCreate.Result.Car
                              {
                                  Number = o.CNumber,
                                  Type = _carTypeConverter.ByCTypeI(o.Ctype), // WARNING: it's cTypeI here, not cType
                                  ServiceClass = o.ClsType,
                                  AdditionalInfo = o.TimeInfo
                              },
-                             Tickets = o.Tickets.Select(t => new ReserveCreate.Result.Ticket
+                             Tickets = o.Tickets.Select(t => new QueryReserveCreate.Result.Ticket
                              {
                                  TicketId = t.TicketId,
                                  Cost = t.Cost,
                                  Seats = t.Seats,
                                  SeatsType = t.SeatsType,
-                                 Tariff = new ReserveCreate.Result.Tariff(t.Tariff, t.TariffName),
+                                 Tariff = new QueryReserveCreate.Result.Tariff(t.Tariff, t.TariffName),
                                  Teema = t.Teema,
                                  Passengers = t.Pass.Select(p => _passengerConverter.ToPassenger(Array.IndexOf(t.Pass, p) + 1, p))
                              })
                          },
-                PaymentSystems = result.PaymentSystems.Select(p => new ReserveCreate.Result.PaymentSystem
+                PaymentSystems = result.PaymentSystems.Select(p => new QueryReserveCreate.Result.PaymentSystem
                 {
                     Id = p.Id,
                     Code = p.Code,
@@ -415,7 +415,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public async Task<ReserveCancel.Result> CancelReserveAsync(ISessionStore session, ReserveCancel.Request request)
+        public async Task<QueryReserveCancel.Result> CancelReserveAsync(ISessionStore session, ReserveCancel.Request request)
         {
             if (session == null)
             {
@@ -440,7 +440,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             reserve.Canceled = true;
             session.Store("reserve", reserve);
 
-            return new ReserveCancel.Result
+            return new QueryReserveCancel.Result
             {
                 OrderId = reserve.SaleOrderId,
                 Code = response.Result,

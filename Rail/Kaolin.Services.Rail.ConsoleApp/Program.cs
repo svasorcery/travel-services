@@ -30,7 +30,7 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 var totalCost = reserveResult.Price.Total;
                 await ssm.SaveAsync(session);
 
-                var cancelResult = await client.CancelReserveAsync(session, new ReserveCancel.Request { SessionId = session.Id });
+                var cancelResult = await client.CancelReserveAsync(session, new QueryReserveCancel.Request { SessionId = session.Id });
                 var status = cancelResult.Status;
                 await ssm.SaveAsync(session);
             }
@@ -41,7 +41,7 @@ namespace Kaolin.Services.Rail.ConsoleApp
             }
         }
 
-        private static ReserveCreate.Request GetReserveRequest(Infrastructure.SessionStore.ISessionStore session)
+        private static QueryReserveCreate.Request GetReserveRequest(Infrastructure.SessionStore.ISessionStore session)
         {
             var person = new Person(
                 Gender.MALE, 
@@ -55,14 +55,14 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 )
             );
 
-            return new ReserveCreate.Request
+            return new QueryReserveCreate.Request
             {
-                Option = new ReserveCreate.Request.OptionParams
+                Option = new QueryReserveCreate.Request.OptionParams
                 {
                     SessionId = session.Id,
                     TrainOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.TrainOptions>("train_options").Options.First().OptionRef,
                     CarOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.CarOptions>("car_options").Options.First().OptionRef,
-                    Range = new ReserveCreate.Request.PlacesRange(1, 30, top: 1),
+                    Range = new QueryReserveCreate.Request.PlacesRange(1, 30, top: 1),
                     Bedding = true
                 },
                 Passengers = new PassengerRequest[]
