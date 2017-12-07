@@ -1,6 +1,6 @@
 ﻿namespace Kaolin.Models.Rail
 {
-    public class ReserveCancel
+    public class QueryReserveCancel
     {
         public class Request
         {

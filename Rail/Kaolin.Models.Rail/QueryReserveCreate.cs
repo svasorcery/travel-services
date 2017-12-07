@@ -2,7 +2,7 @@
 
 namespace Kaolin.Models.Rail
 {
-    public class ReserveCreate
+    public class QueryReserveCreate
     {
         public class Request
         {
