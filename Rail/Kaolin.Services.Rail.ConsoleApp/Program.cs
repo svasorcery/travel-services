@@ -30,7 +30,7 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 var totalCost = reserveResult.Price.Total;
                 await ssm.SaveAsync(session);
 
-                var cancelResult = await client.CancelReserveAsync(session, new QueryReserveCancel.Request { SessionId = session.Id });
+                var cancelResult = await client.CancelReserveAsync(session);
                 var status = cancelResult.Status;
                 await ssm.SaveAsync(session);
             }

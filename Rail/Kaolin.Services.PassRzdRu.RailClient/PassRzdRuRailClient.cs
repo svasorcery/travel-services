@@ -415,7 +415,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             };
         }
 
-        public async Task<QueryReserveCancel.Result> CancelReserveAsync(ISessionStore session, ReserveCancel.Request request)
+        public async Task<QueryReserveCancel.Result> CancelReserveAsync(ISessionStore session)
         {
             if (session == null)
             {
