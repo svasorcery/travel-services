@@ -19,6 +19,9 @@ namespace HermesSpa.Services
         }
 
 
+        public Task<IEnumerable<Country>> SearchCountriesAsync(string q)
+            => Get<IEnumerable<Country>>($"api/countries?term={q}");
+
         public Task<IEnumerable<RailStation>> SearchStationsAsync(string q)
             => Get<IEnumerable<RailStation>>($"api/stations?term={q}");
     }
