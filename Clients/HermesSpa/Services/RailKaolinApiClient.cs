@@ -17,5 +17,9 @@ namespace HermesSpa.Services
         {
             _options = optionsAccessor.Value;
         }
+
+
+        public Task<IEnumerable<RailStation>> SearchStationsAsync(string q)
+            => Get<IEnumerable<RailStation>>($"api/stations?term={q}");
     }
 }
