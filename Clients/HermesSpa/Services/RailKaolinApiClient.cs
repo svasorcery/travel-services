@@ -24,5 +24,14 @@ namespace HermesSpa.Services
 
         public Task<IEnumerable<RailStation>> SearchStationsAsync(string q)
             => Get<IEnumerable<RailStation>>($"api/stations?term={q}");
+
+        public Task<TrainsListResult> QueryTrainsAsync(TrainsListRequest request)
+            => Get<TrainsListResult>("api/trains", 
+                ("from", request.From),
+                ("to", request.To),
+                ("departDate", request.DepartDate.ToString("yyyy.MM.dd")),
+                ("hourFrom", request.HourFrom.HasValue ? request.HourFrom.ToString() : "0"),
+                ("hourTo",  request.HourTo.HasValue ? request.HourTo.ToString() : "24")
+                );
     }
 }

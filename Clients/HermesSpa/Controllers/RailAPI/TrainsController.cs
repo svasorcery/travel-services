@@ -9,20 +9,25 @@ namespace HermesSpa.Controllers.RailAPI
     using HermesSpa.Services;
 
     [Route("api/rail/[controller]")]
-    public class StationsController : Controller
+    public class TrainsController : Controller
     {
         private readonly RailKaolinApiClient _rail;
 
-        public StationsController(RailKaolinApiClient railClient)
+        public TrainsController(RailKaolinApiClient railClient)
         {
             _rail = railClient;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]string term)
+        public async Task<IActionResult> Get(RailKaolinApiClient.TrainsListRequest request)
         {
-            return Ok(await _rail.SearchStationsAsync(term));
+            if (request == null)
+            {
+                return BadRequest(nameof(request));
+            }
+
+            return Ok(await _rail.QueryTrainsAsync(request));
         }
     }
 }

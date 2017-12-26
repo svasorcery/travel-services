@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
@@ -52,6 +53,12 @@ namespace HermesSpa.Services
                 return _json.Deserialize<T>(new JsonTextReader(reader));
             }
         }
+
+        protected Task<T> Get<T>(string url, string p1, string v1)
+            => Get<T>($"{url}?{p1}={Uri.EscapeDataString(v1)}");
+
+        protected Task<T> Get<T>(string url, params (string k, string v)[] p)
+            => Get<T>(string.Concat(url, "?", string.Join("&", p.Where(x => x.v != null).Select(x => $"{x.k}={Uri.EscapeDataString(x.v)}"))));
 
         protected async Task<T> Get<T>(string url)
         {
