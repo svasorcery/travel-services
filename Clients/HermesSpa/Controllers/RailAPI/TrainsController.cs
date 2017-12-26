@@ -8,7 +8,7 @@ namespace HermesSpa.Controllers.RailAPI
 {
     using HermesSpa.Services;
 
-    [Route("api/[controller]")]
+    [Route("api/rail/[controller]")]
     public class TrainsController : Controller
     {
         private readonly RailKaolinApiClient _rail;
