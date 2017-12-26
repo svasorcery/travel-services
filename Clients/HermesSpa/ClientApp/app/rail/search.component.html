@@ -1,0 +1,18 @@
+<form #searchForm="ngForm" (submit)="search()" class="col-md-6">
+    <div class="form-group">
+        <label>Origin station</label>
+        <input type="text" [(ngModel)]="request.from" name="origin" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Destination station</label>
+        <input type="text" [(ngModel)]="request.to" name="destination" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Depart date</label>
+        <input type="date" [(ngModel)]="request.departDate" name="departDate" class="form-control" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
