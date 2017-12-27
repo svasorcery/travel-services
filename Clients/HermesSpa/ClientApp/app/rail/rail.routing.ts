@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RailComponent } from './rail.component';
 import { RailSearchComponent } from './search.component';
+import { TrainsListComponent } from './trains.component';
 
 const routes: Routes = [
     { 
@@ -12,9 +13,13 @@ const routes: Routes = [
             {
                 path: '',
                 component: RailSearchComponent
+            },
+            {
+                path: 'trains',
+                component: TrainsListComponent
             }
         ]
-    },
+    }
 ];
 
 @NgModule({
@@ -25,5 +30,6 @@ export class RailRoutingModule { }
 
 export const routedComponents = [
     RailComponent,
-    RailSearchComponent
+    RailSearchComponent,
+    TrainsListComponent
 ];

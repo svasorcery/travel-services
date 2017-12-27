@@ -1,0 +1,58 @@
+<table *ngIf="result" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Train</th>
+            <th>Depart</th>
+            <th>Time in way</th>
+            <th>Arrive</th>
+            <th>Seats / price (RUR)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let train of result.trains">
+            <td>
+                <div>{{ train.displayNumber }}</div>
+                <div>{{ train.routeStart.station.name }} - {{ train.routeEndStation }}</div>
+                <div>
+                    <span *ngIf="train.hasElectronicRegistration">ЭР</span>
+                    <span *ngIf="train.hasDynamicPricing">ДЦ</span>
+                    <span *ngIf="train.isComponent">!!!</span>
+                    <span>{{ train.carrier }}</span>
+                    <span *ngIf="train.isFirm" class="small">(Фирм)</span> 
+                </div>
+            </td>
+            <td>
+                <div>{{ train.depart.dateAndTime | date:'dd.MM.yyyy HH:mm' }}</div>
+                <div>{{ train.depart.station.name }}</div>
+                <!--<div>{{ train.depart.timeType }}</div>-->
+            </td>
+            <td>
+                {{ train.tripDuration }}
+            </td>
+            <td>
+                <div>{{ train.arrive.dateAndTime | date:'dd.MM.yyyy HH:mm' }}</div>
+                <div>{{ train.arrive.station.name }}</div>
+                <!--<div>{{ train.depart.timeType }}</div>-->
+            </td>
+            <td>
+                <div *ngFor="let car of train.cars">
+                    <div class="col-xs-6 col-sm-12 col-md-5">
+                        {{ car.type }}
+                    </div>
+                    <div class="col-sm-4 col-xs-2 col-md-2">
+                        {{ car.freeSeats }}
+                    </div>
+                    <div class="col-sm-8 col-xs-4 col-md-5 text-right">
+                        от {{ car.minPrice }}
+                    </div>
+                </div>
+            </td>
+            <td>                
+                <button class="btn btn-primary btn-sm" (click)="select(train.optionRef)">
+                    Select
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
