@@ -1,0 +1,43 @@
+<table *ngIf="result" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Car</th>
+            <th>Service type and class</th>
+            <th>Category</th>
+            <th>Price (RUR)</th>
+            <th>Free seats</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let car of result.cars">
+            <td>
+                <div>{{ car.number }}</div>
+                <div>
+                    <span *ngIf="car.hasElectronicRegistration">ЭР</span>
+                </div>
+            </td>
+            <td>
+                <div>{{ car.type.displayName }} ({{ car.serviceClass }})</div>
+                <div>{{ car.carrier }}</div>
+            </td>
+            <td>
+                {{ car.categories }}
+            </td>
+            <td>
+                <div *ngIf="car.price.min.total === car.price.max.total">{{ car.price.min.total }}</div>
+                <div *ngIf="car.price.min.total !== car.price.max.total">от {{ car.price.min.total }} до {{ car.price.max.total }}</div>
+            </td>
+            <td>
+                <div *ngFor="let seat of car.freeSeats">
+                    {{ seat.count }} {{ seat.label }}
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-sm" (click)="select(car.optionRef)">
+                    Выбрать
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

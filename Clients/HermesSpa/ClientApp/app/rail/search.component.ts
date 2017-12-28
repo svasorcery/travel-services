@@ -12,16 +12,13 @@ export class RailSearchComponent implements OnInit {
     constructor(private _rail: RailService) { }
 
     ngOnInit() {
-        this.request = new TrainsListRequest();
+        this.request = new TrainsListRequest('', '', '');
      }
 
     public search(): void {
         if (!this.request) return;
 
-        this._rail.queryTrains(this.request)
-            .subscribe(
-                result => console.log(result),
-                error => console.log(error)
-            );
+        this._rail.setSearch(this.request);
+        this._rail.gotoTrains();
     }
 }

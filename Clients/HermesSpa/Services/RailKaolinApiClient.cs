@@ -33,5 +33,8 @@ namespace HermesSpa.Services
                 ("hourFrom", request.HourFrom.HasValue ? request.HourFrom.ToString() : "0"),
                 ("hourTo",  request.HourTo.HasValue ? request.HourTo.ToString() : "24")
                 );
+
+        public Task<CarsListResult> QueryCarsAsync(string sessionId, int optionRef)
+            => Get<CarsListResult>($"api/trains/{sessionId}/{optionRef}/cars");
     }
 }
