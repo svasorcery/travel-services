@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RailComponent } from './rail.component';
 import { RailSearchComponent } from './search.component';
 import { TrainsListComponent } from './trains.component';
+import { CarsListComponent } from './cars.component';
 
 const routes: Routes = [
     { 
@@ -17,6 +18,10 @@ const routes: Routes = [
             {
                 path: 'trains',
                 component: TrainsListComponent
+            },
+            {
+                path: 'cars',
+                component: CarsListComponent
             }
         ]
     }
@@ -31,5 +36,6 @@ export class RailRoutingModule { }
 export const routedComponents = [
     RailComponent,
     RailSearchComponent,
-    TrainsListComponent
+    TrainsListComponent,
+    CarsListComponent
 ];

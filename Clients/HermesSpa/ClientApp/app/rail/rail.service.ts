@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
 
-import { TrainsListRequest } from './rail.models';
+import { TrainsListRequest, TrainsListResult, CarsListResult } from './rail.models';
 
 @Injectable()
 export class RailService {
@@ -29,7 +29,7 @@ export class RailService {
         return this._search;
     }
     
-    public queryTrains(request: TrainsListRequest): Observable<any> {
+    public queryTrains(request: TrainsListRequest): Observable<TrainsListResult> {
         var params = new URLSearchParams();
         params.set('from', request.from);
         params.set('to', request.to);
@@ -38,7 +38,16 @@ export class RailService {
         //params.set('toHour', request.hourTo.toString());        
 
         return this.http.get(this._url, { search: params })
-            .map((response: Response) => response.json() as any);
+            .map((response: Response) => response.json() as TrainsListResult);
+    }
+
+    public queryCars(sessionId: string, optionRef: number): Observable<CarsListResult> {
+        var params = new URLSearchParams();
+        params.set('sessionId', sessionId);
+        params.set('optionRef', optionRef.toString());
+
+        return this.http.get(`${this._url}/cars`, { search: params })
+            .map((response: Response) => response.json() as CarsListResult)
     }
 
 
@@ -50,7 +59,16 @@ export class RailService {
                 date: this._search.departDate,
                 //t0: this._search.hourFrom,
                 //t1: this._search.hourTo
-             }
+            }
+        });
+    }
+
+    public gotoCars(sessionId: string, optionRef: number): void {
+        this.router.navigate(['rail', 'cars'], {
+            queryParams: { 
+                sessionId: sessionId,
+                optionRef: optionRef.toString()
+            }
         });
     }
 }

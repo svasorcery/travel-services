@@ -9,6 +9,7 @@ export class TrainsListRequest {
 }
 
 export class TrainsListResult {
+    sessionId: string;
     origin: string;
     originCode: string;
     destination: string;
@@ -16,6 +17,10 @@ export class TrainsListResult {
     departureDate: Date;
     timeType: number;
     trains: Train[];
+}
+
+export class CarsListResult {
+    cars: Car[];
 }
 
 class Train {
@@ -49,10 +54,55 @@ class CarInfo {
     bonusPoints?: number;
 }
 
+class Car {
+    optionRef: number;
+    number: string;
+    type: CarType;
+    serviceClass: string;
+    serviceClassInternational: string;
+    letter: string;
+    categories: string;
+    schemeId: string;
+    preePlaceNumbers: number[];
+    specialSeatTypes: string[];
+    freeSeats: SeatGroup[];
+    services: { name: string, description: string }[];
+    servicesDescription: string;
+    price: { min: Price, max: Price };
+    carrier: string;
+    owner: string;
+    hasElectronicRegistration: boolean;
+    hasDynamicPricing: boolean;
+    isNoSmoking: boolean;
+    canAddBedding: boolean;
+    hasBeddingIncluded: boolean;
+    isTwoStorey: boolean;
+    isWebSalesForbidden: boolean;
+}
+
 class TripEvent {
     dateAndTime: Date;
     timeType: number;
     station: { code: string, name: string };
+}
+
+class Price  { 
+    total: number;
+}
+
+class CarType {
+    id: number;
+    category: string;
+    name: string;
+    displayName: string;
+}
+
+class SeatGroup {
+    type: string;
+    label: string;
+    price: Price;
+    places: number[];
+    count: number;    
 }
 
 export class RailStation {

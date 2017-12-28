@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { TrainsListRequest, TrainsListResult } from './rail.models';
+import { CarsListResult } from './rail.models';
 import { RailService } from './rail.service';
 
 @Component({
-    templateUrl: 'trains.component.html'
+    templateUrl: 'cars.component.html'
 })
-export class TrainsListComponent implements OnInit {
-    result: TrainsListResult;
+export class CarsListComponent implements OnInit {
+    result: CarsListResult;
     
     constructor(
         private _rail: RailService,
@@ -19,16 +19,11 @@ export class TrainsListComponent implements OnInit {
         this._route
         .queryParams
         .switchMap(params => {
-            var request = new TrainsListRequest(params['from'], params['to'], params['date']);
-            return this._rail.queryTrains(request);
+            return this._rail.queryCars(params['sessionId'], +params['optionRef']); 
         })
         .subscribe(
             result => this.result = result,
             error => console.log(error)
         );
-    }
-
-    public select(optionRef: number): void {
-        this._rail.gotoCars(this.result.sessionId, optionRef);
     }
 }
