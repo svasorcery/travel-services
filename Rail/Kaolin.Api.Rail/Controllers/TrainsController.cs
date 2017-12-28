@@ -38,6 +38,8 @@ namespace Kaolin.Api.Rail.Controllers
 
                 var result = await _rail.SearchTrainsAsync(session, request);
 
+                await _ssp.SaveAsync(session);
+
                 return Ok(new GetTrainsResult
                 {
                     SessionId = session.Id,
