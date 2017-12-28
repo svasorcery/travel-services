@@ -54,6 +54,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             int optionRef = 0;
             if (result.Tp != null && result.Tp.Length == 1)
             {
+                request.DepartDate = request.DepartDate.ToLocalTime();
                 var options = new Internal.TrainOptions
                 {
                     Request = request,
