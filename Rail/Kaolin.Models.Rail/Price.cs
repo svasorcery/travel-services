@@ -7,7 +7,7 @@ namespace Kaolin.Models.Rail
     {
         public decimal Base { get; protected set; }
         public Charges Charges { get; protected set; }
-        public decimal Total => Base + (Charges.Extra != null ? Charges.Extra.Sum(x => x.Amount) : 0m);
+        public decimal Total => Base + (Charges?.Extra != null ? Charges.Extra.Sum(x => x.Amount) : 0m);
 
         public Price(decimal providerPrice, Charges charges = null)
         {
