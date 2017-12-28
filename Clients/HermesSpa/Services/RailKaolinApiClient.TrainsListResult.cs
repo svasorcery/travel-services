@@ -7,6 +7,7 @@ namespace HermesSpa.Services
     {
         public class TrainsListResult
         {
+            public string SessionId { get; set; }
             public string Origin { get; set; }
             public string OriginCode { get; set; }
             public string Destination { get; set; }
