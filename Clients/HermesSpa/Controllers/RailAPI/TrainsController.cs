@@ -40,5 +40,16 @@ namespace HermesSpa.Controllers.RailAPI
 
             return Ok(await _rail.QueryCarsAsync(sessionId, optionRef));
         }
+
+        [HttpGet("seats")]
+        public async Task<IActionResult> Seats(string sessionId, int trainRef, int optionRef)
+        {
+            if (String.IsNullOrEmpty(sessionId))
+            {
+                return BadRequest(nameof(sessionId));
+            }
+
+            return Ok(await _rail.QuerySeatsAsync(sessionId, trainRef, optionRef));
+        }
     }
 }
