@@ -36,5 +36,8 @@ namespace HermesSpa.Services
 
         public Task<CarsListResult> QueryCarsAsync(string sessionId, int optionRef)
             => Get<CarsListResult>($"api/trains/{sessionId}/{optionRef}/cars");
+
+        public Task<SeatsListResult> QuerySeatsAsync(string sessionId, int trainsRef, int optionRef)
+            => Get<SeatsListResult>($"api/trains/{sessionId}/{trainsRef}/cars/{optionRef}");
     }
 }
