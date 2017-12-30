@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { AutoCompleteComponent } from './autocomplete.component';
 import { SpinnerComponent } from './spinner.component';
+import { ErrorComponent } from './error.component';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { SpinnerComponent } from './spinner.component';
     ],
     declarations: [
         AutoCompleteComponent,
-        SpinnerComponent
+        SpinnerComponent,
+        ErrorComponent
     ],
     providers: [
 
@@ -20,7 +22,8 @@ import { SpinnerComponent } from './spinner.component';
     exports: [
         CommonModule,
         AutoCompleteComponent,
-        SpinnerComponent
+        SpinnerComponent,
+        ErrorComponent
     ],
 })
 export class SharedModule {
