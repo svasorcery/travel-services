@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { AutoCompleteComponent } from './autocomplete.component';
+import { SpinnerComponent } from './spinner.component';
 
 @NgModule({
     imports: [
@@ -10,14 +11,16 @@ import { AutoCompleteComponent } from './autocomplete.component';
         CommonModule
     ],
     declarations: [
-        AutoCompleteComponent
+        AutoCompleteComponent,
+        SpinnerComponent
     ],
     providers: [
 
     ],
     exports: [
+        CommonModule,
         AutoCompleteComponent,
-        CommonModule
+        SpinnerComponent
     ],
 })
 export class SharedModule {
