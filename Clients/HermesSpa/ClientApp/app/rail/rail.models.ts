@@ -1,11 +1,34 @@
 export class TrainsListRequest {
+    private _fromCity: string;
+    private _toCity: string;
+
     constructor(
-        public from: string,
-        public to: string,
+        public from: RailStation | String,
+        public to: RailStation | String,
         public departDate: string,
         public hourFrom?: number,
         public hourTo?: number
-    ) { }
+    ) {
+        if (typeof from === 'string') {
+            this.from = new RailStation('', from);
+            this._fromCity = from !== '' ? from : null;
+        } else {
+            this.from = from;
+            this._fromCity = (<RailStation>from).express;
+        }
+
+        if (typeof to === 'string') {
+            this.to = new RailStation('', to);
+            this._toCity = to !== '' ? to : null;
+        } else {
+            this.to = to;
+            this._toCity = (<RailStation>to).express;
+        }
+    }
+
+    public get fromCity(): string { return this._fromCity ? this._fromCity : (<RailStation>this.from).express; }
+    
+    public get toCity(): string { return this._toCity ? this._toCity : (<RailStation>this.to).express; }
 }
 
 export class TrainsListResult {
@@ -86,7 +109,7 @@ class TripEvent {
     station: { code: string, name: string };
 }
 
-class Price  { 
+class Price {
     total: number;
 }
 
@@ -102,15 +125,16 @@ class SeatGroup {
     label: string;
     price: Price;
     places: number[];
-    count: number;    
+    count: number;
 }
 
 export class RailStation {
-    id: string;
-    name: string;
-    express: number;
-    esr?: number;
-    location?: Location;
+    constructor(
+        public name: string,
+        public express: string,
+        public esr?: number,
+        public location?: Location
+    ) { }
 }
 
 class Location {

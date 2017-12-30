@@ -1,15 +1,27 @@
 <form #searchForm="ngForm" (submit)="search()" class="col-md-6">
     <div class="form-group">
         <label>Origin station</label>
-        <input type="text" [(ngModel)]="request.from" required name="origin" class="form-control" />
+        <autocomplete 
+            [(ngModel)]="searchParams.from" 
+            [source]="railStationsSource"
+            [searchOnInit]="searchParams.fromCity"
+            placeholder="Откуда"
+            name="from">
+        </autocomplete>
     </div>
     <div class="form-group">
         <label>Destination station</label>
-        <input type="text" [(ngModel)]="request.to" required name="destination" class="form-control" />
+        <autocomplete
+            [(ngModel)]="searchParams.to" 
+            [source]="railStationsSource" 
+            [searchOnInit]="searchParams.toCity"
+            placeholder="Куда"
+            name="to">
+        </autocomplete>
     </div>
     <div class="form-group">
         <label>Depart date</label>
-        <input type="date" [(ngModel)]="request.departDate" required name="departDate" class="form-control" />
+        <input type="date" [(ngModel)]="searchParams.departDate" required name="departDate" class="form-control" />
     </div>
 
     <div>
