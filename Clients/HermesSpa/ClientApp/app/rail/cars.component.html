@@ -1,4 +1,8 @@
-<table *ngIf="result" class="table table-hover">
+<spinner [active]="!result && !error"></spinner>
+
+<error [active]="error"></error>
+
+<table *ngIf="result && !error" class="table table-hover">
     <thead>
         <tr>
             <th>Car</th>

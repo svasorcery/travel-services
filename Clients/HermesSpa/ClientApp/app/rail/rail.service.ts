@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
 
-import { TrainsListRequest, TrainsListResult, CarsListResult } from './rail.models';
+import { TrainsListRequest, TrainsListResult, CarsListResult, RailStation } from './rail.models';
 
 @Injectable()
 export class RailService {
@@ -26,13 +26,13 @@ export class RailService {
     }
 
     public getSearch(): TrainsListRequest {
-        return this._search;
+        return this._search ? this._search : new TrainsListRequest('', '', '');
     }
     
     public queryTrains(request: TrainsListRequest): Observable<TrainsListResult> {
         var params = new URLSearchParams();
-        params.set('from', request.from);
-        params.set('to', request.to);
+        params.set('from', request.fromCity);
+        params.set('to', request.toCity);
         params.set('departDate', request.departDate);
         //params.set('fromHour', request.hourFrom.toString());
         //params.set('toHour', request.hourTo.toString());        
@@ -54,8 +54,8 @@ export class RailService {
     public gotoTrains(): void {
         this.router.navigate(['rail', 'trains'], {
             queryParams: { 
-                from: this._search.from,
-                to: this._search.to,
+                from: this._search.fromCity,
+                to: this._search.toCity,
                 date: this._search.departDate,
                 //t0: this._search.hourFrom,
                 //t1: this._search.hourTo

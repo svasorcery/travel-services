@@ -9,6 +9,7 @@ import { RailService } from './rail.service';
 })
 export class TrainsListComponent implements OnInit {
     result: TrainsListResult;
+    error: boolean = false;
     
     constructor(
         private _rail: RailService,
@@ -17,15 +18,15 @@ export class TrainsListComponent implements OnInit {
 
     ngOnInit() {
         this._route
-        .queryParams
-        .switchMap(params => {
-            var request = new TrainsListRequest(params['from'], params['to'], params['date']);
-            return this._rail.queryTrains(request);
-        })
-        .subscribe(
-            result => this.result = result,
-            error => console.log(error)
-        );
+            .queryParams
+            .switchMap(params => {
+                var request = new TrainsListRequest(params['from'], params['to'], params['date']);
+                return this._rail.queryTrains(request);
+            })
+            .subscribe(
+                result => this.result = result,
+                error => this.error = true
+            );
     }
 
     public select(optionRef: number): void {

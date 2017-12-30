@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { RailRoutingModule, routedComponents } from './rail.routing';
 import { RailService } from './rail.service';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     imports: [
-        CommonModule,
+        SharedModule,
         FormsModule,
         RailRoutingModule
     ],

@@ -1,24 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Http, Response, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
-import { TrainsListRequest } from './rail.models';
+import { TrainsListRequest, RailStation } from './rail.models';
 import { RailService } from './rail.service';
+
+import { IAutoCompleteListSource } from '../shared/autocomplete.component';
+
+class RailStationsListSource implements IAutoCompleteListSource {
+
+    constructor(private http: Http, private baseUrl: string) { }
+
+    search(term: string): Observable<{ name: string }[]> {
+        let params = new URLSearchParams();
+        params.set('term', term);
+        return this.http.get(this.baseUrl + '/api/rail/stations', { search: params })
+            .map((response: Response) => response.json() as RailStation[]);
+    }
+}
+
 
 @Component({
     templateUrl: 'search.component.html'
 })
 export class RailSearchComponent implements OnInit {
-    request: TrainsListRequest;
+    searchParams: TrainsListRequest;
+    railStationsSource: RailStationsListSource;
 
-    constructor(private _rail: RailService) { }
+    constructor(
+        private http: Http,
+        @Inject('BASE_URL') baseUrl: string,
+        private _rail: RailService
+    ) {
+        this.searchParams = this._rail.getSearch();
+        this.railStationsSource = new RailStationsListSource(http, baseUrl);
+    }
 
     ngOnInit() {
-        this.request = new TrainsListRequest('', '', '');
-     }
+        
+    }
 
     public search(): void {
-        if (!this.request) return;
-
-        this._rail.setSearch(this.request);
+        if (!this.searchParams) return;
+        this._rail.setSearch(this.searchParams);
         this._rail.gotoTrains();
     }
 }
