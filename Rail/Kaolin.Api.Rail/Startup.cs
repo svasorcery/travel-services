@@ -15,6 +15,17 @@ namespace Kaolin.Api.Rail
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("angular_app", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.Configure<Infrastructure.Database.Config>(config =>
             {
                 config.ConnectionString = "mongodb://localhost:27017";
@@ -50,6 +61,8 @@ namespace Kaolin.Api.Rail
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
+
+            app.UseCors("angular_app");
 
             if (env.IsDevelopment())
             {
