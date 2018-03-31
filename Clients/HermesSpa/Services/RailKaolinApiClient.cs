@@ -39,5 +39,8 @@ namespace HermesSpa.Services
 
         public Task<SeatsListResult> QuerySeatsAsync(string sessionId, int trainsRef, int optionRef)
             => Get<SeatsListResult>($"api/trains/{sessionId}/{trainsRef}/cars/{optionRef}");
+
+        public Task<ReserveCreateResult> CreateReserveAsync(ReserveCreateRequest request)
+            => Post<ReserveCreateResult, ReserveCreateRequest>("api/reserve", request);
     }
 }
