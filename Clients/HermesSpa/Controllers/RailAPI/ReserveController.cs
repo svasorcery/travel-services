@@ -26,5 +26,16 @@ namespace HermesSpa.Controllers.RailAPI
 
             return Ok(await _rail.CreateReserveAsync(request));
         }
+
+        [HttpPost("cancel")]
+        public async Task<IActionResult> Cancel(RailKaolinApiClient.ReserveCancelRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest(nameof(request));
+            }
+
+            return Ok(await _rail.CancelReserveAsync(request));
+        }
     }
 }
