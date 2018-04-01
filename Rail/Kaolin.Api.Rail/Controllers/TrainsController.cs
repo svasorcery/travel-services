@@ -36,7 +36,7 @@ namespace Kaolin.Api.Rail.Controllers
             {
                 var session = _ssp.Create(TimeSpan.FromDays(1));
 
-                var result = await _rail.SearchTrainsAsync(session, request);
+                var result = await _rail.QueryTrainsAsync(session, request);
 
                 await _ssp.SaveAsync(session);
 
@@ -61,7 +61,7 @@ namespace Kaolin.Api.Rail.Controllers
             {
                 var session = await _ssp.LoadAsync(sessionId);
 
-                var result = await _rail.GetCarsAsync(session, new QueryCars.Request(optionRef));
+                var result = await _rail.QueryCarsAsync(session, new QueryCars.Request(optionRef));
 
                 await _ssp.SaveAsync(session);
 
@@ -85,7 +85,7 @@ namespace Kaolin.Api.Rail.Controllers
             {
                 var session = await _ssp.LoadAsync(sessionId);
 
-                var result = await _rail.GetCarAsync(session, new QueryCar.Request(trainRef, optionRef));
+                var result = await _rail.QueryCarAsync(session, new QueryCar.Request(trainRef, optionRef));
 
                 return Ok(result);
             }
