@@ -16,7 +16,7 @@ export class RailSearchComponent {
         this.railStationsSource = this._rail.getRailStationsSource();
     }
 
-    public search(): void {
+    public search = (): void => {
         if (!this.searchParams) return;
         this._rail.setSearch(this.searchParams);
         this._rail.gotoTrains();

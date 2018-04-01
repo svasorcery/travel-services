@@ -6,9 +6,6 @@ import { Component, OnInit } from '@angular/core';
         <router-outlet></router-outlet>
     `
 })
+export class RailComponent {
 
-export class RailComponent implements OnInit {
-    constructor() { }
-
-    ngOnInit() { }
 }

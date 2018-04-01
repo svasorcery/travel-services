@@ -29,7 +29,6 @@ export class TrainsListComponent implements OnInit {
             );
     }
 
-    public select(optionRef: number): void {
+    public select = (optionRef: number): void =>
         this._rail.gotoCars(this.result.sessionId, optionRef);
-    }
 }

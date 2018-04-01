@@ -28,13 +28,12 @@ export class RailService {
         this._stationsSource = new RailStationsListSource(_http, baseUrl);
     }
 
-    public setSearch(params: TrainsListRequest): void {
+    public setSearch = (params: TrainsListRequest): void => {
         this._search = params;
     }
 
-    public getSearch(): TrainsListRequest {
-        return this._search ? this._search : new TrainsListRequest('', '', '');
-    }
+    public getSearch = (): TrainsListRequest =>
+        this._search ? this._search : new TrainsListRequest('', '', '');
 
     public getRailStationsSource = (): RailStationsListSource => this._stationsSource;
     
@@ -50,17 +49,16 @@ export class RailService {
         return this._http.get<TrainsListResult>(this._url, { params: params });
     }
 
-    public queryCars(sessionId: string, optionRef: number): Observable<CarsListResult> {
-        let params = {
-            'sessionId': sessionId,
-            'optionRef': optionRef.toString()
-        };
+    public queryCars = (sessionId: string, optionRef: number): Observable<CarsListResult> =>
+        this._http.get<CarsListResult>(`${this._url}/cars`, { 
+            params: {
+                'sessionId': sessionId,
+                'optionRef': optionRef.toString()
+            }
+        });
 
-        return this._http.get<CarsListResult>(`${this._url}/cars`, { params: params });
-    }
 
-
-    public gotoTrains(): void {
+    public gotoTrains = (): void => {
         this.router.navigate(['rail', 'trains'], {
             queryParams: { 
                 from: this._search.fromCity,
@@ -72,7 +70,7 @@ export class RailService {
         });
     }
 
-    public gotoCars(sessionId: string, optionRef: number): void {
+    public gotoCars = (sessionId: string, optionRef: number): void => {
         this.router.navigate(['rail', 'cars'], {
             queryParams: { 
                 sessionId: sessionId,
