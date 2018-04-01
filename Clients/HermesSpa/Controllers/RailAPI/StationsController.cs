@@ -20,7 +20,7 @@ namespace HermesSpa.Controllers.RailAPI
 
 
         [HttpGet]
-        public async Task<IActionResult> Get(string term)
+        public async Task<IActionResult> Get([FromQuery]string term)
         {
             return Ok(await _rail.SearchStationsAsync(term));
         }
