@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HermesSpa.Controllers.RailAPI
 {
     using HermesSpa.Services;
 
+    [Authorize]
     [Route("api/rail/[controller]")]
     public class ReserveController : Controller
     {

@@ -15,12 +15,21 @@ namespace HermesSpa.Services
         protected virtual bool CamelCaseSerialization => false;
 
         private readonly HttpClient _client;
-        private readonly JsonSerializer _json;
+        private static readonly JsonSerializer _json;
         private readonly ILogger _logger;
+
+        static AbstractKaolinApiClient()
+        {
+            _json = new JsonSerializer();
+        }
 
         public AbstractKaolinApiClient(ILogger logger)
         {
-            _json = new JsonSerializer();
+            _logger = logger;
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/")
+            };
             if (CamelCaseSerialization)
             {
                 _json.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
@@ -28,11 +37,6 @@ namespace HermesSpa.Services
                     NamingStrategy = new Newtonsoft.Json.Serialization.CamelCaseNamingStrategy()
                 };
             }
-            _logger = logger;
-            _client = new HttpClient
-            {
-                BaseAddress = new Uri(BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/")
-            };
         }
 
         public async Task<T> ReadAs<T>(HttpContent content)
