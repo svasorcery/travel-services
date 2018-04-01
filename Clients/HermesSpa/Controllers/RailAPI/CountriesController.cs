@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HermesSpa.Controllers.RailAPI
 {
     using HermesSpa.Services;
-
+ 
     [Route("api/rail/[controller]")]
     public class CountriesController : Controller
     {

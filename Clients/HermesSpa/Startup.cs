@@ -21,6 +21,16 @@ namespace HermesSpa
             services.Configure<Services.RailKaolinApiClientOptions>(Configuration.GetSection("KaolinApi:Rail"))
                 .AddSingleton<Services.RailKaolinApiClient>();
 
+            services
+                .AddAuthentication(DevelopmentAuthentication.DevelopmentAuthenticationDefaults.AuthenticationScheme)
+                .AddDevelopment(new DevelopmentUser
+                {
+                    Username = Configuration.GetSection("Authentication:Development:Username").Value,
+                    Password = Configuration.GetSection("Authentication:Development:Password").Value,
+                    Roles = new string[] { Configuration.GetSection("Authentication:Development:Role").Value },
+                    Subject = "S-0-0-00-0000000000-0000000000-0000000000-0000"
+                });
+
             services.AddMvc();
 
             // In production, the Angular files will be served from this directory
@@ -41,6 +51,8 @@ namespace HermesSpa
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseAuthentication();
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
