@@ -12,6 +12,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 
 import { SharedModule } from './shared/shared.module';
+import { ErrorsModule } from './errors/errors.module';
 import { RailModule } from './rail/rail.module';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { RailModule } from './rail/rail.module';
         HttpClientModule,
         FormsModule,
         SharedModule,
+        ErrorsModule,
         RailModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent, pathMatch: 'full' },
