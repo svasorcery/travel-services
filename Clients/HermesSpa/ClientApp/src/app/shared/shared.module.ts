@@ -28,4 +28,4 @@ import { ErrorComponent } from './error.component';
 })
 export class SharedModule {
     
- }
+}
