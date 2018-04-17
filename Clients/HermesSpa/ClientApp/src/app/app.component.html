@@ -4,6 +4,10 @@
             <app-nav-menu></app-nav-menu>
         </div>
         <div class='col-sm-10 body-content'>
+            <error [active]="error" 
+                   [error]="error"
+                   [dismissible]="true">
+            </error>
             <router-outlet></router-outlet>
         </div>
     </div>

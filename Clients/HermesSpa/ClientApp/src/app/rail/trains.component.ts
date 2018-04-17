@@ -9,7 +9,6 @@ import { RailService } from './rail.service';
 })
 export class TrainsListComponent implements OnInit {
     result: TrainsListResult;
-    error: boolean = false;
     
     constructor(
         private _rail: RailService,
@@ -25,7 +24,7 @@ export class TrainsListComponent implements OnInit {
             })
             .subscribe(
                 result => this.result = result,
-                error => this.error = true
+                error => console.log(error)
             );
     }
 
