@@ -4,7 +4,14 @@
 
 - Install and run MongoDB:
 
-https://github.com/svasorcery/know-how-to/blob/master/installs/install-mongodb.md
+[How to install MongoDB](https://github.com/svasorcery/know-how-to/blob/master/installs/install-mongodb.md)
+
+- Run ```mongoimport``` to import data:
+
+```cmd
+mongoimport -d kaolin -c countries --jsonArray --mode=upsert --upsertFields=ru --file mongo-countries.json
+mongoimport -d kaolin -c stations --jsonArray --mode=upsert --upsertFields=ru --file mongo-stations.json
+```
 
 ## Installation
 
@@ -31,11 +38,3 @@ dotnet restore
 ```cmd
 npm install
 ```
-
-- Run ```mongoimport``` to import data:
-
-```cmd
-mongoimport -d kaolin -c countries --jsonArray --mode=upsert --upsertFields=ru --file mongo-countries.json
-mongoimport -d kaolin -c stations --jsonArray --mode=upsert --upsertFields=ru --file mongo-stations.json
-```
-
