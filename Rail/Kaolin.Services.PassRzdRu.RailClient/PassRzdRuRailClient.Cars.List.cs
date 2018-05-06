@@ -41,7 +41,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 ServiceClassInternational = c.IntServiceClass,
                                 Letter = c.Letter,
                                 Categories = c.AddSigns,
-                                SchemeId = c.SchemeId.ToString(), // TODO: Add scheme converter
+                                SchemeId = c.SchemeId.ToString(),
                                 FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
                                 SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
                                 FreeSeats = c.Seats.Select(s => new QueryCars.Result.SeatGroup
@@ -49,7 +49,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                     Type = s.Type,
                                     Label = s.Label?.Replace("&nbsp;", " "),
                                     Price = _priceConverter.ToPrice(s.Tariff),
-                                    Places = Internal.Converters.FreePlacesConverter.Convert(s.Places),
+                                    Places = Internal.Converters.FreePlacesConverter.Convert(s.Places).ToArray(),
                                     Count = s.Free
                                 }).ToArray(),
                                 Services = c.Services.Select(s => new QueryCars.Result.CarService
@@ -71,6 +71,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                             };
 
             var cars = carsQuery.ToList();
+            var schemePatterns = result.Schemes.Select(x => Internal.Converters.CarSchemeConverter.Convert(x.Id, x.Html));
 
             var ageLimits = new QueryCars.Result.AgeRestrictions
             {
@@ -81,7 +82,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             var options = new Internal.CarOptions
             {
                 Options = cars,
-                // TODO: add Schemes
+                Schemes = schemePatterns,
                 AgeLimits = ageLimits
             };
 
