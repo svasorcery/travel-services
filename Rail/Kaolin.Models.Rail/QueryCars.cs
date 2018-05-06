@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kaolin.Models.Rail
 {
@@ -59,7 +60,7 @@ namespace Kaolin.Models.Rail
                 public string Type { get; set; }
                 public string Label { get; set; }
                 public Price Price { get; set; }
-                public int[] Places { get; set; }
+                public CarPlace[] Places { get; set; }
                 public int Count { get; set; }
             }
 
@@ -73,6 +74,56 @@ namespace Kaolin.Models.Rail
             {
                 public int InfantWithoutPlace { get; set; }
                 public int ChildWithPlace { get; set; }
+            }
+
+            public class CarScheme
+            {
+                public long Id { get; set; }
+                public CarSchemeCell[][] Rows { get; set; }
+            }
+
+            public class CarSchemeCell
+            {
+                public string Type { get; set; }
+                public CarPlace Place { get; set; }
+                public string Content { get; set; }
+                public string Border { get; set; }
+                public string StyleClass { get; protected set; }
+
+                public void AppendStyleClass(string style)
+                {
+                    if (!String.IsNullOrEmpty(StyleClass))
+                    {
+                        StyleClass += " ";
+                    }
+                    StyleClass += style;
+                }
+            }
+
+            public class CarPlace
+            {
+                public int Number { get; set; }
+                public string Gender { get; set; }
+                public string Price { get; set; }
+                public bool IsFree { get; set; }
+
+                public CarPlace(int number, string gender, string price = null)
+                {
+                    Number = number;
+                    Gender = gender;
+                    Price = price;
+                    IsFree = true;
+                }
+                public CarPlace(int number, bool isFree)
+                {
+                    Number = number;
+                    IsFree = isFree;
+                }
+
+                public CarPlace()
+                {
+
+                }
             }
         }
     }

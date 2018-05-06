@@ -42,7 +42,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 Letter = c.Letter,
                                 Categories = c.AddSigns,
                                 SchemeId = c.SchemeId.ToString(),
-                                FreePlaceNumbers = Internal.Converters.FreePlacesConverter.Convert(c.Places),
+                                FreePlaceNumbers = Internal.Converters.FreePlaceNumbersConverter.Convert(c.Places).ToArray(),
                                 SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
                                 FreeSeats = c.Seats.Select(s => new QueryCars.Result.SeatGroup
                                 {
