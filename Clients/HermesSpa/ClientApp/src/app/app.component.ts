@@ -17,5 +17,5 @@ export class AppComponent implements OnInit {
         this._notification
             .notification$
             .subscribe(error => this.error = error);
-      }
+    }
 }

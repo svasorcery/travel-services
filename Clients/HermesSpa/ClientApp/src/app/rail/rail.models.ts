@@ -86,7 +86,7 @@ class Car {
     letter: string;
     categories: string;
     schemeId: string;
-    preePlaceNumbers: number[];
+    freePlaceNumbers: number[];
     specialSeatTypes: string[];
     freeSeats: SeatGroup[];
     services: { name: string, description: string }[];
