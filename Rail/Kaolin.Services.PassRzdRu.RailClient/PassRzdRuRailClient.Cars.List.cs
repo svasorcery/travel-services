@@ -44,14 +44,16 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                                 SchemeId = c.SchemeId.ToString(),
                                 FreePlaceNumbers = Internal.Converters.FreePlaceNumbersConverter.Convert(c.Places).ToArray(),
                                 SpecialSeatTypes = c.SpecialSeatTypes?.Split(' '),
-                                FreeSeats = c.Seats.Select(s => new QueryCars.Result.SeatGroup
-                                {
-                                    Type = s.Type,
-                                    Label = s.Label?.Replace("&nbsp;", " "),
-                                    Price = _priceConverter.ToPrice(s.Tariff),
-                                    Places = Internal.Converters.FreePlacesConverter.Convert(s.Places).ToArray(),
-                                    Count = s.Free
-                                }).ToArray(),
+                                FreeSeats = (from s in c.Seats
+                                             let price = _priceConverter.ToPrice(s.Tariff)
+                                             select new QueryCars.Result.SeatGroup
+                                             {
+                                                 Type = s.Type,
+                                                 Label = s.Label?.Replace("&nbsp;", " "),
+                                                 Price = price,
+                                                 Places = Internal.Converters.FreePlacesConverter.Convert(s.Places, price).ToArray(),
+                                                 Count = s.Free
+                                            }).ToArray(),
                                 Services = c.Services.Select(s => new QueryCars.Result.CarService
                                 {
                                     Name = s.Name,

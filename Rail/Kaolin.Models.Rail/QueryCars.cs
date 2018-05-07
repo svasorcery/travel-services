@@ -104,10 +104,10 @@ namespace Kaolin.Models.Rail
             {
                 public int Number { get; set; }
                 public string Gender { get; set; }
-                public string Price { get; set; }
+                public Price Price { get; set; }
                 public bool IsFree { get; set; }
 
-                public CarPlace(int number, string gender, string price = null)
+                public CarPlace(int number, string gender, Price price = null)
                 {
                     Number = number;
                     Gender = gender;
