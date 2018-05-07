@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Kaolin.Models.Rail
 {
@@ -85,9 +86,13 @@ namespace Kaolin.Models.Rail
             public class CarSchemeCell
             {
                 public string Type { get; set; }
+                [BsonIgnoreIfNull]
                 public CarPlace Place { get; set; }
+                [BsonIgnoreIfNull]
                 public string Content { get; set; }
+                [BsonIgnoreIfNull]
                 public string Border { get; set; }
+                [BsonIgnoreIfNull]
                 public string StyleClass { get; protected set; }
 
                 public void AppendStyleClass(string style)
@@ -103,8 +108,11 @@ namespace Kaolin.Models.Rail
             public class CarPlace
             {
                 public int Number { get; set; }
+                [BsonIgnoreIfNull]
                 public string Gender { get; set; }
+                [BsonIgnoreIfNull]
                 public Price Price { get; set; }
+                [BsonIgnoreIfDefault]
                 public bool IsFree { get; set; }
 
                 public CarPlace(int number, string gender, Price price = null)
