@@ -7,7 +7,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 {
     public static class FreePlacesConverter
     {
-        public static IEnumerable<QueryCars.Result.CarPlace> Convert(string placeNumbers)
+        public static IEnumerable<QueryCars.Result.CarPlace> Convert(string placeNumbers, Price price = null)
         {
             var freePlaces = new List<QueryCars.Result.CarPlace>();
 
@@ -18,18 +18,18 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
                 if (placeNumber.Contains('-'))
                 {
-                    freePlaces.AddRange(GetRangePlaces(placeNumber));
+                    freePlaces.AddRange(GetRangePlaces(placeNumber, price));
                 }
                 else
                 {
-                    freePlaces.Add(GetSinglePlace(placeNumber));
+                    freePlaces.Add(GetSinglePlace(placeNumber, price));
                 }
             }
 
             return freePlaces;
         }
 
-        private static QueryCars.Result.CarPlace GetSinglePlace(string num)
+        private static QueryCars.Result.CarPlace GetSinglePlace(string num, Price price = null)
         {
             char genderLetter = ' ';
 
@@ -39,10 +39,10 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 num = num.Remove(num.Length - 1);
             }
 
-            return new QueryCars.Result.CarPlace(int.Parse(num), GetGenderType(genderLetter));
+            return new QueryCars.Result.CarPlace(int.Parse(num), GetGenderType(genderLetter), price);
         }
 
-        private static IEnumerable<QueryCars.Result.CarPlace> GetRangePlaces(string numRange)
+        private static IEnumerable<QueryCars.Result.CarPlace> GetRangePlaces(string numRange, Price price = null)
         {
             var result = new List<QueryCars.Result.CarPlace>();
             char genderLetter = ' ';
@@ -58,7 +58,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
 
             for (int number = range.ElementAt(0); number <= range.ElementAt(1); number++)
             {
-                result.Add(new QueryCars.Result.CarPlace(number, gender));
+                result.Add(new QueryCars.Result.CarPlace(number, gender, price));
             }
 
             return result;

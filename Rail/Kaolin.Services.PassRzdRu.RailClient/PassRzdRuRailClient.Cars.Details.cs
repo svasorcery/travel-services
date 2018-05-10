@@ -22,16 +22,39 @@ namespace Kaolin.Services.PassRzdRu.RailClient
             }
 
             var trains = session.Retrieve<Internal.TrainOptions>("train_options");
-            var train = trains.Options.First(x => x.OptionRef == request.TrainRef);
+            var trainOption = trains.Options.First(x => x.OptionRef == request.TrainRef);
+            var train = new QueryTrain.Result.TrainOption
+            {
+                OptionRef = trainOption.OptionRef,
+                DisplayNumber = trainOption.DisplayNumber,
+                Brand = trainOption.Brand,
+                BEntire = trainOption.BEntire,
+                IsFirm = trainOption.IsFirm,
+                HasElectronicRegistration = trainOption.HasElectronicRegistration,
+                HasDynamicPricing = trainOption.HasDynamicPricing,
+                TripDuration = trainOption.TripDuration,
+                RouteStart = trainOption.RouteStart,
+                RouteEndStation = trainOption.RouteEndStation,
+                Depart = trainOption.Depart,
+                Arrive = trainOption.Arrive,
+            };
 
             var cars = session.Retrieve<Internal.CarOptions>("car_options");
             var car = cars.Options.First(x => x.OptionRef == request.OptionRef);
+            var scheme = cars.Schemes.First(x => x.Id.ToString() == car.SchemeId);
+
+            var freeSeats = car.FreeSeats.SelectMany(x => x.Places).Where(x => x != null).OrderBy(x => x.Number);
+            var freeSeatsCells = scheme.Rows.SelectMany(x => x).Where(x => x.Place != null);
+            foreach (var seat in freeSeats)
+            {
+                freeSeatsCells.First(x => x.Place.Number == seat.Number).Place = seat;
+            }
 
             return Task.FromResult(new QueryCar.Result
             {
-                // TODO: add train info
+                Train = train,
                 Car = car,
-                // TODO: add car schemes
+                Scheme = scheme
             });
         }
     }
