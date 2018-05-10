@@ -24,7 +24,7 @@
         {
             public QueryTrain.Result.TrainOption Train { get; set; }
             public QueryCars.Result.Car Car { get; set; }
-            // TODO: add Car schemes
+            public QueryCars.Result.CarScheme Scheme { get; set; }
         }
     }
 }

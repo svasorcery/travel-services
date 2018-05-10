@@ -26,6 +26,9 @@ namespace Kaolin.Services.Rail.ConsoleApp
                 var cars = carsResult.Cars.ToArray();
                 await ssm.SaveAsync(session);
 
+                var optionRef = session.Retrieve<PassRzdRu.RailClient.Internal.CarOptions>("car_options").Options.First().OptionRef;
+                var car = await client.QueryCarAsync(session, new QueryCar.Request { TrainRef = 1, OptionRef = optionRef });
+
                 var reserveResult = await client.CreateReserveAsync(session, GetReserveRequest(session));
                 var totalCost = reserveResult.Price.Total;
                 await ssm.SaveAsync(session);
