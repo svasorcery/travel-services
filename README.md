@@ -5,6 +5,8 @@
 
 ## Tools
 
+- Install NodeJS: [How to install NodeJS](https://github.com/svasorcery/know-how-to/blob/master/install/node-js.md)
+
 - Install and run MongoDB: [How to install MongoDB](https://github.com/svasorcery/know-how-to/blob/master/install/mongodb-server-on-windows.md)
 
 - Run ```mongoimport``` to import data:
