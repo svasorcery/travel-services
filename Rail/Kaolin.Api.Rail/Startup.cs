@@ -48,8 +48,8 @@ namespace Kaolin.Api.Rail
                 })
                 .Configure<Services.PassRzdRu.RailClient.Config>(config =>
                 {
-                    config.Username = "your_login_here";
-                    config.Password = "your_password_here";
+                    config.Username = "webtours19";
+                    config.Password = "rf5svk";
                 })
                 .AddSingleton<Services.PassRzdRu.Parser.PassRzdRuClient>()
                 .AddTransient<Kaolin.Models.Rail.Abstractions.IRailClient, Services.PassRzdRu.RailClient.PassRzdRuRailClient>();
