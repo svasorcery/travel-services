@@ -41,8 +41,16 @@ namespace HermesSpa.Services
             public string Type { get; set; }
             public string Label { get; set; }
             public Price Price { get; set; }
-            public int[] Places { get; set; }
+            public CarPlace[] Places { get; set; }
             public int Count { get; set; }
+        }
+
+        public class CarPlace
+        {
+            public int Number { get; set; }
+            public string Gender { get; set; }
+            public Price Price { get; set; }
+            public bool IsFree { get; set; }
         }
 
         public class CarService

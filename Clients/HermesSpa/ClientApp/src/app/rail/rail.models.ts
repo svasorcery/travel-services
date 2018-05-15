@@ -124,8 +124,15 @@ class SeatGroup {
     type: string;
     label: string;
     price: Price;
-    places: number[];
+    places: CarPlace[];
     count: number;
+}
+
+class CarPlace {
+  number: number;
+  gender: string;
+  price: Price
+  isFree: boolean;
 }
 
 export class RailStation {
