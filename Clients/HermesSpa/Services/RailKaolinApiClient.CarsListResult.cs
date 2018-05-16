@@ -6,7 +6,11 @@ namespace HermesSpa.Services
     {
         public class CarsListResult
         {
+            public string SessionId { get; set; }
+            public int TrainOption { get; set; }
             public IEnumerable<Car> Cars { get; set; }
+            public IEnumerable<InsuranceProvider> InsuranceProviders { get; set; }
+            public AgeRestrictions AgeLimits { get; set; }
         }
 
         public class Car
