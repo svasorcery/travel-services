@@ -29,6 +29,6 @@ export class CarsListComponent implements OnInit {
 
     public select = (optionRef: number): void => {
         if (!optionRef) { return; }
-        this._rail.gotoSeats(this.result.sessionId, this.result.trainOption, optionRef);
+        this._rail.gotoOrder(this.result.sessionId, this.result.trainOption, optionRef);
     }
 }

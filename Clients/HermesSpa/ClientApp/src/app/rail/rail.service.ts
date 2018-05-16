@@ -3,19 +3,19 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { TrainsListRequest, TrainsListResult, CarsListResult, RailStation } from './rail.models';
+import { RailStation, TrainsListRequest, TrainsListResult, CarsListResult, SeatsListResult } from './rail.models';
 
 import { IAutoCompleteListSource } from '../shared/autocomplete.component';
 
 export class RailStationsListSource implements IAutoCompleteListSource {
     constructor(private _http: HttpClient, private baseUrl: string) { }
     public search = (term: string): Observable<{ name: string }[]> =>
-        this._http.get<RailStation[]>(`${this.baseUrl}/api/rail/stations?term=${term}`);
+        this._http.get<RailStation[]>(`${this.baseUrl}/api/rail/stations?term=${term}`)
 }
 
 @Injectable()
 export class RailService {
-    private _url: string;    
+    private _url: string;
     private _search: TrainsListRequest;
     private _stationsSource: RailStationsListSource;
 
@@ -56,11 +56,11 @@ export class RailService {
             }
         })
 
-    public querySeats = (sessionId: string, trainOption: number, optionRef: number): Observable<CarsListResult> =>
-        this._http.get<CarsListResult>(`${this._url}/cars`, {
+    public querySeats = (sessionId: string, trainRef: number, optionRef: number): Observable<SeatsListResult> =>
+        this._http.get<SeatsListResult>(`${this._url}/seats`, {
             params: {
                 'sessionId': sessionId,
-                'trainOption': trainOption.toString(),
+                'trainRef': trainRef.toString(),
                 'optionRef': optionRef.toString()
             }
         })
@@ -87,11 +87,11 @@ export class RailService {
         });
     }
 
-    public gotoSeats = (sessionId: string, trainOption: number, optionRef: number): void => {
-        this.router.navigate(['rail', 'seats'], {
+    public gotoOrder = (sessionId: string, trainRef: number, optionRef: number): void => {
+        this.router.navigate(['rail', 'order'], {
             queryParams: {
                 sessionId: sessionId,
-                trainOption: trainOption.toString(),
+                trainRef: trainRef.toString(),
                 optionRef: optionRef.toString()
             }
         });
