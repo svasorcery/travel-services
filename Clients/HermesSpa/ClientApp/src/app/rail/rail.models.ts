@@ -170,7 +170,7 @@ export class CarPlace {
   isFree: boolean;
 }
 
-export class CarScheme {
+export class CarSchemeRzd {
     id: number;
     rows: SchemeCell[][];
 }

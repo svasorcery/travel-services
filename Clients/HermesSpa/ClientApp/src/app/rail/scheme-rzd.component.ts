@@ -2,7 +2,7 @@ import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
-import { Car, CarScheme, PlacesRange, CarPlace, SchemeCell } from './rail.models';
+import { Car, CarSchemeRzd, PlacesRange, CarPlace, SchemeCell } from './rail.models';
 
 @Component({
     selector: 'car-scheme-rzd',
@@ -16,7 +16,7 @@ import { Car, CarScheme, PlacesRange, CarPlace, SchemeCell } from './rail.models
     ]
 })
 export class CarSchemeRzdComponent implements ControlValueAccessor {
-    @Input() scheme: CarScheme;
+    @Input() scheme: CarSchemeRzd;
     data: PlacesRange;
 
     constructor(private sanitizer: DomSanitizer) { }
