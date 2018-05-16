@@ -1,0 +1,21 @@
+<div class="panel-body">
+    <div class="car">
+        <div class="car-block">
+            <div *ngFor="let row of scheme.rows" class="car-block-item">
+                <div *ngFor="let cell of row" class="cell">
+                    <div [style]="getCellStyle(cell)">
+                        <span *ngIf="cell.content" [class]="cell.styleClass">{{ cell.content }}</span>
+                        <span *ngIf="cell.place && cell.place.isFree"
+                            (click)="selectSeat(cell.place)"
+                            [class]="cell.styleClass"
+                            [class.selected]="data && data.range0 <= cell.place.number && data.range1 >= cell.place.number">
+                            {{ cell.place.number }}
+                        </span>
+                        <span *ngIf="cell.place && !cell.place.isFree" [class]="cell.styleClass">{{ cell.place.number }}</span>
+                        <span *ngIf="!cell.content && !cell.place" [class]="cell.styleClass"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

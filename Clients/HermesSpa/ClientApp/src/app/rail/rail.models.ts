@@ -163,9 +163,29 @@ class SeatGroup {
     count: number;
 }
 
-class CarPlace {
+export class CarPlace {
   number: number;
   gender: string;
   price: Price;
   isFree: boolean;
+}
+
+export class CarScheme {
+    id: number;
+    rows: SchemeCell[][];
+}
+
+export class SchemeCell {
+    type: string;
+    place: CarPlace;
+    content: string;
+    styleClass: string;
+    border: string;
+}
+
+export class PlacesRange {
+    constructor (
+        public range0: number = null,
+        public range1: number = null
+    ) { }
 }

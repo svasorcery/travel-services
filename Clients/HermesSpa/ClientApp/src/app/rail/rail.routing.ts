@@ -5,10 +5,12 @@ import { RailComponent } from './rail.component';
 import { RailSearchComponent } from './search.component';
 import { TrainsListComponent } from './trains.component';
 import { CarsListComponent } from './cars.component';
+import { CarSchemeRzdComponent } from './scheme-rzd.component';
+
 
 const routes: Routes = [
-    { 
-        path: 'rail', 
+    {
+        path: 'rail',
         component: RailComponent,
         children: [
             {
@@ -33,9 +35,11 @@ const routes: Routes = [
 })
 export class RailRoutingModule { }
 
+
 export const routedComponents = [
     RailComponent,
     RailSearchComponent,
     TrainsListComponent,
-    CarsListComponent
+    CarsListComponent,
+    CarSchemeRzdComponent
 ];
