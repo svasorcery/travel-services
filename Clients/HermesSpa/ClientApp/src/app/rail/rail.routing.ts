@@ -5,6 +5,7 @@ import { RailComponent } from './rail.component';
 import { RailSearchComponent } from './search.component';
 import { TrainsListComponent } from './trains.component';
 import { CarsListComponent } from './cars.component';
+import { RailOrderComponent } from './order.component';
 import { CarSchemeRzdComponent } from './scheme-rzd.component';
 
 
@@ -24,6 +25,10 @@ const routes: Routes = [
             {
                 path: 'cars',
                 component: CarsListComponent
+            },
+            {
+                path: 'order',
+                component: RailOrderComponent
             }
         ]
     }
@@ -33,7 +38,9 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class RailRoutingModule { }
+export class RailRoutingModule {
+
+}
 
 
 export const routedComponents = [
@@ -41,5 +48,6 @@ export const routedComponents = [
     RailSearchComponent,
     TrainsListComponent,
     CarsListComponent,
+    RailOrderComponent,
     CarSchemeRzdComponent
 ];

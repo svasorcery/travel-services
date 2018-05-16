@@ -170,6 +170,27 @@ export class CarPlace {
   isFree: boolean;
 }
 
+export class SeatsListResult {
+    train: TrainInfo;
+    car: Car;
+    scheme: CarSchemeRzd;
+}
+
+class TrainInfo {
+    optionRef: number;
+    displayNumber: string;
+    brand: boolean;
+    bEntire: boolean;
+    isFirm: boolean;
+    hasElectronicRegistration: boolean;
+    hasDynamicPricing: boolean;
+    tripDuration: number;
+    routeStart: TripEvent;
+    routeEndStation: string;
+    depart: TripEvent;
+    arrive: TripEvent;
+}
+
 export class CarSchemeRzd {
     id: number;
     rows: SchemeCell[][];
