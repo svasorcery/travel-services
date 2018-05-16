@@ -1,3 +1,20 @@
+export class RailStation {
+    constructor(
+        public name: string,
+        public express: string,
+        public esr?: number,
+        public location?: Location
+    ) { }
+}
+
+class Location {
+    country: string;
+    region: string;
+    railway: string;
+    latitude?: number;
+    longitude?: number;
+}
+
 export class TrainsListRequest {
     private _fromCity: string;
     private _toCity: string;
@@ -27,7 +44,7 @@ export class TrainsListRequest {
     }
 
     public get fromCity(): string { return this._fromCity ? this._fromCity : (<RailStation>this.from).express; }
-    
+
     public get toCity(): string { return this._toCity ? this._toCity : (<RailStation>this.to).express; }
 }
 
@@ -40,10 +57,6 @@ export class TrainsListResult {
     departureDate: Date;
     timeType: number;
     trains: Train[];
-}
-
-export class CarsListResult {
-    cars: Car[];
 }
 
 class Train {
@@ -77,7 +90,29 @@ class CarInfo {
     bonusPoints?: number;
 }
 
-class Car {
+export class CarsListResult {
+    sessionId: string;
+    trainOption: number;
+    cars: Car[];
+    insuranceProviders: InsuranceProvider[] = [];
+    ageLimits: AgeRestrictions;
+}
+
+class InsuranceProvider {
+    id: number;
+    fullName: string;
+    shortName: string;
+    offerUrl: string;
+    insuranceCost: number;
+    insuranceBenefit: number;
+}
+
+class AgeRestrictions {
+    infantWithoutPlace: number;
+    childWithPlace: number;
+}
+
+export class Car {
     optionRef: number;
     number: string;
     type: CarType;
@@ -131,23 +166,6 @@ class SeatGroup {
 class CarPlace {
   number: number;
   gender: string;
-  price: Price
+  price: Price;
   isFree: boolean;
-}
-
-export class RailStation {
-    constructor(
-        public name: string,
-        public express: string,
-        public esr?: number,
-        public location?: Location
-    ) { }
-}
-
-class Location {
-    country: string;
-    region: string;
-    railway: string;
-    latitude?: number;
-    longitude?: number;
 }
