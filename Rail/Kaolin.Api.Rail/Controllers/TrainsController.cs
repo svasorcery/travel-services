@@ -67,7 +67,11 @@ namespace Kaolin.Api.Rail.Controllers
 
                 return new JsonResult(new GetCarsResult
                 {
-                    Cars = result.Cars
+                    SessionId = sessionId,
+                    TrainOption = optionRef,
+                    Cars = result.Cars,
+                    InsuranceProviders = result.InsuranceProviders,
+                    AgeLimits = result.AgeLimits
                 });
             }
             catch (Exception ex)
