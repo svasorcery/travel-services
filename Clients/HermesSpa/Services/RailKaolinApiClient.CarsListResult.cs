@@ -49,14 +49,6 @@ namespace HermesSpa.Services
             public int Count { get; set; }
         }
 
-        public class CarPlace
-        {
-            public int Number { get; set; }
-            public string Gender { get; set; }
-            public Price Price { get; set; }
-            public bool IsFree { get; set; }
-        }
-
         public class CarService
         {
             public string Name { get; set; }

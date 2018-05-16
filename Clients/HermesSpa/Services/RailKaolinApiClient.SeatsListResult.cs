@@ -8,6 +8,7 @@ namespace HermesSpa.Services
         {
             public TrainOption Train { get; set; }
             public Car Car { get; set; }
+            public CarScheme Scheme { get; set; }
         }
 
         public class TrainOption
