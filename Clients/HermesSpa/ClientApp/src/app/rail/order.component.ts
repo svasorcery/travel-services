@@ -5,7 +5,7 @@ import { SeatsListResult } from './rail.models';
 import { RailService } from './rail.service';
 
 @Component({
-    template: `<h2>Order</h2>`
+    template: `<traveller></traveller>`
     // templateUrl: 'order.component.html'
 })
 export class RailOrderComponent implements OnInit {

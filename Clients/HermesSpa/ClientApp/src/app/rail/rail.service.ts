@@ -23,8 +23,8 @@ export class RailService {
         private _http: HttpClient,
         @Inject('BASE_URL') baseUrl: string,
         private router: Router
-    ) { 
-        this._url = `${baseUrl}/api/rail/trains`;
+    ) {
+        this._url = baseUrl + 'api/rail/trains';
         this._stationsSource = new RailStationsListSource(_http, baseUrl);
     }
 
