@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kaolin.Api.Rail
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        {
+            Configuration = configuration;
+        }
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -26,31 +30,16 @@ namespace Kaolin.Api.Rail
                 });
             });
 
-            services.Configure<Infrastructure.Database.Config>(config =>
-            {
-                config.ConnectionString = "mongodb://localhost:27017";
-                config.Database = "kaolin";
-                config.CountriesCollection = "countries";
-                config.StationsCollection = "stations";
-            })
+            services.Configure<Infrastructure.Database.Config>(Configuration.GetSection("Database"))
                 .AddSingleton<Infrastructure.Database.CountriesDbContext>()
                 .AddSingleton<Infrastructure.Database.StationsDbContext>()
                 .AddMongoDbSessionProvider()
-                .Configure<Infrastructure.SessionStore.Config>(config =>
-                {
-                    config.ConnectionString = "mongodb://localhost:27017";
-                    config.Database = "ssp";
-                    config.Collection = "sessions";
-                })
+                .Configure<Infrastructure.SessionStore.Config>(Configuration.GetSection("SessionStore"))
                 .Configure<Services.PassRzdRu.Parser.Config>(config =>
                 {
                     config.Polling = new Services.PassRzdRu.Parser.Config.PollingConfig(60, 1000);
                 })
-                .Configure<Services.PassRzdRu.RailClient.Config>(config =>
-                {
-                    config.Username = "webtours19";
-                    config.Password = "rf5svk";
-                })
+                .Configure<Services.PassRzdRu.RailClient.Config>(Configuration.GetSection("PassRzdRuRailClient"))
                 .AddSingleton<Services.PassRzdRu.Parser.PassRzdRuClient>()
                 .AddTransient<Kaolin.Models.Rail.Abstractions.IRailClient, Services.PassRzdRu.RailClient.PassRzdRuRailClient>();
 
