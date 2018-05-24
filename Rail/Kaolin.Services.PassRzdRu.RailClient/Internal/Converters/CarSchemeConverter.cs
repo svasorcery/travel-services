@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
@@ -17,7 +18,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
                 Type = x.Type,
                 Place = x.Number.HasValue ? new QueryCars.Result.CarPlace(x.Number.Value, false) : null,
                 Content = x.Content,
-                Border = GetCellBorder(x.Style),
+                Border = GetCellBorder(x.Style)
             });
 
             var rowsCount = result.Cells.Length / result.Len;
@@ -41,17 +42,70 @@ namespace Kaolin.Services.PassRzdRu.RailClient.Internal.Converters
             };
         }
 
-
-        private static string GetCellBorder(string rawStyle)
+        public static QueryCars.Result.CarScheme SetCellStyleClasses(QueryCars.Result.CarScheme pattern, IEnumerable<QueryCars.Result.CarPlace> freeSeats)
         {
-            if (String.IsNullOrEmpty(rawStyle))
-                return null;
+            foreach (var row in pattern.Rows)
+            {
+                for (int i = 0; i < row.Length; i++)
+                {
+                    var place = row[i].Place != null ? freeSeats.FirstOrDefault(x => x.Number == row[i].Place?.Number) : null;
+                    row[i] = SetCellStyleClasses(row[i], place);
+                }
+            }
 
-            if (rawStyle.Contains("border-top")) return "top";
-            if (rawStyle.Contains("border-right")) return "right";
-            if (rawStyle.Contains("border-left")) return "left";
-            if (rawStyle.Contains("border-bottom")) return "bottom";
-            return null;
+            return pattern;
+        }
+
+
+        private static string GetCellBorder(string rawStyle) =>
+            !String.IsNullOrEmpty(rawStyle) && rawStyle.Contains("border-") ?
+                rawStyle.Replace("border-", "") :
+                null;
+
+        private static QueryCars.Result.CarSchemeCell SetCellStyleClasses(
+            QueryCars.Result.CarSchemeCell cell,
+            QueryCars.Result.CarPlace place = null
+            )
+        {
+            cell.AppendStyleClass(cell.Type); //!= "XX" ? cell.Type : null;
+
+            if (!String.IsNullOrEmpty(cell.Content))
+            {
+                if (cell.Content.Contains("Первый этаж"))
+                {
+                    cell.AppendStyleClass("first-floor");
+                }
+                else if (cell.Content.Contains("Второй этаж"))
+                {
+                    cell.AppendStyleClass("second-floor");
+                }
+            }
+
+            if (cell.Place != null)
+            {
+                /*if (carCType == 1)
+                {
+                    cell.AppendStyleClass("plc");
+                }*/
+
+                if (cell.Place.Number.ToString().Length > 2)
+                {
+                    cell.AppendStyleClass("less-letter");
+                }
+
+                if (place != null)
+                {
+                    cell.Place = place;
+                    cell.AppendStyleClass($"gender-{place.Gender}");
+                    cell.AppendStyleClass("booking");
+                }
+                else
+                {
+                    cell.AppendStyleClass("non-booking");
+                }
+            }
+
+            return cell;
         }
     }
 

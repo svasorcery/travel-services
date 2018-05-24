@@ -1,0 +1,6 @@
+<spinner [active]="!result"></spinner>
+
+<div *ngIf="result">
+    <traveller></traveller>
+    <car-scheme-rzd [scheme]="result.scheme"></car-scheme-rzd>
+</div>

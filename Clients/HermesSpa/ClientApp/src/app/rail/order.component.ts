@@ -5,8 +5,7 @@ import { SeatsListResult } from './rail.models';
 import { RailService } from './rail.service';
 
 @Component({
-    template: `<h2>Order</h2>`
-    // templateUrl: 'order.component.html'
+    templateUrl: 'order.component.html'
 })
 export class RailOrderComponent implements OnInit {
     result: SeatsListResult;
@@ -19,10 +18,10 @@ export class RailOrderComponent implements OnInit {
         this._route
         .queryParams
         .switchMap(params => {
-            return this._rail.querySeats(params['sessionId'], +params['trainOption'], +params['optionRef']);
+            return this._rail.querySeats(params['sessionId'], +params['trainRef'], +params['optionRef']);
         })
         .subscribe(
-            result => console.log(result), //this.result = result,
+            result => this.result = result,
             error => console.log(error)
         );
     }

@@ -50,6 +50,8 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                 freeSeatsCells.First(x => x.Place.Number == seat.Number).Place = seat;
             }
 
+            scheme = Internal.Converters.CarSchemeConverter.SetCellStyleClasses(scheme, freeSeats);
+
             return Task.FromResult(new QueryCar.Result
             {
                 Train = train,

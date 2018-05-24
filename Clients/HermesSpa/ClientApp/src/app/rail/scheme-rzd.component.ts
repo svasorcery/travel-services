@@ -6,7 +6,8 @@ import { Car, CarSchemeRzd, PlacesRange, CarPlace, SchemeCell } from './rail.mod
 
 @Component({
     selector: 'car-scheme-rzd',
-    templateUrl: './scheme-rzd.component.html',
+    templateUrl: 'scheme-rzd.component.html',
+    styleUrls: [ 'scheme-rzd.component.css' ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -56,7 +57,6 @@ export class CarSchemeRzdComponent implements ControlValueAccessor {
     registerOnChange = (fn: any): void => this.propagateChange = fn;
     registerOnTouched = (fn: any): void => { };
     setDisabledState = (isDisabled: boolean): void => { };
-
     writeValue(obj: any): void {
         if (!obj) { return; }
         this.data = obj;

@@ -1,0 +1,201 @@
+/* Типы этажей: */
+
+.car {
+    padding: 15px;
+    overflow: auto;
+    border: 1px solid #0011ff;
+    float: left;
+    border-radius: 10px;
+    overflow: auto;
+}
+.car-block {
+    display: flex;
+    flex-direction: column;
+}
+.car-block-item {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.cell{
+    float: left;
+    width: 33px !important;
+    height: 35px !important;
+}
+
+.first-floor, .second-floor {
+    width: 100%;
+    display: block;
+    position: absolute;
+    height: 20px;
+    margin-top: 5px;
+}
+
+/* текст в первой ячейке и далее пустая строка
+   (применяется при указании этажа в многоэтажных вагонах) */
+.text {
+
+}
+
+
+/* Типы дополнительных ячеек */
+
+/* проход */
+.XX, .prohod {
+
+}
+
+/* туалет */
+.wc {
+    background-color: #d6f0ff;
+}
+
+/* стол */
+.st, .st-up, .st-dn {
+    background-color: #eeeeee;
+    display: block;
+    border-radius: 4px 4px 10px 10px;
+    height: 20px !important;
+    width: 20px !important;
+    margin: 0px auto;
+}
+.st-up {
+    border-radius: 4px 4px 10px 10px;
+}
+.st-dn {
+    border-radius: 10px 10px 4px 4px;
+}
+
+/* шкаф / гардероб */
+.sk {
+    background-color: #f6d7ab;
+}
+
+/* переговорная */
+.pe {
+    background-color: #d2e6a4;
+}
+
+.wc, .sk, .pe {
+    display: block;
+    width: 33px !important;
+    height: 35px !important;
+    border: none;
+}
+
+
+/* Типы расположений места */
+
+/* верхнее */
+.up {
+    box-shadow: inset 0px 3px #cacfff;
+}
+
+/* нижнее */
+.dn {
+    box-shadow: inset 0px -3px #cacfff;
+}
+
+/* сидячее */
+.si {
+
+}
+
+/* с животным */
+.pet {
+
+}
+
+
+/* Типы доступности места */
+
+.booking, .non-booking {
+    display: block;
+    width: 33px !important;
+    height: 35px !important;
+    text-align: center;
+    line-height: 2.3;
+    border: 1px solid #b4b0b0; 
+}
+.booking {
+    cursor: pointer;
+}
+.non-booking, .wc,.st-dn, .st-up{
+    cursor: default;
+}
+
+/* свободно */
+.booking {
+    background-image: linear-gradient(to bottom, #92d7ff 0%, #2eadf7 100%);
+    background-image: -moz-linear-gradient(to bottom, #92d7ff 0%, #2eadf7 100%);
+    background-image: -o-linear-gradient(to bottom, #92d7ff 0%, #2eadf7 100%);
+    background-image: -ms-linear-gradient(to bottom, #92d7ff 0%, #2eadf7 100%);
+    background-image: -webkit-linear-gradient(to bottom, #92d7ff 0%, #2eadf7 100%);
+    color: #575757;
+}
+
+/* свободно и выбрано */
+.selected {
+    background-color: #ff7777;
+    background-image: none;
+    color: #fff;
+}
+
+.selected.up {
+    box-shadow: inset 0px 3px #f72e2e;
+}
+
+.selected.dn {
+    box-shadow: inset 0px -3px #f72e2e;
+}
+
+/* занято */
+.non-booking {
+    background-color: #e3e3e3;
+    color: #a1a1a1;
+}
+
+/* много символов */
+.less-letter {
+
+}
+
+
+/* Типы купе */
+
+/* женское */
+.gender-female {
+    background-image: linear-gradient(to bottom, rgb(234, 153, 221) 0%, rgb(207, 92, 188) 100%);
+    background-image: -moz-linear-gradient(to bottom, rgb(234, 153, 221) 0%, rgb(207, 92, 188) 100%);
+    background-image: -o-linear-gradient(to bottom, rgb(234, 153, 221) 0%, rgb(207, 92, 188) 100%);
+    background-image: -ms-linear-gradient(to bottom, rgb(234, 153, 221) 0%, rgb(207, 92, 188) 100%);
+    background-image: -webkit-linear-gradient(to bottom, rgb(234, 153, 221) 0%, rgb(207, 92, 188) 100%);
+}
+
+/* мужское */
+.gender-male {
+    background-image: linear-gradient(to bottom, rgb(88, 197, 221) 0%, rgb(56, 158, 200) 100%);
+    background-image: -moz-linear-gradient(to bottom, rgb(88, 197, 221) 0%, rgb(56, 158, 200) 100%);
+    background-image: -o-linear-gradient(to bottom, rgb(88, 197, 221) 0%, rgb(56, 158, 200) 100%);
+    background-image: -ms-linear-gradient(to bottom, rgb(88, 197, 221) 0%, rgb(56, 158, 200) 100%);
+    background-image: -webkit-linear-gradient(to bottom, rgb(88, 197, 221) 0%, rgb(56, 158, 200) 100%);
+}
+
+/* смешанное (м/ж) */
+.gender-mix {
+    background-image: linear-gradient(to bottom, #eabaa4 0%, #d88b29 100%);
+    background-image: -moz-linear-gradient(to bottom, #eabaa4 0%, #d88b29 100%);
+    background-image: -o-linear-gradient(to bottom, #eabaa4 0%, #d88b29 100%);
+    background-image: -ms-linear-gradient(to bottom, #eabaa4 0%, #d88b29 100%);
+    background-image: -webkit-linear-gradient(to bottom, #eabaa4 0%, #d88b29 100%);
+}
+
+/* можно назначить любой тип */
+.gender-any {
+
+}
+
+/* без ограничений по полу */
+.gender-none {
+
+}
