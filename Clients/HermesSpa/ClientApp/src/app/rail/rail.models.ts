@@ -210,3 +210,14 @@ export class PlacesRange {
         public range1: number = null
     ) { }
 }
+
+export class SeatOptionParams {
+    range: PlacesRange;
+    bedding: boolean = true;
+    updown: string = '00';
+    location: string;
+
+    constructor(public carOptionRef: number) {
+        this.range = new PlacesRange();
+    }
+}

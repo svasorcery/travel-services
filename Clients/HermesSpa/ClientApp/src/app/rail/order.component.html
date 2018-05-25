@@ -2,5 +2,9 @@
 
 <div *ngIf="result">
     <traveller></traveller>
-    <car-scheme-rzd [scheme]="result.scheme"></car-scheme-rzd>
+    <car-scheme-rzd [(ngModel)]="params.range" [scheme]="result.scheme"></car-scheme-rzd>
+</div>
+
+<div *ngIf="params">
+    Places: {{ params.range.range0 }} - {{ params.range.range1 }}
 </div>
