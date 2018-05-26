@@ -10,7 +10,7 @@ import { IAutoCompleteListSource } from '../shared/autocomplete.component';
 export class RailStationsListSource implements IAutoCompleteListSource {
     constructor(private _http: HttpClient, private baseUrl: string) { }
     public search = (term: string): Observable<{ name: string }[]> =>
-        this._http.get<RailStation[]>(`${this.baseUrl}/api/rail/stations?term=${term}`)
+        this._http.get<RailStation[]>(`${this.baseUrl}api/rail/stations?term=${term}`)
 }
 
 @Injectable()
@@ -33,7 +33,7 @@ export class RailService {
     }
 
     public getSearch = (): TrainsListRequest =>
-        this._search ? this._search : new TrainsListRequest('', '', '');
+        this._search ? this._search : new TrainsListRequest('', '', '')
 
     public getRailStationsSource = (): RailStationsListSource => this._stationsSource;
 

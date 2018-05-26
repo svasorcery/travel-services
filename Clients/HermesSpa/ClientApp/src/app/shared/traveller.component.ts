@@ -32,7 +32,7 @@ export class Country {
 export class CountriesListSource implements IAutoCompleteListSource {
     constructor(private _http: HttpClient, private baseUrl: string) { }
     public search = (term: string): Observable<{ name: string }[]> =>
-        this._http.get<Country[]>(`${this.baseUrl}/api/countries?term=${term}`)
+        this._http.get<Country[]>(`${this.baseUrl}api/countries?term=${term}`)
 }
 
 
