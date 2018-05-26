@@ -65,7 +65,7 @@ namespace Kaolin.Services.Rail.ConsoleApp
                     SessionId = session.Id,
                     TrainOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.TrainOptions>("train_options").Options.First().OptionRef,
                     CarOptionRef = session.Retrieve<PassRzdRu.RailClient.Internal.CarOptions>("car_options").Options.First().OptionRef,
-                    Range = new QueryReserveCreate.Request.PlacesRange(1, 30, top: 1),
+                    Range = new QueryReserveCreate.Request.PlacesRange(1, 30, upper: 1),
                     Bedding = true
                 },
                 Passengers = new PassengerRequest[]
