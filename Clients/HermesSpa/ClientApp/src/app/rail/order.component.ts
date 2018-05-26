@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { SeatsListResult, SeatOptionParams } from './rail.models';
 import { RailService } from './rail.service';
+import { SeatsListResult, SeatOptionParams, Traveller } from './rail.models';
 
 @Component({
     templateUrl: 'order.component.html'
@@ -10,6 +10,7 @@ import { RailService } from './rail.service';
 export class RailOrderComponent implements OnInit {
     result: SeatsListResult;
     params: SeatOptionParams;
+    travellers: Traveller[] = [];
 
     constructor(
         private _rail: RailService,
@@ -19,12 +20,20 @@ export class RailOrderComponent implements OnInit {
     ngOnInit() {
         this._route.queryParams
             .switchMap(params => {
-                this.params = new SeatOptionParams(+params['optionRef']);
-                return this._rail.querySeats(params['sessionId'], +params['trainRef'], +params['optionRef']);
+                const sessionId = params['sessionId'];
+                const trainRef = +params['trainRef'];
+                const optionRef = +params['optionRef'];
+                this.params = new SeatOptionParams(sessionId, trainRef, optionRef);
+                return this._rail.querySeats(sessionId, trainRef, optionRef);
             })
             .subscribe(
                 result => this.result = result,
                 error => console.log(error)
             );
+    }
+
+    submit() {
+        console.log('params', this.params);
+        console.log('travellers', this.travellers);
     }
 }
