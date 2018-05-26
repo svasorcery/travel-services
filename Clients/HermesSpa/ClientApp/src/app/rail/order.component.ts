@@ -10,7 +10,7 @@ import { SeatsListResult, SeatOptionParams, Traveller } from './rail.models';
 export class RailOrderComponent implements OnInit {
     result: SeatsListResult;
     params: SeatOptionParams;
-    travellers: Traveller[] = [];
+    passengers: Traveller[] = [];
 
     constructor(
         private _rail: RailService,
@@ -33,7 +33,12 @@ export class RailOrderComponent implements OnInit {
     }
 
     submit() {
-        console.log('params', this.params);
-        console.log('travellers', this.travellers);
+        console.log(this.params);
+        console.log(this.passengers);
+        this._rail.reserveCreate(this.params, this.passengers)
+            .subscribe(
+                result => console.log(result),
+                error => console.log(error)
+            );
     }
 }

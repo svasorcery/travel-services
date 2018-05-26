@@ -27,7 +27,7 @@
                 <input type="number" [(ngModel)]="params.range.lowerCount" name="range_lower" required class="form-control" />
             </div>
         </div>
-        <div *ngIf="travellers.length > 1" class="form-group col-md-3">
+        <div *ngIf="passengers.length > 1" class="form-group col-md-3">
             <label class="control-label">Location: </label>
             <select [(ngModel)]="params.location" required name="location" class="form-control">
                 <option disabled [value]="">Выберите расположение</option>
@@ -45,8 +45,8 @@
 
     <div>
         <travellers-array 
-            [(ngModel)]="travellers"
-            name="travellers">
+            [(ngModel)]="passengers"
+            name="passengers">
         </travellers-array>
     </div>
 
