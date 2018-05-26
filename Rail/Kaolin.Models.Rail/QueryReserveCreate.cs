@@ -23,15 +23,15 @@ namespace Kaolin.Models.Rail
             {
                 public int From { get; set; }
                 public int To { get; set; }
-                public int TopCount { get; set; }
-                public int BottomCount { get; set; }
+                public int UpperCount { get; set; }
+                public int LowerCount { get; set; }
 
-                public PlacesRange(int from, int to, int? top = null, int? bottom = null)
+                public PlacesRange(int from, int to, int? upper = null, int? lower = null)
                 {
                     From = from;
                     To = to;
-                    TopCount = top ?? 0;
-                    BottomCount = bottom ?? 0;
+                    UpperCount = upper ?? 0;
+                    LowerCount = lower ?? 0;
                 }
             }
         }

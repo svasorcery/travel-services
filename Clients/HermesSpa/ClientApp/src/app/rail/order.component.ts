@@ -1,28 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { SeatsListResult } from './rail.models';
 import { RailService } from './rail.service';
+import { SeatsListResult, SeatOptionParams, Traveller } from './rail.models';
 
 @Component({
     templateUrl: 'order.component.html'
 })
 export class RailOrderComponent implements OnInit {
     result: SeatsListResult;
+    params: SeatOptionParams;
+    passengers: Traveller[] = [];
 
     constructor(
         private _rail: RailService,
-        private _route: ActivatedRoute) { }
+        private _route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
-        this._route
-        .queryParams
-        .switchMap(params => {
-            return this._rail.querySeats(params['sessionId'], +params['trainRef'], +params['optionRef']);
-        })
-        .subscribe(
-            result => this.result = result,
-            error => console.log(error)
-        );
+        this._route.queryParams
+            .switchMap(params => {
+                const sessionId = params['sessionId'];
+                const trainRef = +params['trainRef'];
+                const optionRef = +params['optionRef'];
+                this.params = new SeatOptionParams(sessionId, trainRef, optionRef);
+                return this._rail.querySeats(sessionId, trainRef, optionRef);
+            })
+            .subscribe(
+                result => this.result = result,
+                error => console.log(error)
+            );
+    }
+
+    submit() {
+        console.log(this.params);
+        console.log(this.passengers);
+        this._rail.reserveCreate(this.params, this.passengers)
+            .subscribe(
+                result => console.log(result),
+                error => console.log(error)
+            );
     }
 }

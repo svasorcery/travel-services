@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
-import { ControlValueAccessor, AbstractControl, Validator, ValidationErrors } from '@angular/forms';
+import { Component, OnInit, Inject, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,14 +13,14 @@ export class Traveller {
     lastName: string;
     gender: string;
     birthDate: Date;
-    passport: Passport;
+    passport: Passport = new Passport();
 }
 
 export class Passport {
     type: string;
     series: string;
     number: string;
-    citizenship: Country;
+    citizenship: Country = new Country();
     expire?: Date;
 }
 
@@ -31,7 +32,7 @@ export class Country {
 export class CountriesListSource implements IAutoCompleteListSource {
     constructor(private _http: HttpClient, private baseUrl: string) { }
     public search = (term: string): Observable<{ name: string }[]> =>
-        this._http.get<Country[]>(`${this.baseUrl}/api/countries?term=${term}`)
+        this._http.get<Country[]>(`${this.baseUrl}api/countries?term=${term}`)
 }
 
 
@@ -114,15 +115,27 @@ export class CountriesListSource implements IAutoCompleteListSource {
                 </div>
             </div>
         </form>
-    `
+    `,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TravellerComponent),
+            multi: true
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => TravellerComponent),
+            multi: true
+        }
+    ]
 })
 export class TravellerComponent implements OnInit, ControlValueAccessor, Validator {
-    @Input() value: Traveller;
+    value: Traveller;
     valid: boolean;
     countriesSource: IAutoCompleteListSource;
 
-    constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-        this.countriesSource = new CountriesListSource(this.http, baseUrl);
+    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+        this.countriesSource = new CountriesListSource(http, baseUrl);
     }
 
     ngOnInit() {
@@ -138,7 +151,7 @@ export class TravellerComponent implements OnInit, ControlValueAccessor, Validat
     /* --- ControlValueAccessor -- */
     private onChange = (_: any) => { };
     private onTouched = (_: any) => { };
-    writeValue = (obj: any): void => this.value = obj;
+    writeValue = (value: Traveller): void => { if (value) this.value = value; };
     registerOnChange = (fn: any) => this.onChange = fn;
     registerOnTouched = (fn: any) => this.onTouched = fn;
     setDisabledState = (isDisabled: boolean) => { };
@@ -150,4 +163,88 @@ export class TravellerComponent implements OnInit, ControlValueAccessor, Validat
             message: 'Traveller is not valid'
         };
     }
+}
+
+
+@Component({
+    selector: 'travellers-array',
+    template: `
+        <div *ngIf="value" class="panel panel-default">
+            <div *ngFor="let traveller of value; let t = index" class="panel-body">
+                <h4>
+                    Passenger #{{ t + 1 }}
+                    <a *ngIf="canRemove" (click)="remove(t)" class="pull-right small" style="cursor:pointer">
+                        Remove <span class="fa fa-close" aria-hidden="true"></span>
+                    </a>
+                </h4>
+                <traveller [(ngModel)]="value[t]"></traveller>
+            </div>
+            <a *ngIf="canPush" (click)="push()" class="btn btn-link">
+                <span class="fa fa-plus" aria-hidden="true"></span>
+                Add passenger
+            </a>
+        </div>
+    `,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TravellersArrayComponent),
+            multi: true
+        }
+    ]
+})
+export class TravellersArrayComponent implements OnInit, ControlValueAccessor {
+    @Input() min: number = 1;
+    @Input() max: number = 4;
+
+    value: Traveller[] = [];
+
+    constructor() { }
+
+    ngOnInit() {
+        if (this.min > this.max) {
+            const temp = this.min;
+            this.min = this.max;
+            this.max = temp;
+        }
+    }
+
+
+    public get canPush(): boolean {
+        return this.value && this.value.length < this.max;
+    }
+
+    public get canRemove(): boolean {
+        return this.value && this.value.length > this.min;
+    }
+
+    public push(): void {
+        if (!this.canPush) { return; }
+        this.value.push(new Traveller());
+    }
+
+    public remove(el: number | Traveller): void {
+        if (!this.canRemove || el === null) { return; }
+        const index = typeof(el) === 'number' ? el : this.value.indexOf(el);
+        this.value.splice(index, 1);
+        this.onChange(this.value);
+    }
+
+
+    /* --- ControlValueAccessor -- */
+    private onChange = (_: any) => { };
+    private onTouched = (_: any) => { };
+    writeValue = (value: Traveller[]): void => {
+        this.value = value ? value : [];
+        if (this.value.length < this.min) {
+            for (let i = this.value.length; i < this.min; i++) {
+                const traveller = new Traveller();
+                traveller.ref = i + 1;
+                this.value.push(traveller);
+            }
+        }
+    }
+    registerOnChange = (fn: any) => this.onChange = fn;
+    registerOnTouched = (fn: any) => this.onTouched = fn;
+    setDisabledState = (isDisabled: boolean) => { };
 }

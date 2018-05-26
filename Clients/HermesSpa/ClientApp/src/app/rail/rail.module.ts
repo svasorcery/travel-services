@@ -18,9 +18,9 @@ import { SharedModule } from '../shared/shared.module';
         RailService
     ],
     exports: [
-        
+
     ],
 })
-export class RailModule { 
-    
+export class RailModule {
+
 }

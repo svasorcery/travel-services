@@ -8,7 +8,7 @@
                         <span *ngIf="cell.place && cell.place.isFree"
                             (click)="selectSeat(cell.place)"
                             [class]="cell.styleClass"
-                            [class.selected]="data && data.range0 <= cell.place.number && data.range1 >= cell.place.number">
+                            [class.selected]="data && data.from <= cell.place.number && data.to >= cell.place.number">
                             {{ cell.place.number }}
                         </span>
                         <span *ngIf="cell.place && !cell.place.isFree" [class]="cell.styleClass">{{ cell.place.number }}</span>

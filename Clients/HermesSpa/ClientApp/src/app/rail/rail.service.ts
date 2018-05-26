@@ -3,14 +3,15 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { RailStation, TrainsListRequest, TrainsListResult, CarsListResult, SeatsListResult } from './rail.models';
+import { RailStation, TrainsListRequest, TrainsListResult, CarsListResult,
+    SeatsListResult, SeatOptionParams, Traveller } from './rail.models';
 
 import { IAutoCompleteListSource } from '../shared/autocomplete.component';
 
 export class RailStationsListSource implements IAutoCompleteListSource {
     constructor(private _http: HttpClient, private baseUrl: string) { }
     public search = (term: string): Observable<{ name: string }[]> =>
-        this._http.get<RailStation[]>(`${this.baseUrl}/api/rail/stations?term=${term}`)
+        this._http.get<RailStation[]>(`${this.baseUrl}api/rail/stations?term=${term}`)
 }
 
 @Injectable()
@@ -24,7 +25,7 @@ export class RailService {
         @Inject('BASE_URL') baseUrl: string,
         private router: Router
     ) {
-        this._url = baseUrl + 'api/rail/trains';
+        this._url = baseUrl + 'api/rail';
         this._stationsSource = new RailStationsListSource(_http, baseUrl);
     }
 
@@ -33,12 +34,12 @@ export class RailService {
     }
 
     public getSearch = (): TrainsListRequest =>
-        this._search ? this._search : new TrainsListRequest('', '', '');
+        this._search ? this._search : new TrainsListRequest('', '', '')
 
     public getRailStationsSource = (): RailStationsListSource => this._stationsSource;
 
     public queryTrains = (request: TrainsListRequest): Observable<TrainsListResult> =>
-        this._http.get<TrainsListResult>(this._url, {
+        this._http.get<TrainsListResult>(`${this._url}/trains`, {
             params: {
                 'from': request.fromCity,
                 'to': request.toCity,
@@ -49,7 +50,7 @@ export class RailService {
         })
 
     public queryCars = (sessionId: string, optionRef: number): Observable<CarsListResult> =>
-        this._http.get<CarsListResult>(`${this._url}/cars`, {
+        this._http.get<CarsListResult>(`${this._url}/trains/cars`, {
             params: {
                 'sessionId': sessionId,
                 'optionRef': optionRef.toString()
@@ -57,12 +58,18 @@ export class RailService {
         })
 
     public querySeats = (sessionId: string, trainRef: number, optionRef: number): Observable<SeatsListResult> =>
-        this._http.get<SeatsListResult>(`${this._url}/seats`, {
+        this._http.get<SeatsListResult>(`${this._url}/trains/seats`, {
             params: {
                 'sessionId': sessionId,
                 'trainRef': trainRef.toString(),
                 'optionRef': optionRef.toString()
             }
+        })
+
+    public reserveCreate = (option: SeatOptionParams, passengers: Traveller[]): Observable<any> =>
+        this._http.post(`${this._url}/reserve`, {
+            option: option,
+            passengers: passengers
         })
 
 

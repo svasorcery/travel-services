@@ -40,7 +40,7 @@ namespace Kaolin.Services.PassRzdRu.RailClient
                     {
                         Range0 = request.Option.Range.From,
                         Range1 = request.Option.Range.To,
-                        PlUpdown = $"{request.Option.Range.BottomCount.ToString()}{request.Option.Range.TopCount.ToString()}",
+                        PlUpdown = $"{request.Option.Range.LowerCount.ToString()}{request.Option.Range.UpperCount.ToString()}",
                         PlBedding = request.Option.Bedding,
                         PlComp = request.Option.Location,
                         Dir = 1,
