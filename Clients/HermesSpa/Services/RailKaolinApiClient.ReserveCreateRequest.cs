@@ -22,8 +22,8 @@
             {
                 public int From { get; set; }
                 public int To { get; set; }
-                public int TopCount { get; set; }
-                public int BottomCount { get; set; }
+                public int UpperCount { get; set; }
+                public int LowerCount { get; set; }
             }
 
             public class PassengerRequest : Person
