@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
-import { ControlValueAccessor, AbstractControl, Validator, ValidationErrors } from '@angular/forms';
+import { Component, OnInit, Inject, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,14 +13,14 @@ export class Traveller {
     lastName: string;
     gender: string;
     birthDate: Date;
-    passport: Passport;
+    passport: Passport = new Passport();
 }
 
 export class Passport {
     type: string;
     series: string;
     number: string;
-    citizenship: Country;
+    citizenship: Country = new Country();
     expire?: Date;
 }
 
@@ -114,15 +115,27 @@ export class CountriesListSource implements IAutoCompleteListSource {
                 </div>
             </div>
         </form>
-    `
+    `,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TravellerComponent),
+            multi: true
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => TravellerComponent),
+            multi: true
+        }
+    ]
 })
 export class TravellerComponent implements OnInit, ControlValueAccessor, Validator {
-    @Input() value: Traveller;
+    value: Traveller;
     valid: boolean;
     countriesSource: IAutoCompleteListSource;
 
-    constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-        this.countriesSource = new CountriesListSource(this.http, baseUrl);
+    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+        this.countriesSource = new CountriesListSource(http, baseUrl);
     }
 
     ngOnInit() {
@@ -138,7 +151,7 @@ export class TravellerComponent implements OnInit, ControlValueAccessor, Validat
     /* --- ControlValueAccessor -- */
     private onChange = (_: any) => { };
     private onTouched = (_: any) => { };
-    writeValue = (obj: any): void => this.value = obj;
+    writeValue = (value: Traveller): void => { if (value) this.value = value; };
     registerOnChange = (fn: any) => this.onChange = fn;
     registerOnTouched = (fn: any) => this.onTouched = fn;
     setDisabledState = (isDisabled: boolean) => { };
