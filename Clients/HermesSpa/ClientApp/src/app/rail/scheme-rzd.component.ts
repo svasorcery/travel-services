@@ -28,16 +28,16 @@ export class CarSchemeRzdComponent implements ControlValueAccessor {
             this.data = new PlacesRange();
         }
 
-        if (this.data.range0 && this.data.range1 && this.data.range0 === this.data.range1) {
-            if (place.number > this.data.range0) {
-                this.data.range1 = place.number;
+        if (this.data.from && this.data.to && this.data.from === this.data.to) {
+            if (place.number > this.data.from) {
+                this.data.to = place.number;
             } else {
-                this.data.range1 = this.data.range0;
-                this.data.range0 = place.number;
+                this.data.to = this.data.from;
+                this.data.from = place.number;
             }
         } else {
-            this.data.range0 = place.number;
-            this.data.range1 = place.number;
+            this.data.from = place.number;
+            this.data.to = place.number;
         }
         this.propagateChange(this.data);
     }

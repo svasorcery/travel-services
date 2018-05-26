@@ -1,3 +1,5 @@
+export { Traveller } from '../shared/traveller.component';
+
 export class RailStation {
     constructor(
         public name: string,
@@ -206,18 +208,23 @@ export class SchemeCell {
 
 export class PlacesRange {
     constructor (
-        public range0: number = null,
-        public range1: number = null
+        public from: number = null,
+        public to: number = null,
+        public upperCount: number = 0,
+        public lowerCount: number = 0
     ) { }
 }
 
 export class SeatOptionParams {
     range: PlacesRange;
     bedding: boolean = true;
-    updown: string = '00';
     location: string;
 
-    constructor(public carOptionRef: number) {
+    constructor(
+        public sessionId: string,
+        public trainOptionRef: number,
+        public carOptionRef: number
+    ) {
         this.range = new PlacesRange();
     }
 }
