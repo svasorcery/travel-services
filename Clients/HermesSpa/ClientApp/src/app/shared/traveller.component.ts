@@ -164,3 +164,87 @@ export class TravellerComponent implements OnInit, ControlValueAccessor, Validat
         };
     }
 }
+
+
+@Component({
+    selector: 'travellers-array',
+    template: `
+        <div *ngIf="value" class="panel panel-default">
+            <div *ngFor="let traveller of value; let t = index" class="panel-body">
+                <h4>
+                    Passenger #{{ t + 1 }}
+                    <a *ngIf="canRemove" (click)="remove(t)" class="pull-right small" style="cursor:pointer">
+                        Remove <span class="fa fa-close" aria-hidden="true"></span>
+                    </a>
+                </h4>
+                <traveller [(ngModel)]="value[t]"></traveller>
+            </div>
+            <a *ngIf="canPush" (click)="push()" class="btn btn-link">
+                <span class="fa fa-plus" aria-hidden="true"></span>
+                Add passenger
+            </a>
+        </div>
+    `,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TravellersArrayComponent),
+            multi: true
+        }
+    ]
+})
+export class TravellersArrayComponent implements OnInit, ControlValueAccessor {
+    @Input() min: number = 1;
+    @Input() max: number = 4;
+
+    value: Traveller[] = [];
+
+    constructor() { }
+
+    ngOnInit() {
+        if (this.min > this.max) {
+            const temp = this.min;
+            this.min = this.max;
+            this.max = temp;
+        }
+    }
+
+
+    public get canPush(): boolean {
+        return this.value && this.value.length < this.max;
+    }
+
+    public get canRemove(): boolean {
+        return this.value && this.value.length > this.min;
+    }
+
+    public push(): void {
+        if (!this.canPush) { return; }
+        this.value.push(new Traveller());
+    }
+
+    public remove(el: number | Traveller): void {
+        if (!this.canRemove || el === null) { return; }
+        const index = typeof(el) === 'number' ? el : this.value.indexOf(el);
+        this.value.splice(index, 1);
+        this.onChange(this.value);
+    }
+
+
+    /* --- ControlValueAccessor -- */
+    private onChange = (_: any) => { };
+    private onTouched = (_: any) => { };
+    writeValue = (value: Traveller[]): void => {
+        this.value = value ? value : [];
+        if (this.value.length < this.min) {
+            for (let i = this.value.length; i < this.min; i++) {
+                const traveller = new Traveller();
+                traveller.ref = i + 1;
+                this.value.push(traveller);
+            }
+        }
+    }
+    registerOnChange = (fn: any) => this.onChange = fn;
+    registerOnTouched = (fn: any) => this.onTouched = fn;
+    setDisabledState = (isDisabled: boolean) => { };
+}
