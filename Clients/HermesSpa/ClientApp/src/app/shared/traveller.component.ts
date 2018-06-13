@@ -11,13 +11,13 @@ export class Traveller {
     firstName: string;
     middleName: string;
     lastName: string;
-    gender: string;
+    gender: string = null;
     birthDate: Date;
     passport: Passport = new Passport();
 }
 
 export class Passport {
-    type: string;
+    type: string = null;
     series: string;
     number: string;
     citizenship: Country = new Country();
@@ -44,7 +44,7 @@ export class CountriesListSource implements IAutoCompleteListSource {
                 <div class="form-group col-md-3">
                     <label class="control-label">Пол</label>
                     <select [(ngModel)]="value.gender" name="gender" #gender="ngModel" required class="form-control">
-                        <option disabled selected value="">-- Пол --</option>
+                        <option disabled selected [ngValue]="null">-- Пол --</option>
                         <option value="MALE">Мужской</option>
                         <option value="FEMALE">Женский</option>
                     </select>
@@ -85,6 +85,7 @@ export class CountriesListSource implements IAutoCompleteListSource {
                     <label class="control-label">Дата рождения</label>
                     <input type="datetime"
                         [(ngModel)]="value.birthDate"
+                        [validateDateRange]="{required:true}"
                         placeholder="Дата рождения"
                         name="birthDate"
                         #birthDate="ngModel"
@@ -98,6 +99,7 @@ export class CountriesListSource implements IAutoCompleteListSource {
                         name="type"
                         #type="ngModel"
                         class="form-control">
+                        <option disabled selected [ngValue]="null">-- Документ --</option>
                         <option value="PS">Общегражданский паспорт</option>
                         <option value="PSP">Общегражданский заграничный паспорт</option>
                         <option value="SR">Свидетельство о рождении</option>

@@ -29,7 +29,7 @@ export class DateRangeValidatorDirective implements Validator, OnInit {
     required: boolean;
     min: Date;
     max: Date;
-    
+
     constructor() { }
 
     ngOnInit() {
@@ -44,11 +44,11 @@ export class DateRangeValidatorDirective implements Validator, OnInit {
             return {
                 required: false,
                 message: 'Выберите дату.'
-            }
+            };
         }
 
         if (c.value && (c.value.getTime() < this.min.getTime())) {
-            return { 
+            return {
                 dateMinValue: false,
                 message: 'Дата недействительна.',
                 min: this.min
@@ -56,7 +56,7 @@ export class DateRangeValidatorDirective implements Validator, OnInit {
         }
 
         if (c.value && (c.value.getTime() > this.max.getTime())) {
-            return { 
+            return {
                 dateMaxValue: false,
                 message: 'Дата превышает максимальное значение.',
                 max: this.max
@@ -65,19 +65,19 @@ export class DateRangeValidatorDirective implements Validator, OnInit {
     }
 }
 
-export class DateCalc {    
+export class DateCalc {
     public static addDaysFromToday(count: number): Date {
-        var today = new Date();
+        const today = new Date();
         return new Date(today.setDate(today.getDate() + count));
     }
 
     public static addMonthsFromToday(count: number): Date {
-        var today = new Date();
+        const today = new Date();
         return new Date(today.setMonth(today.getMonth() + count));
     }
 
     public static addYearsFromToday(count: number): Date {
-        var today = new Date();
+        const today = new Date();
         return new Date(today.setFullYear(today.getFullYear() + count));
     }
-} 
+}

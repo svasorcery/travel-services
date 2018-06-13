@@ -6,6 +6,7 @@ import { AutoCompleteComponent } from './autocomplete.component';
 import { SpinnerComponent } from './spinner.component';
 import { ErrorComponent } from './error.component';
 import { TravellerComponent, TravellersArrayComponent } from './traveller.component';
+import { DateRangeValidatorDirective } from './date.validator';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { TravellerComponent, TravellersArrayComponent } from './traveller.compon
         SpinnerComponent,
         ErrorComponent,
         TravellerComponent,
-        TravellersArrayComponent
+        TravellersArrayComponent,
+        DateRangeValidatorDirective
     ],
     providers: [
 
@@ -28,7 +30,8 @@ import { TravellerComponent, TravellersArrayComponent } from './traveller.compon
         SpinnerComponent,
         ErrorComponent,
         TravellerComponent,
-        TravellersArrayComponent
+        TravellersArrayComponent,
+        DateRangeValidatorDirective
     ],
 })
 export class SharedModule {
