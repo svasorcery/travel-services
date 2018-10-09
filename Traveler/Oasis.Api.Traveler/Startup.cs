@@ -37,6 +37,8 @@ namespace Oasis.Api.Traveler
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseMvcWithDefaultRoute();
         }
     }
