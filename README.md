@@ -1,5 +1,7 @@
 # About
 
+TravelServices is a [Micro-Services Architecture patterns](https://github.com/svasorcery/architectural-patterns/tree/master/distributed/MSA) implementation of [Rail](Rail), Avia, Hotel tickets booking APIs, [Traveler API](Traveler) and [Client applications](Clients), all secured with [Security API](Security).
+
 ----------
 
 
