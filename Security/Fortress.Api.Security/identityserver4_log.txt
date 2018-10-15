@@ -1,0 +1,20 @@
+2018-10-15 21:14:22.648 +03:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-10-15 21:14:22.677 +03:00 [DBG] Using idsrv as default scheme for authentication
+2018-10-15 21:14:22.680 +03:00 [DBG] Using idsrv as default scheme for sign-in
+2018-10-15 21:14:22.680 +03:00 [DBG] Using idsrv as default scheme for sign-out
+2018-10-15 21:14:22.680 +03:00 [DBG] Using idsrv as default scheme for challenge
+2018-10-15 21:14:22.680 +03:00 [DBG] Using idsrv as default scheme for forbid
+2018-10-15 21:15:26.126 +03:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "bob",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLHIP849FLGJ:00000004",
+  "TimeStamp": "2018-10-15T18:15:26Z",
+  "ProcessId": 1912,
+  "LocalIpAddress": "127.0.0.1:25024",
+  "RemoteIpAddress": "::1"
+}
