@@ -1,4 +1,4 @@
-namespace Oasis.Api.Traveller.Models
+namespace Oasis.Api.Traveler.Models
 {
     public class Traveller
     {

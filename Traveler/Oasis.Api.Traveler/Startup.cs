@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oasis.Api.Traveler.DbContexts;
+using Oasis.Api.Traveler.Abstractions;
+using Oasis.Api.Traveler.Services;
 
 namespace Oasis.Api.Traveler
 {
@@ -26,6 +28,7 @@ namespace Oasis.Api.Traveler
         {
             services.Configure<OasisDbContextOptions>(Configuration.GetSection("OasisDatabase"));
             services.AddTransient<OasisDbContext>();
+            services.AddTransient<IPersonsRepository, PersonsRepository>();
 
             services.AddMvc();
         }
