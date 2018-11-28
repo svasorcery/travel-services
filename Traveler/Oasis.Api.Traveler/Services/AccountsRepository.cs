@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Oasis.Api.Traveler.Services
 {
-    public class TravelersRepository : ICatalogueRepository<Account>
+    public class AccountsRepository : ICatalogueRepository<Account>
     {
         private readonly OasisDbContext _db;
 
-        public TravelersRepository(OasisDbContext context)
+        public AccountsRepository(OasisDbContext context)
         {
             _db = context;
         }

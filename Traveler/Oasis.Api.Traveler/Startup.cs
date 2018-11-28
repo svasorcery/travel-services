@@ -28,7 +28,8 @@ namespace Oasis.Api.Traveler
         {
             services.Configure<OasisDbContextOptions>(Configuration.GetSection("OasisDatabase"));
             services.AddTransient<OasisDbContext>();
-            services.AddTransient<IPersonsRepository, PersonsRepository>();
+            services.AddTransient<ICatalogueRepository<Models.Person>, PersonsRepository>();
+            services.AddTransient<ICatalogueRepository<Models.Account>, AccountsRepository>();
 
             services.AddMvc();
         }

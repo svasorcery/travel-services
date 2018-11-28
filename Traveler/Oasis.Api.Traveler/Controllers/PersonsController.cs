@@ -9,9 +9,9 @@ namespace Oasis.Api.Traveler.Controllers
     [Route("api/[controller]")]
     public class PersonsController : Controller
     {
-        private readonly IPersonsRepository _persons;
+        private readonly ICatalogueRepository<Person> _persons;
 
-        public PersonsController(IPersonsRepository personsRepository)
+        public PersonsController(ICatalogueRepository<Person> personsRepository)
         {
             _persons = personsRepository;
         }
