@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Oasis.Api.Traveler.Services
 {
-    public class PersonsRepository : IPersonsRepository
+    public class PersonsRepository : ICatalogueRepository<Person>
     {
         private readonly OasisDbContext _db;
 
