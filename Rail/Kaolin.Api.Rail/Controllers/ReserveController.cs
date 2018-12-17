@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kaolin.Api.Rail.Controllers
 {
@@ -10,6 +11,7 @@ namespace Kaolin.Api.Rail.Controllers
     using Kaolin.Infrastructure.SessionStore;
     using Kaolin.Models.Rail;
 
+    [Authorize]
     [Route("api/[controller]")]
     public class ReserveController : RailControllerBase
     {

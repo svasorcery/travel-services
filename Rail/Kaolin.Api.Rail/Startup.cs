@@ -19,6 +19,19 @@ namespace Kaolin.Api.Rail
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore()
+               .AddAuthorization()
+               .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5001";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = "rail_api";
+                });
+
             services.AddCors(options =>
             {
                 // this defines a CORS policy called "default"
@@ -42,8 +55,6 @@ namespace Kaolin.Api.Rail
                 .Configure<Services.PassRzdRu.RailClient.Config>(Configuration.GetSection("PassRzdRuRailClient"))
                 .AddSingleton<Services.PassRzdRu.Parser.PassRzdRuClient>()
                 .AddTransient<Kaolin.Models.Rail.Abstractions.IRailClient, Services.PassRzdRu.RailClient.PassRzdRuRailClient>();
-
-            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +63,8 @@ namespace Kaolin.Api.Rail
             loggerFactory.AddConsole();
 
             app.UseCors("angular_app");
+
+            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
