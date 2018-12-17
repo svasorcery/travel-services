@@ -43,14 +43,14 @@ namespace Fortress.Api.Security
                 .AddTestUsers(TestUsers.Users);
 
             // in-memory, code config
-            //builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
-            //builder.AddInMemoryApiResources(Config.GetApis());
-            //builder.AddInMemoryClients(Config.GetClients());
+            builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
+            builder.AddInMemoryApiResources(Config.GetApis());
+            builder.AddInMemoryClients(Config.GetClients());
 
             // in-memory, json config
-            builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
-            builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
-            builder.AddInMemoryClients(Configuration.GetSection("clients"));
+            //builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
+            //builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
+            //builder.AddInMemoryClients(Configuration.GetSection("clients"));
 
             if (Environment.IsDevelopment())
             {
@@ -61,14 +61,7 @@ namespace Fortress.Api.Security
                 throw new Exception("need to configure key material");
             }
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                    options.ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com";
-                    options.ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh";
-                });
+            services.AddAuthentication();
         }
 
         public void Configure(IApplicationBuilder app)
