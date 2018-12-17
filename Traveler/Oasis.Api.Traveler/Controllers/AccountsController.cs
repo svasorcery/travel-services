@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Oasis.Api.Traveler.Controllers
 {
     using Oasis.Api.Traveler.Abstractions;
     using Oasis.Api.Traveler.Models;
 
+    [Authorize]
     [Route("api/[controller]")]
     public class AccountsController : Controller
     {
