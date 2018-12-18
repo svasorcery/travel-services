@@ -31,7 +31,7 @@ namespace HermesSpa
                     Subject = "S-0-0-00-0000000000-0000000000-0000000000-0000"
                 });
 
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

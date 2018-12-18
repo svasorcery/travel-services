@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Oasis.Api.Traveler.Abstractions;
 using Oasis.Api.Traveler.Models;
-using Oasis.Api.Traveler.Services.InMemory;
+using Oasis.Api.Traveler.DbContexts;
 
 namespace Oasis.Api.Traveler.Services
 {

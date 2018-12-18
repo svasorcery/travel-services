@@ -25,7 +25,7 @@ namespace Fortress.Api.Security
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
             services.Configure<IISOptions>(options =>
             {

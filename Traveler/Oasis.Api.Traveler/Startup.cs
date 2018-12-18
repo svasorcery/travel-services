@@ -36,8 +36,9 @@ namespace Oasis.Api.Traveler
             services.AddTransient<ICatalogueRepository<Models.Account>, InMemoryAccountsRepository>();
 
             services.AddMvcCore()
-               .AddAuthorization()
-               .AddJsonFormatters();
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2)
+                .AddAuthorization()
+                .AddJsonFormatters();
 
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>

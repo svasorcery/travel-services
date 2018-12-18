@@ -20,8 +20,9 @@ namespace Kaolin.Api.Rail
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore()
-               .AddAuthorization()
-               .AddJsonFormatters();
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2)
+                .AddAuthorization()
+                .AddJsonFormatters();
 
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
