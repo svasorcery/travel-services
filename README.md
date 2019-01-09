@@ -21,21 +21,17 @@ mongoimport -d kaolin -c stations --jsonArray --mode=upsert --upsertFields=ru --
 
 - Clone repo:
 ```
-https://github.com/svasorcery/travel-services.git
+git clone https://github.com/svasorcery/travel-services.git
 ```
 
-- Go to the Rail folder and run ```cmd``` with comand:
+- Restore dotnet packages:
 ```cmd
 dotnet restore
 ```
 
-- Go to the Clients/HermesSpa folder and run:
+- Restore angular client packages:
 ```cmd
-dotnet restore
-```
-
-- Then go to the Clients/HermesSpa/ClientApp and run:
-```cmd
+cd ./travel-services/Clients/HermesSpa/ClientApp
 npm install
 ```
 
