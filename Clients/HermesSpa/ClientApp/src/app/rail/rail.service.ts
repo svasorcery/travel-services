@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { RailStation, TrainsListRequest, TrainsListResult, CarsListResult,
     SeatsListResult, SeatOptionParams, Traveller } from './rail.models';

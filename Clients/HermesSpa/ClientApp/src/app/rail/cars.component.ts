@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
-import { CarsListResult, Car } from './rail.models';
+import { CarsListResult } from './rail.models';
 import { RailService } from './rail.service';
 
 @Component({
@@ -18,9 +19,7 @@ export class CarsListComponent implements OnInit {
     ngOnInit() {
         this._route
         .queryParams
-        .switchMap(params => {
-            return this._rail.queryCars(params['sessionId'], +params['optionRef']);
-        })
+        .pipe(switchMap(params => this._rail.queryCars(params['sessionId'], +params['optionRef'])))
         .subscribe(
             result => this.result = result,
             error => console.log(error)

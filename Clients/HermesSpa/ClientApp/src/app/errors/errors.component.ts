@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
     template: `
@@ -11,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
     `
 })
 export class ErrorsComponent implements OnInit {
-    routeParams;
+    routeParams: any;
 
     constructor(private activatedRoute: ActivatedRoute) { }
 

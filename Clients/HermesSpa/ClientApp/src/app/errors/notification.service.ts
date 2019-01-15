@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/publish';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 
 @Injectable()
@@ -11,10 +9,10 @@ export class NotificationService {
 
     constructor() {
         this._notification = new BehaviorSubject(null);
-        this.notification$ = this._notification.asObservable().publish().refCount();
+        this.notification$ = this._notification.asObservable();
     }
 
-    public notify = (message) => {
+    public notify = (message: any) => {
         console.error(message);
         this._notification.next(message);
     }

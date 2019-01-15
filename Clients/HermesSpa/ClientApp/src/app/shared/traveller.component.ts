@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from '@angular/forms';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { IAutoCompleteListSource } from './autocomplete.component';
 
@@ -119,16 +119,8 @@ export class CountriesListSource implements IAutoCompleteListSource {
         </form>
     `,
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TravellerComponent),
-            multi: true
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => TravellerComponent),
-            multi: true
-        }
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TravellerComponent), multi: true },
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => TravellerComponent), multi: true }
     ]
 })
 export class TravellerComponent implements OnInit, ControlValueAccessor, Validator {

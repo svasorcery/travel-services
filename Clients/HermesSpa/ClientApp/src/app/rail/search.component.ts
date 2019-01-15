@@ -1,7 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component } from '@angular/core';
 
-import { TrainsListRequest, RailStation } from './rail.models';
+import { TrainsListRequest } from './rail.models';
 import { RailService, RailStationsListSource } from './rail.service';
 
 @Component({

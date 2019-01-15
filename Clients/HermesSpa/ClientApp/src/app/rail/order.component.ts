@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 import { RailService } from './rail.service';
 import { SeatsListResult, SeatOptionParams, Traveller } from './rail.models';
@@ -18,18 +19,17 @@ export class RailOrderComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this._route.queryParams
-            .switchMap(params => {
-                const sessionId = params['sessionId'];
-                const trainRef = +params['trainRef'];
-                const optionRef = +params['optionRef'];
-                this.params = new SeatOptionParams(sessionId, trainRef, optionRef);
-                return this._rail.querySeats(sessionId, trainRef, optionRef);
-            })
-            .subscribe(
-                result => this.result = result,
-                error => console.log(error)
-            );
+        this._route.queryParams.pipe(switchMap(params => {
+            const sessionId = params['sessionId'];
+            const trainRef = +params['trainRef'];
+            const optionRef = +params['optionRef'];
+            this.params = new SeatOptionParams(sessionId, trainRef, optionRef);
+            return this._rail.querySeats(sessionId, trainRef, optionRef);
+        }))
+        .subscribe(
+            result => this.result = result,
+            error => console.log(error)
+        );
     }
 
     submit() {
